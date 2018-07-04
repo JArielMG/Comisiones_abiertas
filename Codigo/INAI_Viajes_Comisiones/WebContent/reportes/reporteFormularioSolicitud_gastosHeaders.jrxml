@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteFormularioSolicitud_gastosHeaders" pageWidth="572" pageHeight="752" columnWidth="572" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="41507071-0806-46d0-8f77-387c14227b46">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_COMISION" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select
+0 as 'id',
+MAX(CASE when orden = 1 then gccc.etiqueta END) 'c1',
+MAX(CASE when orden = 2 then gccc.etiqueta END) 'c2',
+MAX(CASE when orden = 3 then gccc.etiqueta END) 'c3',
+MAX(CASE when orden = 4 then gccc.etiqueta END) 'c4',
+MAX(CASE when orden = 5 then gccc.etiqueta END) 'c5',
+MAX(CASE when orden = 6 then gccc.etiqueta END) 'c6',
+MAX(CASE when orden = 7 then gccc.etiqueta END) 'c7',
+MAX(CASE when orden = 8 then gccc.etiqueta END) 'c8',
+MAX(CASE when orden = 9 then gccc.etiqueta END) 'c9',
+MAX(CASE when orden = 10 then gccc.etiqueta END) 'c10',
+MAX(CASE when orden = 11 then gccc.etiqueta END) 'c11'
+from gastos_campos_config gccc
+union
+select
+  cdg.id_registro_gasto_comision AS 'id',
+MAX(CASE when orden = 1 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c1',
+   MAX(CASE when orden = 2 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c2',
+MAX(CASE when orden = 3 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c3',
+   MAX(CASE when orden = 4 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c4',
+            MAX(CASE when orden = 5 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c5',
+   MAX(CASE when orden = 6 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c6',
+            MAX(CASE when orden = 7 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c7',
+   MAX(CASE when orden = 8 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c8',
+            MAX(CASE when orden = 9 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c9',
+   MAX(CASE when orden = 10 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c10',
+            MAX(CASE when orden = 11 then (CASE WHEN cdn.tipo_dato = 1 THEN
+	cdg.valor_numerico
+ELSE (CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN cdn.tipo_dato = 2 and cdn.tipo_control != 2 THEN
+		cdg.valor_texto
+		ELSE (CASE WHEN cdn.tipo_dato = 3 THEN
+			DATE_FORMAT(cdg.valor_fecha,'%d/%m/%Y')
+			ELSE 0 END )END) END ) END) END) 'c11'
+from comisiones_desglose_gastos cdg
+inner join registros_gastos_comision rgc on cdg.id_registro_gasto_comision = rgc.id_registro_gasto_comision
+inner join gastos_campos_config gcc on cdg.campo = gcc.campo
+inner join campos_dinamicos cdn on gcc.campo = cdn.nombre_campo
+left outer join valores_dinamicos vd on cdn.id_lista = vd.id_lista and cdg.valor_texto = vd.codigo
+where cdg.id_comision = $P{ID_COMISION}
+group by cdg.id_registro_gasto_comision
+order by 'id']]>
+	</queryString>
+	<field name="id" class="java.lang.Long">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="c1" class="java.lang.String"/>
+	<field name="c2" class="java.lang.String"/>
+	<field name="c3" class="java.lang.String"/>
+	<field name="c4" class="java.lang.String"/>
+	<field name="c5" class="java.lang.String"/>
+	<field name="c6" class="java.lang.String"/>
+	<field name="c7" class="java.lang.String"/>
+	<field name="c8" class="java.lang.String"/>
+	<field name="c9" class="java.lang.String"/>
+	<field name="c10" class="java.lang.String"/>
+	<field name="c11" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="514" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="f2558155-999e-4fd8-88df-1b57770f8165"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="463" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="45e70bad-223d-4171-907c-bea95eeccdb4"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="412" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="dd530e93-c843-4ff6-ac23-ec7a86a678d1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="361" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="b59f592f-e435-4efc-9366-6e0ec933b676"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="310" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="5b826b49-aaa3-4b24-99a6-6f6094711268"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="259" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="701d84cd-6524-4db7-a379-a6474a408fea"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="208" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="39ac7b02-bf2d-42fe-b98e-1689fd6870ef"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="157" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="20e0db0a-d6c8-46b1-8528-ef59bcf83667"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="106" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="f3459606-73fe-442b-ae0d-11b8cb7d0e03"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="55" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="62bdf54d-0c57-4838-a459-75ac98ba8dc1"/>
+			</rectangle>
+			<rectangle>
+				<reportElement stretchType="RelativeToTallestObject" x="4" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" backcolor="#CCCCCC" uuid="0f18cf20-17fc-4f0a-9dd8-1edf821aac0a"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="4" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="58e71f73-f980-4ac7-a10f-6e6e114d0563"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c1}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="55" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="308308ae-70e6-4c6b-af99-6b072c3832f3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="106" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="36ea39ed-c0c8-4e46-8c20-9d2271dae357"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c3}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="157" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="f8a418f9-3943-4064-acd7-996ca2ff446a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c4}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="208" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="2fa467fb-7c41-48a3-878f-efa72e738ea3"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c5}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="259" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="71962182-d83d-4288-90de-13916e326e78"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c6}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="310" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="ea0c750f-f506-45ec-9f04-28e801b240c7"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c7}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="361" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="1f5e4094-c5b6-4f89-abf4-840ae2270319"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c8}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="412" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="e6caaf4f-3771-4106-bd65-ab91a2896c78"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c9}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="463" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="f04b4b63-883b-42bb-aab8-ac02b83ab595"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c10}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement x="514" y="0" width="51" height="20" isPrintWhenDetailOverflows="true" uuid="b2b408f2-0adc-4d7b-8ab7-262878a7dba1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{c11}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
