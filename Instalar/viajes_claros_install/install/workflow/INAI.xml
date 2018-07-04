@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<organization:Organization xmlns:organization="http://documentation.bonitasoft.com/organization-xml-schema/1.1">
+  <customUserInfoDefinitions/>
+  <users>
+    <user userName="admin">
+      <firstName>admin</firstName>
+      <lastName>admin</lastName>
+      <manager></manager>
+      <personalData/>
+      <professionalData/>
+      <password encrypted="false">admin</password>
+      <customUserInfoValues/>
+    </user>
+  </users>
+  <roles>
+    <role name="admin">
+      <displayName>admin</displayName>
+      <description>admin</description>
+    </role>
+    <role name="aprobadores">
+      <displayName>aprobadores</displayName>
+      <description>aprobadores</description>
+    </role>
+    <role name="solicitantes">
+      <displayName>solicitantes</displayName>
+      <description>solicitantes</description>
+    </role>
+  </roles>
+  <groups>
+    <group name="Generico">
+      <displayName>Generico</displayName>
+      <description>Generico</description>
+    </group>
+  </groups>
+  <memberships>
+    <membership>
+      <userName>admin</userName>
+      <roleName>admin</roleName>
+      <groupName>Generico</groupName>
+    </membership>
+  </memberships>
+</organization:Organization>
