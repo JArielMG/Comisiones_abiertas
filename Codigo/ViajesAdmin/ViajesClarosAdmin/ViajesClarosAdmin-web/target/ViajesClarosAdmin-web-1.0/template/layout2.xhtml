@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Viajes Claros Admin</title>
+        <link rel="shortcut icon" href="#{resource['img/favicon.ico']}"></link>
+        <h:outputStylesheet name="css/bootstrap.min.css" />
+        <h:outputStylesheet library="webjars" name="font-awesome/4.4.0/css/font-awesome-jsf.css" />
+        <h:outputStylesheet name="css/main.css" />
+        <h:outputScript library="libs" name="jquery-migrate-1.2.1.min.js" />
+        <h:outputScript library="libs" name="bootstrap.min.js" />
+    </h:head>
+
+    <h:body>
+
+        <div id="page">
+
+            <div id="header">
+                <ui:insert name="header" >
+                    <ui:include src="header-empty.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div id="content">
+                <ui:insert name="content" >
+                    <ui:include src="content.xhtml" />
+                </ui:insert>
+            </div>
+
+            <div id="footer">
+                <ui:insert name="footer" >
+                    <ui:include src="footer.xhtml" />
+                </ui:insert>
+            </div>
+
+            <p:ajaxStatus onstart="PF('statusDialog').show()" onsuccess="PF('statusDialog').hide();setTimeout(function() { $('#msgs').hide(1000); }, 5000);" />
+
+            <p:dialog widgetVar="statusDialog" modal="true" draggable="false" position="center"
+                      closable="false" resizable="false" showHeader="false">
+                <img src="#{request.contextPath}/resources/img/ajaxloadingbar.gif" />
+            </p:dialog>
+
+        </div>
+
+    </h:body>
+</html>

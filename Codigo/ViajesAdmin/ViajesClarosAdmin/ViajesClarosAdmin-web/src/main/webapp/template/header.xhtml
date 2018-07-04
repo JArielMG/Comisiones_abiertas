@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+    <body>
+        <ui:composition>
+            <div id="header">
+                <div class="container-fluid gradient-blue">
+                    <div class="container">
+                        <div class="logout-header pull-right">
+                            #{request.remoteUser}
+                            <b><a href="#{request.contextPath}/logout">| <i class="fa fa-sign-out"></i> Salir</a></b>
+                        </div>
+                    </div>
+                </div>
+                
+                <nav class="navbar navbar-default gradient-blue">
+                    <div class="container-fluid content">
+                        <div class="navbar-header">
+                            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                            </button>
+                            <a href="http://www.inai.org.mx/" class="navbar-brand" target="_blank"><img src="#{request.contextPath}/resources/img/logoifai2014.png" alt="inai"/></a>
+                            <a href="#/" class="navbar-brand"><img src="#{request.contextPath}/resources/img/viajeslogo.png" alt="Viajes Claros"/></a>
+                        </div>
+
+                        <div collapse="isCollapsed" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="#{view.viewId == '/filtros/filtros.xhtml' ? 'active' : ''}"><h:outputLink value="#{request.contextPath}/filtros/filtros.xhtml"><i class="fa fa-search"></i> Buscador</h:outputLink></li>
+                                <li class="#{view.viewId == '/graficas/graficas.xhtml' ? 'active' : ''}"><h:outputLink value="#{request.contextPath}/graficas/graficas.xhtml"><i class="fa fa-bar-chart"></i> Gráficas</h:outputLink></li>
+                                <li class="#{view.viewId == '/calendario/calendario.xhtml' ? 'active' : ''}"><h:outputLink value="#{request.contextPath}/calendario/calendario.xhtml"><i class="fa fa-calendar"></i> Calendario</h:outputLink></li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-gear"></i> Configurar <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><h:outputLink value="#{request.contextPath}/suscripcion/suscripcion.xhtml"><i class="fa fa-rss"></i> Suscripción</h:outputLink></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><h:outputLink value="#{request.contextPath}/flujos/flujos.xhtml"><i class="fa fa-edit"></i> Pantallas de flujos</h:outputLink></li>
+                                        <li><h:outputLink value="#{request.contextPath}/gastos/gastos.xhtml"><i class="fa fa-edit"></i> Comprobación de gastos</h:outputLink></li>
+                                        <li><h:outputLink value="#{request.contextPath}/carga/carga.xhtml"><i class="fa fa-upload"></i> Carga masiva</h:outputLink></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><h:outputLink value="#{request.contextPath}/param/tablaCampo.xhtml"><i class="fa fa-plane"></i> Parametrización</h:outputLink></li>
+                                        <li><h:outputLink value="#{request.contextPath}/param/camposDinamicos.xhtml"><i class="fa fa-th"></i> Campos dinámicos</h:outputLink></li>
+                                        <li><h:outputLink value="#{request.contextPath}/param/listas.xhtml"><i class="fa fa-th-list"></i>Listas</h:outputLink></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+                </nav>
+            </div>
+        </ui:composition>
+    </body>
+</html>

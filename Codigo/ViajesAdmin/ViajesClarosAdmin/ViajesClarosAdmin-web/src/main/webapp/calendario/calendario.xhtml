@@ -1,0 +1,110 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+                <!--                <h:outputScript library="libs" name="jquery.min.js"/>
+                                <h:outputScript library="libs" name="jquery-migrate-1.2.1.min.js" />
+                                <h:outputScript library="libs" name="bootstrap.min.js" />-->
+                <h:outputStylesheet library="css" name="fullcalendar.css"  />
+                <h:outputStylesheet library="css" name="/jquery/jquery-ui.min.css"  />
+                <h:outputScript library="libs" name="moment.min.js" />
+                <h:outputScript library="libs" name="fullcalendar.min.js" />
+                <h:outputScript library="libs" name="/lang/es.js" />
+                <h:outputScript library="js" name="/calendario/calendario.js" />
+
+                <h:form id="formCalendar" prependId="false">
+                    <p:remoteCommand name="changeMonth" update="jsonEventos slArea slFuncionario"
+                                     oncomplete="refreshEvents();"
+                                     actionListener="#{calendarioController.changeMonth}" />
+
+
+                    <div id="flujos" class="container-fluid">
+                        <div class="row">
+                            <h4 class="text-center"><strong>CALENDARIO DE VIAJES</strong></h4>
+                            <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+                        </div>
+
+                        <div id="calendar-filters" class="col-xs-12 col-sm-3 col-md-3">
+
+                            <div class="form-group col-md-12">
+                                <label>Unidad administrativa: </label>
+                                <h:selectOneMenu id="slArea" styleClass="form-control" 
+                                                 value="#{calendarioController.idArea}">
+                                    <f:selectItem itemLabel="Selecciona.."/>
+                                    <f:selectItems value="#{calendarioController.areas}" var="area"
+                                                   itemLabel="#{area.descripcion}" itemValue="#{area.id}"/>
+                                    <p:ajax process="@this" update="jsonEventos slFuncionario" oncomplete="refreshEvents();"
+                                            listener="#{calendarioController.changeUnidad}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Funcionario: </label>
+                                <h:selectOneMenu id="slFuncionario" styleClass="form-control"
+                                                 value="#{calendarioController.idFunc}">
+                                    <f:selectItem itemLabel="Selecciona.."/>
+                                    <f:selectItems value="#{calendarioController.funcionarios}" var="fun"
+                                                   itemLabel="#{fun.nombreCompleto}"
+                                                   itemValue="#{fun.id}"/>
+                                    <p:ajax process="@this" update="jsonEventos" oncomplete="refreshEvents();"
+                                            listener="#{calendarioController.changeFuncionario}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label>Estado: </label>
+                                <h:selectOneMenu id="slStatus" value="#{calendarioController.selectedStatus}" styleClass="form-control">
+                                    <f:selectItem itemLabel="Selecciona.."/>
+                                    <f:selectItem itemLabel="PUBLICADO" itemValue="PUBLICADO"/>
+                                    <f:selectItem itemLabel="PENDIENTE" itemValue="PENDIENTE"/>
+                                    <f:selectItem itemLabel="RECHAZADO" itemValue="RECHAZADO"/>
+                                    <p:ajax process="@this" update="jsonEventos" oncomplete="refreshEvents();"
+                                            listener="#{calendarioController.updateEventos}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-12 col-sm-8 col-md-8">
+                            <!-- CALENDARIO -->
+                            <div id="calendar"></div>
+                        </div>
+
+                    </div>
+
+                    <!-- JSON QUE CONTIENE LOS EVENTOS -->
+                    <h:outputText id="jsonEventos" value="#{calendarioController.jsonString}" style="visibility: hidden"/>
+
+                </h:form>
+
+                <div id="modalEvent" class="modal fade bs-example-modal-sm" tabindex="-1" 
+                     role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content text-center">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                <strong><span id="txEvFuncionario" class="blue"></span></strong> <br/>
+                            </div>
+                            <div class="modal-body gray">
+                                <h5 id="txEvStatus" ></h5>
+                                <label>Unidad administrativa: </label> <span id="txEvUnidad"></span> <br/>
+                                <label>Fecha de inicio: </label> <span id="txEvInicio"></span> <br/>
+                                <label>Fecha de fin: </label> <span id="txEvFin"></span> <br/>
+                                <label>Destino: </label> <span id="txEvDestino"></span> <br/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

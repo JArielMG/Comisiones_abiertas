@@ -1,0 +1,287 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div id="carga-masiva" class="container">
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE DESGLOSE DE GASTOS</strong></h4>
+                    <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+
+                    <h:form id="formTabla" prependId="false">
+                        <div id="div-carga" class="col-md-12">
+                            <button class="btn btn-info btn-square pull-right btn-add-filtro"
+                                    onclick="PF('dlg1').show();
+                                            return false;">
+                                <i class="fa fa-plus"></i> <strong>Agregar campo</strong>
+                            </button>
+
+                            <div class="row">
+                                <p:dataTable styleClass="small" id="table1" style="margin-top: 30px;">
+                                    <p:columns value="#{gastosController.camposEnTabla}" var="campo" columnIndexVar="index">
+                                        <f:facet name="header">
+                                            <p:commandLink oncomplete="PF('dlg2').show();return false;"
+                                                           update=":formDeleteCampo" immediate="true"
+                                                           rendered="true"
+                                                           styleClass="btn btn-danger btn-xs btn-square pull-left prime-btn-reset">
+                                                <f:setPropertyActionListener value="#{campo}" 
+                                                                             target="#{gastosController.campoDelete}" />
+                                                <i class="fa fa-remove"></i>
+                                            </p:commandLink>
+                                            <p:commandLink oncomplete="PF('dlg3').show();return false;"
+                                                           update=":formEditCampo" immediate="true"
+                                                           rendered="true" 
+                                                           styleClass="btn btn-info btn-xs btn-square pull-left prime-btn-reset">
+                                                <f:setPropertyActionListener value="#{campo}" 
+                                                                             target="#{gastosController.campoEdit}" />
+                                                <i class="fa fa-pencil"></i>
+                                            </p:commandLink>
+                                            
+                                            <h:outputText value="#{campo.etiqueta}" styleClass="small" style="font-weight: normal;"/>
+                                        </f:facet>
+                                    </p:columns>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </h:form>
+
+
+                    <h:form id="formAddCampo" prependId="false">
+                    <p:remoteCommand name="reinitValorInsert" update="formAddCampo" process="@this"
+                                     actionListener="#{gastosController.reinitValorInsert}"/>
+                    <p:dialog header="Agregar campo" id="dlg1" widgetVar="dlg1" 
+                              modal="true" height="280" width="370" onHide="reinitValorInsert()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg1" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Tabla:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slTabla" styleClass="form-control" 
+                                                     value="#{gastosController.campoInsert.tabla}" >
+                                        <f:selectItems value="#{gastosController.tablas}" 
+                                                       var="t" itemLabel="#{t.descripcion==''?'CAMPOS DINÁMICOS':t.descripcion}" 
+                                                       itemValue="#{t.descripcion}"/>
+                                        <p:ajax process="@this" update="slCampo"
+                                                listener="#{gastosController.changeTabla}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Campo:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slCampo" styleClass="form-control"
+                                                     value="#{gastosController.campoInsert.campo}">
+                                        <f:selectItems value="#{gastosController.camposPorTabla}"
+                                                       var="c" itemLabel="#{c.campo}" itemValue="#{c.campo}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txEtiqueta" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiqueta" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{gastosController.campoInsert.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    Subtipo
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slSubtipo" styleClass="form-control"
+                                                     value="#{gastosController.campoInsert.subtipo}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItem itemLabel="Fecha" itemValue="FECHA"/>
+					<f:selectItem itemLabel="Hora" itemValue="HORA"/>
+					<f:selectItem itemLabel="Área de Texto" itemValue="AREA"/>
+					<f:selectItem itemLabel="Texto Simple" itemValue="SIMPLE"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrden" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrden" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{gastosController.campoInsert.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo Orden es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{gastosController.campoInsert.listaHabilitada}"/>
+                                        <span>Lista habilitada</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{gastosController.campoInsert.obligatorio}"/>
+                                        <span>Obligatorio</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formAddCampo" update="msgDlg1 :formTabla :msgs"
+                                            listener="#{gastosController.saveColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg1').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg1').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formDeleteCampo" prependId="false">
+                    <p:dialog header="Eliminar Campo" id="dlg2" widgetVar="dlg2" 
+                              modal="true" height="60" width="350" resizable="false"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+
+                        <h4 class="text-center">¿Deseas eliminar el campo 
+                            <b>#{gastosController.campoDelete.etiqueta}</b>?</h4>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <button class="btn btn-danger" onclick="PF('dlg2').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="@this" update=":formTabla :msgs :formAddCampo:slTabla :formAddCampo:slCampo"
+                                            listener="#{gastosController.deleteColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg2').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formEditCampo" prependId="false">
+                    <p:remoteCommand name="reinitValorEdit" update="formEditCampo" process="@this"
+                                     actionListener="#{gastosController.reinitValorInsert}"/>
+                    <p:dialog header="Editar campo" id="dlg3" widgetVar="dlg3" 
+                              modal="true" height="280" width="370" onHide="reinitValorEdit()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg3" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label for="txTablaEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Tabla:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txTablaEdit" styleClass="form-control" maxlength="50" disabled="true"
+                                                 value="#{gastosController.campoEdit.tabla==''?'CAMPOS DINÁMICOS':gastosController.campoEdit.tabla}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Campo:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txCampoEdit" styleClass="form-control" maxlength="50" 
+                                                 disabled="true" value="#{gastosController.campoEdit.campo}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txEtiquetaEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiquetaEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{gastosController.campoEdit.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    Subtipo
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slSubtipoEdit" styleClass="form-control"
+                                                     value="#{gastosController.campoEdit.subtipo}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItem itemLabel="Fecha" itemValue="FECHA"/>
+					<f:selectItem itemLabel="Hora" itemValue="HORA"/>
+					<f:selectItem itemLabel="Área de Texto" itemValue="AREA"/>
+					<f:selectItem itemLabel="Texto Simple" itemValue="SIMPLE"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrdenEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrdenEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{gastosController.campoEdit.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo Orden es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{gastosController.campoEdit.listaHabilitada}"/>
+                                        <span>Lista habilitada</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{gastosController.campoEdit.obligatorio}"/>
+                                        <span>Obligatorio</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formEditCampo" update="msgDlg3 :formTabla :msgs"
+                                            listener="#{gastosController.updateColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg3').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

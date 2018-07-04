@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div class="container-fluid buscador-container">
+                    <p:messages id="msgs" autoUpdate="true" showDetail="true" globalOnly="true" />
+
+                    <h:form id="formDep" prependId="false">
+                        <div id="search-dependencia" class="col-sm-12">
+                            <div class="form-group col-sm-2">
+                                <h:selectOneMenu  styleClass="form-control" 
+                                                 value="#{filtroBusquedaController.idDependencia}">
+                                    <f:selectItems value="#{filtroBusquedaController.dependencias}" var="d"
+                                                   itemLabel="#{d.siglas}" itemValue="#{d.id}"/>
+                                    <p:ajax process="@this" update=":formDep :formFiltros :formResult :formAddFiltro :formAddResult"
+                                            listener="#{filtroBusquedaController.changeDependencia}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-sm-10">
+                                <h4 class="text-center"><h:outputText value="#{filtroBusquedaController.selectedDependencia.dependencia}"/></h4>
+                            </div>
+                        </div>
+                    </h:form>
+
+                    <div id="search-filters" class="col-xs-12 col-sm-3 col-md-3">
+                        <button class="btn btn-info btn-square pull-right btn-add-filtro"
+                                onclick="PF('dlg2').show();
+                                        return false;">
+                            <i class="fa fa-plus"></i> <strong></strong></button>
+
+                        <h4 class="text-center"><strong>Filtros de búsqueda</strong></h4>
+
+                        <h:form id="formFiltros" prependId="false">
+                            <ui:repeat value="#{filtroBusquedaController.filtros}" var="filtro">
+                                <div class="form-group">
+                                    <p:commandButton styleClass="btn btn-danger btn-xs btn-square prime-btn-reset" 
+                                                     immediate="true"
+                                                     oncomplete="PF('dlg3').show();return false;" value="x">
+                                        <f:setPropertyActionListener value="#{filtro}" 
+                                                                     target="#{filtroBusquedaController.filtroToDelete}" />
+                                    </p:commandButton>
+                                    <label>#{filtro.descripcion} <small class="gray">(#{filtro.comparador})</small></label>
+
+                                    <!-- tipo de control: SELECT, TEXT, DATEPICKER -->
+                                    <h:selectOneMenu styleClass="form-control" value=""
+                                                     rendered="#{filtro.tipoControl == 'SELECT'}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItems value="#{filtro.catalogo}" var="item"
+                                                       itemLabel="#{item.descripcion}" itemValue="#{item.id}"/>
+                                    </h:selectOneMenu>
+                                    <h:inputText styleClass="form-control" value="" onkeypress="if( event.keyCode == 13){event.keyCode=0;return false;}"
+                                                 rendered="#{filtro.tipoControl == 'TEXT'}" />
+                                    <p:calendar locale="es_MX" pattern="dd/MM/yyyy"
+                                                value="#{filtroBusquedaController.selectedFiltro.fecha}"
+                                                rendered="#{filtro.tipoControl == 'DATE'}" />
+                                </div>
+                            </ui:repeat>
+
+<!--                            <button type="button" disabled="disabled" 
+                                    class="btn btn-primary pull-right clearfix">
+                                <i class="fa fa-search"></i> Buscar</button>-->
+                        </h:form>
+                    </div>
+
+                    <h:form id="formResult" prependId="false">
+                        <div class="col-xs-12 col-sm--9 col-md-9 pull-right">
+                            <div id="search-results">
+                                <button class="btn btn-info btn-add-result btn-square btn-add-result"
+                                        onclick="PF('dlg5').show();
+                                                return false;">
+                                    <i class="fa fa-plus"></i> </button>
+
+                                <h4 class="text-center"><strong>Resultados</strong></h4>
+
+                                <div class="row">
+                                    <p:dataTable styleClass="small" id="table1" 
+                                                 emptyMessage="No se encontraron viajes"
+                                                 value="#{filtroBusquedaController.viajes}" var="viaje"
+                                                 rows="5" paginator="true" rowsPerPageTemplate="5,10,15"
+                                                 currentPageReportTemplate="{currentPage} de {totalPages}"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                        <p:columns value="#{filtroBusquedaController.headers}" var="h" columnIndexVar="index">
+                                            <f:facet name="header">
+                                                <p:commandButton value="x" oncomplete="PF('dlg4').show();return false;"
+                                                                 immediate="true"
+                                                                 styleClass="btn btn-danger btn-xs btn-square pull-left prime-btn-reset">
+                                                    <f:setPropertyActionListener value="#{h}" 
+                                                                                 target="#{filtroBusquedaController.despliegueToDelete}" />
+                                                </p:commandButton>
+                                                <h:outputText value="#{h.despliegue}" />
+                                            </f:facet>
+                                            <h:outputText value="#{viaje.datos[index].length() gt 60 ?  viaje.datos[index].substring(0, 57).concat('...') : viaje.datos[index]}"/>
+                                        </p:columns>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+
+                </div>
+
+
+
+                <!-- Modal para agregar filtros -->
+                <h:form id="formAddFiltro" prependId="false">
+                    <p:dialog header="Agregar Filtro" id="dlg2" widgetVar="dlg2" 
+                              modal="true" height="200" width="400"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+
+                        <div class="small form-horizontal col-sm-12">
+                            <div class="form-group">
+                                <label for="slTabla" class="control-label col-sm-4">Tabla:</label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slTabla" styleClass="form-control" 
+                                                     value="#{filtroBusquedaController.insertFiltro.tabla}" >
+                                        <f:selectItems value="#{filtroBusquedaController.tablas}" var="tabla" 
+                                                       itemLabel="#{tabla.descripcion==''?'CAMPOS DINÁMICOS':tabla.descripcion}" 
+                                                       itemValue="#{tabla.descripcion}"/>
+                                        <p:ajax process="@this" update="slParametro txControl txDato pnlComparador"
+                                                listener="#{filtroBusquedaController.changeTabla}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inFiltro" class="control-label col-sm-4">Campo:</label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slParametro" styleClass="form-control" 
+                                                     value="#{filtroBusquedaController.insertFiltro.campo}" >
+                                        <f:selectItems value="#{filtroBusquedaController.campos}" var="campo" 
+                                                       itemLabel="#{campo.despliegue}" itemValue="#{campo.campo}"/>
+                                        <p:ajax process="@this" update="txControl txDato pnlComparador"
+                                                listener="#{filtroBusquedaController.changeCampo}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6 text-right"><b>Control:</b> </div>
+                                    <div class="col-sm-6 text-left"><h:outputText id="txControl" value="#{filtroBusquedaController.selectedCampo.tipoControl}"/></div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <div class="col-sm-6 text-right"><b>Tipo de dato:</b> </div>
+                                    <div class="col-sm-6 text-left"><h:outputText id="txDato" value="#{filtroBusquedaController.selectedCampo.tipoDato}"/></div>
+                                </div>
+                            </div>
+                            <p:outputPanel id="pnlComparador">
+                                <p:outputPanel styleClass="form-group" rendered="#{filtroBusquedaController.selectedCampo.tipoControl=='Calendario'}">
+                                    <label for="slComparador" class="control-label col-sm-4">Comparador:</label>
+                                    <div class="col-sm-8">
+                                        <h:selectOneMenu id="slComparador" styleClass="form-control"
+                                                         value="#{filtroBusquedaController.insertFiltro.comparador}" >
+                                            <f:selectItems value="#{filtroBusquedaController.comparadores}" var="t" 
+                                                           itemLabel="#{t.descripcion}" itemValue="#{t.descripcion}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </p:outputPanel>
+                            </p:outputPanel>
+                        </div>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-3">
+                                <button class="btn btn-danger" onclick="PF('dlg2').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formAddFiltro" 
+                                            update=":formFiltros slTabla slParametro txControl txDato pnlComparador"
+                                            listener="#{filtroBusquedaController.saveFiltro}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg2').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>  
+                </h:form>
+
+                <h:form id="formDeleteFiltro" prependId="false">
+                    <p:dialog header="Eliminar Filtro" id="dlg3" widgetVar="dlg3" 
+                              modal="true" height="60" width="350" resizable="false"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+
+                        <h4 class="text-center">¿Deseas eliminar el filtro de búsqueda?</h4>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <button class="btn btn-danger" onclick="PF('dlg3').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="@this" update=":formFiltros :formAddFiltro"
+                                            listener="#{filtroBusquedaController.deleteFiltro}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formDeleteResult" prependId="false">
+                    <p:dialog header="Eliminar Filtro" id="dlg4" widgetVar="dlg4" 
+                              modal="true" height="60" width="350" resizable="false"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <h4 class="text-center">¿Deseas eliminar esta columna de resultados?</h4>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <button class="btn btn-danger" onclick="PF('dlg4').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="@this" update=":formResult :formAddResult"
+                                            listener="#{filtroBusquedaController.deleteResult}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg4').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+                <h:form id="formAddResult" prependId="false">
+                    <p:dialog header="Agregar columna" id="dlg5" widgetVar="dlg5" 
+                              modal="true" height="120" width="350"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small form-horizontal col-sm-12">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Tabla:</label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slParamResult" styleClass="form-control" 
+                                                     value="#{filtroBusquedaController.despliegueInsert.tabla}" >
+                                        <f:selectItems value="#{filtroBusquedaController.tablasDespliegue}" 
+                                                       var="t" itemLabel="#{t.descripcion==''?'CAMPOS DINÁMICOS':t.descripcion}" 
+                                                       itemValue="#{t.descripcion}"/>
+                                        <p:ajax process="@this" update="slCampoResult"
+                                                listener="#{filtroBusquedaController.changeTablaDespliegue}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">Campo:</label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slCampoResult" styleClass="form-control" 
+                                                     value="#{filtroBusquedaController.despliegueInsert.campo}" >
+                                        <f:selectItems value="#{filtroBusquedaController.camposDespliegue}" 
+                                                       var="c" itemLabel="#{c.despliegue}" itemValue="#{c.campo}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg5').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formAddResult" update=":formResult slParamResult slCampoResult"
+                                            listener="#{filtroBusquedaController.addResult}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg5').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

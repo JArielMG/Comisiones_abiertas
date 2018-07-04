@@ -1,0 +1,285 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div class="container default-width-content">
+                    <h:form id="formListas" prependId="false">
+                        <h4 class="text-center"><strong>CONFIGURACIÓN DE LISTAS</strong></h4>
+
+                        <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+
+                        <div class="col-sm-4">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">LISTAS</div>
+                                <div class="panel-body">
+                                    <button class="btn btn-info" style="margin-bottom: 10px;"  
+                                            onclick="PF('dlg2').show();
+                                                    return false;">
+                                        <i class="fa fa-plus"></i> <strong>Agregar lista</strong>
+                                    </button>
+                                    
+                                    <p:commandLink styleClass="pull-right btn btn-default"
+                                                   process="@this" update="formListas" 
+                                                   actionListener="#{listasController.unselectRow}">
+                                        <i class="fa fa-rotate-right"></i></p:commandLink>
+                                    <p:dataTable styleClass="small" id="table2" 
+                                                 emptyMessage="No se encontraron listas" 
+                                                 value="#{listasController.listas}" var="lista" 
+                                                 selectionMode="single" rowKey="#{lista.idList}" selection="#{listasController.selectedLista}"
+                                                 rows="10" paginator="true" rowStyleClass="#{lista.constraintFails?'bg-warning':null}"
+                                                 currentPageReportTemplate="{currentPage} de {totalPages}"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                        <p:ajax event="rowSelect" process="@this" update="@form :formAddElement"
+                                                listener="#{listasController.selectRow}"/>
+                                        <p:column headerText="Id" styleClass="col-sm-3">
+                                            <h:outputText value="#{lista.idList}"/>
+                                        </p:column>
+                                        <p:column headerText="Lista">
+                                            <h:outputText value="#{lista.nombreLista}"/>
+                                        </p:column>
+                                        <p:column styleClass="col-sm-3" headerText="Opciones">
+                                            <p:commandLink styleClass="col-xs-offset-3 pull-right"
+                                                           oncomplete="PF('dlg2').show();
+                                                           return false;" update=":formAddLista" >
+                                                <i class="fa fa-pencil"></i>
+                                                <f:setPropertyActionListener value="#{lista}" 
+                                                                             target="#{listasController.listaInsert}"/>
+                                            </p:commandLink>
+                                            <p:commandLink styleClass="pull-right" update=":formDeleteLista"
+                                                           oncomplete="PF('dlg3').show();return false;"
+                                                           rendered="#{!lista.constraintFails}">
+                                                <i class="fa fa-trash red"></i>
+                                                <f:setPropertyActionListener value="#{lista}"
+                                                                             target="#{listasController.listaDelete}"/>
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                    
+                                    <h6 class="small gray bg-warning">
+                                        Campos que no se pueden eliminar porque están siendo usados.</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8">
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">VALORES</div>
+                                <div class="panel-body">
+                                    <button class="btn btn-info" style="margin-bottom: 10px;"  
+                                            onclick="PF('dlg1').show();
+                                                    return false;">
+                                        <i class="fa fa-plus"></i> <strong>Agregar valor</strong>
+                                    </button>
+                                    <p:dataTable styleClass="small" id="table1" 
+                                                 emptyMessage="No se encontraron valores"
+                                                 value="#{listasController.valores}" var="valor"
+                                                 rows="10" paginator="true" rowsPerPageTemplate="5,10,15"
+                                                 currentPageReportTemplate="{currentPage} de {totalPages}"
+                                                 paginatorPosition="bottom"
+                                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                        <p:column headerText="Id lista" styleClass="col-sm-2">
+                                            <h:outputText value="#{valor.idLista}"/>
+                                        </p:column>
+                                        <p:column headerText="Nombre lista" styleClass="col-sm-3">
+                                            <h:outputText value="#{valor.nombreLista}"/>
+                                        </p:column>
+                                        <p:column headerText="Código">
+                                            <h:outputText value="#{valor.codigo}" styleClass="col-sm-2"/>
+                                        </p:column>
+                                        <p:column headerText="Valor">
+                                            <h:outputText value="#{valor.valor}" styleClass="col-sm-3"/>
+                                        </p:column>
+                                        <p:column styleClass="col-sm-2" headerText="Opciones">
+                                            <p:commandLink styleClass="col-xs-offset-3 pull-right"
+                                                           oncomplete="PF('dlg1').show();
+                                                           return false;" update=":formAddElement" >
+                                                <i class="fa fa-pencil"></i>
+                                                <f:setPropertyActionListener value="#{true}"
+                                                                             target="#{listasController.edicionValor}"/>
+                                                <f:setPropertyActionListener value="#{valor}"
+                                                                             target="#{listasController.valorInsert}"/>
+                                            </p:commandLink>
+                                            <p:commandLink styleClass="pull-right" update=":formDeleteValor"
+                                                           oncomplete="PF('dlg4').show();return false;">
+                                                <i class="fa fa-trash red"></i>
+                                                <f:setPropertyActionListener value="#{valor}"
+                                                                             target="#{listasController.valorDelete}"/>
+                                            </p:commandLink>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                            </div>
+                        </div>
+
+                    </h:form>
+
+                </div>
+
+
+
+                <!-- Modal para agregar lista -->
+                <h:form id="formAddLista" prependId="false">
+                    <p:remoteCommand name="reinitListaInsert" update="formAddLista"
+                                     actionListener="#{listasController.reinitListaInsert}"/>
+                    <p:dialog id="dlg2" widgetVar="dlg2" onHide="reinitListaInsert()"
+                              modal="true" height="120" width="400"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <f:facet name="header">#{listasController.listaInsert.idList==null?'Agregar':'Editar'} lista</f:facet>
+                        <div class="small"><p:messages id="dlgMsgsLista" /></div>
+                        <h:inputHidden value="#{listasController.listaInsert.idList}"/>
+                        <div class="small form-horizontal">
+                            <div class="form-group">
+                                <label for="txNombreLista" class="control-label col-sm-4">
+                                    <span class="red">* </span> Nombre:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txNombreLista" styleClass="form-control" maxlength="50"
+                                                 required="true" value="#{listasController.listaInsert.nombreLista}"
+                                                 requiredMessage="El nombre de la lista es requerido"/>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" value="Aceptar">
+                                    <p:ajax process="formAddLista" update="dlgMsgsLista :formListas"
+                                            listener="#{listasController.saveLista}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg2').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg2').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <!-- Modal para agregar valor -->
+                <h:form id="formAddElement" prependId="false">
+                    <p:remoteCommand name="reinitValorInsert" update="formAddElement" process="@this"
+                                     actionListener="#{listasController.reinitValorInsert}"/>
+                    <p:dialog id="dlg1" widgetVar="dlg1" 
+                              modal="true" height="225" width="420" onHide="reinitValorInsert()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <f:facet name="header">#{listasController.edicionValor?'Editar':'Agregar'} valor</f:facet>
+                        <div class="small"><p:messages id="dlgMsgs" showDetail="true"/></div>
+                        <div id="pnlAddElement" class="small form-horizontal">
+                            <div  class="form-group">
+                                <label for="slDlgLista" class="control-label col-sm-3">
+                                    <span class="red">* </span>
+                                    Lista:</label>
+                                <div class="col-sm-9">
+                                    <h:selectOneMenu id="slDlgLista" styleClass="form-control" 
+                                                     value="#{listasController.valorInsert.idLista}">
+                                        <f:selectItems value="#{listasController.listas}" var="lista"
+                                                       itemLabel="#{lista.nombreLista}" itemValue="#{lista.idList}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-3">
+                                    <span class="red">* </span>Código:</label>
+                                <div class="col-sm-9">
+                                    <h:inputText id="txDlgCodigo" styleClass="form-control" required="true"
+                                                 maxlength="30" requiredMessage="El código es requerido"
+                                                 readonly="#{listasController.edicionValor}"
+                                                 value="#{listasController.valorInsert.codigo}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txDlgValor" class="control-label col-sm-3">
+                                    <span class="red">* </span>Valor:</label>
+                                <div class="col-sm-9">
+                                    <h:inputText id="txDlgValor" styleClass="form-control" required="true"
+                                                 maxlength="150"
+                                                 requiredMessage="El valor es requerido"
+                                                 value="#{listasController.valorInsert.valor}"/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" value="Aceptar">
+                                    <p:ajax process="formAddElement" update="dlgMsgs :formListas"
+                                            listener="#{listasController.saveValor}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed &amp;&amp; args.saved) PF('dlg1').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg1').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <!-- Modal para eliminar lista -->
+                <h:form id="formDeleteLista" prependId="false">
+                    <p:dialog id="dlg3" widgetVar="dlg3" 
+                              modal="true" height="120" width="400"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <h:inputHidden value="#{listasController.listaDelete.idList}"/>
+                        <h3 class="text-center">
+                            <i class="fa fa-warning red"></i> 
+                            <small>¿Deseas elimnar la lista <b>#{listasController.listaDelete.nombreLista}</b>?</small>
+                        </h3>
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" 
+                                                 value="Aceptar">
+                                    <p:ajax process="@this" update=":formListas"
+                                            listener="#{listasController.deleteLista}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg3').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+                
+                <!-- Modal para eliminar valor -->
+                <h:form id="formDeleteValor" prependId="false">
+                    <p:dialog id="dlg4" widgetVar="dlg4" 
+                              modal="true" height="120" width="400"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <h:inputHidden value="#{listasController.valorDelete.idLista}"/>
+                        <h:inputHidden value="#{listasController.valorDelete.codigo}"/>
+                        <h3 class="text-center">
+                            <i class="fa fa-warning red"></i> 
+                            <small>¿Deseas elimnar el valor <b>#{listasController.valorDelete.valor}</b>?</small>
+                        </h3>
+                        
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" 
+                                                 value="Aceptar">
+                                    <p:ajax process="formDeleteValor" update=":formListas"
+                                            listener="#{listasController.deleteValor}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg4').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg4').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

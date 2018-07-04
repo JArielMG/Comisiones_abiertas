@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div class="container default-width-content">
+                    <p:messages id="msgs" autoUpdate="true" showDetail="true" globalOnly="true" />
+
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE CAMPOS BASE</strong></h4>
+                    
+                    <p:dataTable class="small" id="table1" 
+                                 emptyMessage="No se encontraron campos"
+                                 value="#{camposBaseController.camposBase}" var="campo"
+                                 rows="10" paginator="true" rowsPerPageTemplate="5,10,15"
+                                 currentPageReportTemplate="{currentPage} de {totalPages}"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                        <p:column headerText="Tabla">
+                            <h:outputText value="#{campo.tabla}"/>
+                        </p:column>
+                        <p:column headerText="Campo">
+                            <h:outputText value="#{campo.campo}"/>
+                        </p:column>
+                        <p:column headerText="Descripción">
+                            <h:outputText value="#{campo.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Despliegue">
+                            <h:outputText value="#{campo.despliegue}"/>
+                        </p:column>
+                        <p:column headerText="Tipo de dato">
+                            <h:outputText value="#{campo.tipoDato}"/>
+                        </p:column>
+                        <p:column headerText="Tipo de control">
+                            <h:outputText value="#{campo.tipoControl}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

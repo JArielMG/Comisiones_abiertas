@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div class="container default-width-content">
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE CAMPOS DINÁMICOS</strong></h4>
+
+                    <h:form id="formCampos" prependId="false">
+                        <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+                        <button class="btn btn-info" style="margin-bottom: 10px;"  
+                                onclick="PF('dlg1').show();
+                                        return false;">
+                            <i class="fa fa-plus"></i> <strong>Agregar campo</strong>
+                        </button>
+
+                        <p:dataTable styleClass="small" id="table1" 
+                                     emptyMessage="No se encontraron campos"
+                                     value="#{camposDinamicosController.camposDinamicos}" var="campo"
+                                     rows="10" paginator="true" rowsPerPageTemplate="5,10,15"
+                                     currentPageReportTemplate="{currentPage} de {totalPages}"
+                                     paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                            <p:column headerText="Campo">
+                                <h:outputText value="#{campo.campo}"/>
+                            </p:column>
+                            <p:column headerText="Descripción">
+                                <h:outputText value="#{campo.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Despliegue">
+                                <h:outputText value="#{campo.despliegue}"/>
+                            </p:column>
+                            <p:column headerText="Lista">
+                                <h:outputText value="#{campo.nombreLista}"/>
+                            </p:column>
+                            <p:column headerText="Tipo de dato">
+                                <h:outputText value="#{campo.tipoDato}"/>
+                            </p:column>
+                            <p:column headerText="Tipo de control">
+                                <h:outputText value="#{campo.tipoControl}"/>
+                            </p:column>
+                            <p:column headerText="Categoría">
+                                <h:outputText value="#{campo.categoria}"/>
+                            </p:column>
+                            <p:column styleClass="col-sm-1" headerText="Opciones">
+                                <p:commandLink styleClass="col-xs-offset-3 pull-right" update=":formAddCampo"
+                                               oncomplete="PF('dlg1').show();return false;"  >
+                                    <i class="fa fa-pencil"></i>
+                                    <f:setPropertyActionListener value="#{true}"
+                                                                 target="#{camposDinamicosController.edicionCampo}"/>
+                                    <f:setPropertyActionListener value="#{campo}"
+                                                                 target="#{camposDinamicosController.campoInsert}"/>
+                                </p:commandLink>
+                                <p:commandLink styleClass="pull-right" update=":formDeleteCampo"
+                                               oncomplete="PF('dlg2').show();return false;"
+                                               rendered="#{!campo.constraintFails}">
+                                    <i class="fa fa-trash red"></i>
+                                    <f:setPropertyActionListener value="#{campo}"
+                                                                 target="#{camposDinamicosController.campoDelete}"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+
+                    </h:form>
+                </div>
+
+
+                <!-- Modal para agregar campo -->
+                <h:form id="formAddCampo" prependId="false">
+                    <p:remoteCommand name="reinitCampoInsert" update="formAddCampo"
+                                     actionListener="#{camposDinamicosController.reinitCampoInsert}"/>
+                    <p:dialog id="dlg1" widgetVar="dlg1" header="Agregar campo"
+                              modal="true" height="350" width="480" onHide="reinitCampoInsert()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="dlgMsgs" showSummary="false" showDetail="true"/></div>
+                        <div id="pnlAddCampo" class="small form-horizontal col-sm-12">
+                            <div  class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span for="txCampo" class="red">* </span>Nombre:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txCampo" styleClass="form-control" required="true"
+                                                 disabled="#{camposDinamicosController.edicionCampo}"
+                                                 value="#{camposDinamicosController.campoInsert.campo}"
+                                                 requiredMessage="EL nombre del campo es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txDescrip" class="control-label col-sm-4">
+                                    <span class="red">* </span>Descripción:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txDescrip" styleClass="form-control" required="true"
+                                                 value="#{camposDinamicosController.campoInsert.descripcion}"
+                                                 requiredMessage="El campo descripción es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txDespli" class="control-label col-sm-4">
+                                    <span class="red">* </span>Despliegue:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txDespli" styleClass="form-control" required="true"
+                                                 value="#{camposDinamicosController.campoInsert.despliegue}"
+                                                 requiredMessage="El campo despliegue es requerido" />
+                                </div>
+                            </div>
+                            <div  class="form-group">
+                                <label for="slLista" class="control-label col-sm-4">
+                                    Lista:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slLista" styleClass="form-control"
+                                                     value="#{camposDinamicosController.campoInsert.idLista}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItems value="#{camposDinamicosController.listas}"
+                                                       var="l" itemLabel="#{l.nombreLista}" itemValue="#{l.idList}"/>
+                                        <p:ajax process="@this" update="slTipoDato slTipoControl hdTipoDato hdTipoControl"
+                                                listener="#{camposDinamicosController.selectLista}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="slTipoDato" class="control-label col-sm-4">
+                                    <span class="red">* </span>Tipo de dato:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slTipoDato" styleClass="form-control"
+                                                     disabled="#{camposDinamicosController.campoInsert.idLista!=null}"
+                                                     value="#{camposDinamicosController.campoInsert.idTipoDato}">
+                                        <f:selectItems value="#{camposDinamicosController.tiposDato}"
+                                                       var="d" itemLabel="#{d.descripcion}" itemValue="#{d.id}"/>
+                                        <p:ajax process="@this" update="@this hdTipoDato slTipoControl hdTipoControl"
+                                                listener="#{camposDinamicosController.selectTipoDato}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <p:inputText type="hidden" id="hdTipoDato" value="#{camposDinamicosController.campoInsert.idTipoDato}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="slTipoControl" class="control-label col-sm-4">
+                                    <span class="red">* </span>Tipo de control:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slTipoControl" styleClass="form-control"
+                                                     disabled="true"
+                                                     value="#{camposDinamicosController.campoInsert.idTipoControl}">
+                                        <f:selectItems value="#{camposDinamicosController.tiposControl}"
+                                                       var="c" itemLabel="#{c.descripcion}" itemValue="#{c.id}"/>
+                                        <p:ajax process="@this" update="@this hdTipoControl"/>
+                                    </h:selectOneMenu>
+                                </div>
+                                <p:inputText type="hidden" id="hdTipoControl" value="#{camposDinamicosController.campoInsert.idTipoControl}"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="slCategoria" class="control-label col-sm-4">
+                                    <span class="red">* </span>Categoría:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slCategoria" styleClass="form-control"
+                                                     value="#{camposDinamicosController.campoInsert.categoria}">
+                                        <f:selectItems value="#{camposDinamicosController.categorias}" var="c"
+                                                       itemLabel="#{c.descripcion}" itemValue="#{c.codigo}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                        </div>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" value="Aceptar">
+                                    <p:ajax process="formAddCampo" update=":formCampos dlgMsgs"
+                                            listener="#{camposDinamicosController.saveCampo}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed &amp;&amp; args.saved) PF('dlg1').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg1').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+                <!-- Modal para eliminar campo -->
+                <h:form id="formDeleteCampo" prependId="false">
+                    <p:dialog id="dlg2" widgetVar="dlg2" header="Eliminar campo"
+                              modal="true" height="100" width="400" 
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <h:inputHidden value="#{camposDinamicosController.campoDelete.campo}"/>
+                        <h4 class="text-center">¿Realmente deseas eliminar 
+                            el campo <b>#{camposDinamicosController.campoDelete.campo}</b>?</h4>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1 pull-right" value="Aceptar">
+                                    <p:ajax process="formDeleteCampo" update=":formCampos"
+                                            listener="#{camposDinamicosController.deleteCampo}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed &amp;&amp; args.deleted) PF('dlg2').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-6" onclick="PF('dlg2').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

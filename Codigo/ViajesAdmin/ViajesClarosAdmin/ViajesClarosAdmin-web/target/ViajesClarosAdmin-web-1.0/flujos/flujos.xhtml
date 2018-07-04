@@ -1,0 +1,515 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div id="flujos" class="container">
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE PANTALLAS DE FLUJOS</strong></h4>
+                    <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+
+                    <h:form id="formFlujos" prependId="false">
+                        <div id="search-dependencia" class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="form-group col-sm-8">
+                                <h:selectOneMenu styleClass="form-control" 
+                                                 value="#{flujosController.idFlujo}">
+                                    <f:selectItems value="#{flujosController.flujosTrabajo}" var="f"
+                                                   itemLabel="#{f.descripcion}" itemValue="#{f.id}"/>
+                                    <p:ajax process="@this" update="@this :formCampos :formAddCampo"
+                                            listener="#{flujosController.changeFlujo}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="form-group col-sm-4">
+                                <h:selectOneMenu styleClass="form-control" 
+                                                 value="#{flujosController.idTipoPersona}">
+                                    <f:selectItems value="#{flujosController.tiposPersona}" var="p"
+                                                   itemLabel="#{p.descripcion}" itemValue="#{p.id}"/>
+                                    <p:ajax process="@this" update="@this :formCampos :formAddCampo"
+                                            listener="#{flujosController.changeFlujo}"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+                    </h:form>
+
+                    <h:form id="formCampos" prependId="false">
+                        <div class="col-sm-12 div-dashed" style="margin-bottom: 10px;">
+                            <button class="btn btn-primary btn-sm btn-square pull-right btn-add-filtro"
+                                    onclick="PF('dlg4').show();
+                                            return false;">
+                                <i class="fa fa-plus"></i> <strong>Agregar sección</strong>
+                            </button> 
+                            <h4 class="text-center">#{flujosController.flujoSelected.descripcion}</h4>
+
+                            <ui:repeat var="catego" value="#{flujosController.secciones}" varStatus="status">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <p:commandLink oncomplete="PF('dlg5').show();return false;"
+                                                       update=":formDeleteSeccion" immediate="true"
+                                                       rendered="#{catego.campos.size() == 0}"
+                                                       styleClass="btn btn-danger btn-xs btn-square pull-left btn-remove">
+                                            <i class="fa fa-remove"></i> 
+                                            <f:setPropertyActionListener value="#{catego}"
+                                                                         target="#{flujosController.seccionDelete}"/>
+                                        </p:commandLink>
+                                        <p:commandLink oncomplete="PF('dlg6').show();return false;"
+                                                       update=":formEditSeccion" immediate="true"
+                                                       styleClass="btn btn-primary btn-xs btn-square pull-left btn-edit">
+                                            <i class="fa fa-pencil"></i> 
+                                            <f:setPropertyActionListener value="#{catego}"
+                                                                         target="#{flujosController.seccionEdit}"/>
+                                        </p:commandLink>
+                                        <p:commandLink oncomplete="PF('dlg1').show();return false;"
+                                                       update=":formAddCampo" immediate="true"
+                                                       styleClass="btn btn-info btn-sm btn-square pull-right btn-add-campo">
+                                            <i class="fa fa-plus"></i> <strong>Agregar campo</strong>
+                                            <f:setPropertyActionListener value="#{catego.id}"
+                                                                         target="#{flujosController.campoInsert.idSeccion}"/>
+                                        </p:commandLink>
+                                        #{catego.orden}. #{catego.etiqueta}
+                                    </div>
+                                    <div class="panel-body">
+                                        <ui:repeat var="camp" value="#{catego.campos}">
+                                            <div class="form-group col-sm-3">
+                                                <label>
+                                                    <p:commandLink oncomplete="PF('dlg2').show();return false;"
+                                                                   update=":formDeleteCampo" immediate="true"
+                                                                   styleClass="btn btn-danger btn-xs btn-square pull-left prime-btn-reset">
+                                                        <f:setPropertyActionListener value="#{camp}" 
+                                                                                     target="#{flujosController.campoDelete}" />
+                                                        <i class="fa fa-remove"></i>
+                                                    </p:commandLink>
+                                                    <p:commandLink oncomplete="PF('dlg3').show();return false;"
+                                                                   update=":formEditCampo" immediate="true"
+                                                                   styleClass="btn btn-info btn-xs btn-square pull-left prime-btn-reset">
+                                                        <f:setPropertyActionListener value="#{camp}" 
+                                                                                     target="#{flujosController.campoEdit}" />
+                                                        <i class="fa fa-pencil"></i>
+                                                    </p:commandLink>
+                                                    <span style="margin-left: 8px;" class="red"><h:outputText value="*" rendered="#{camp.obligatorio}"/></span>
+                                                    <span>#{camp.etiqueta}</span>
+                                                </label>
+
+                                                <!-- tipo de control: SELECT, TEXT, DATEPICKER -->
+                                                <h:selectOneMenu styleClass="form-control" value="" disabled="true"
+                                                                 rendered="#{camp.tipoControl == 'LISTA'}">
+                                                    <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                                </h:selectOneMenu>
+                                                <h:inputText styleClass="form-control" value="" disabled="true"
+                                                             rendered="#{camp.tipoControl == 'TEXTO'}" />
+                                                <h:inputText styleClass="form-control" value="" disabled="true"
+                                                             rendered="#{camp.tipoControl == 'CALENDARIO'}" />
+                                            </div>
+                                        </ui:repeat>
+                                    </div>
+                                </div>
+                            </ui:repeat>
+
+                        </div>
+                    </h:form>
+                </div>
+
+
+                <h:form id="formAddCampo" prependId="false">
+                    <p:remoteCommand name="reinitValorInsert" update="formAddCampo" process="@this"
+                                     actionListener="#{flujosController.reinitValorInsert}"/>
+                    <p:dialog header="Agregar campo" id="dlg1" widgetVar="dlg1" 
+                              modal="true" height="280" width="370" onHide="reinitValorInsert()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg1" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Tabla:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slTabla" styleClass="form-control" 
+                                                     value="#{flujosController.campoInsert.tabla}" >
+                                        <f:selectItems value="#{flujosController.tablas}" 
+                                                       var="t" itemLabel="#{t.descripcion==''?'CAMPOS DINÁMICOS':t.descripcion}" 
+                                                       itemValue="#{t.descripcion}"/>
+                                        <p:ajax process="@this" update="slCampo"
+                                                listener="#{flujosController.changeTabla}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Campo:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slCampo" styleClass="form-control"
+                                                     value="#{flujosController.campoInsert.campo}">
+                                        <f:selectItems value="#{flujosController.camposPorTabla}"
+                                                       var="c" itemLabel="#{c.campo}" itemValue="#{c.campo}"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txEtiqueta" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiqueta" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.campoInsert.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    Subtipo
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slSubtipo" styleClass="form-control"
+                                                     value="#{flujosController.campoInsert.subtipo}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItem itemLabel="Fecha" itemValue="FECHA"/>
+					<f:selectItem itemLabel="Hora" itemValue="HORA"/>
+					<f:selectItem itemLabel="Área de Texto" itemValue="AREA"/>
+					<f:selectItem itemLabel="Texto Simple" itemValue="SIMPLE"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrden" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrden" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.campoInsert.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo Orden es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoInsert.listaHabilitada}"/>
+                                        <span>Lista habilitada</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoInsert.obligatorio}"/>
+                                        <span>Obligatorio</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoInsert.soloLectura}"/>
+                                        <span>Solo Lectura</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txClase" class="control-label col-sm-4">
+                                    Validación Formulario:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txClase" styleClass="form-control" maxlength="100"
+                                                 required="false" value="#{flujosController.campoInsert.clase}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formAddCampo" update="msgDlg1 :formCampos :msgs"
+                                            listener="#{flujosController.saveColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg1').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg1').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formDeleteCampo" prependId="false">
+                    <p:dialog header="Eliminar Campo" id="dlg2" widgetVar="dlg2" 
+                              modal="true" height="60" width="350" resizable="false"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+
+                        <h4 class="text-center">¿Deseas eliminar el campo 
+                            <b>#{flujosController.campoDelete.etiqueta}</b>?</h4>
+
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <button class="btn btn-danger" onclick="PF('dlg2').hide();
+                                        return false;">Cancelar</button>
+                                <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="@this" update=":formCampos :msgs :formAddCampo:slTabla :formAddCampo:slCampo"
+                                            listener="#{flujosController.deleteColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg2').hide();"/>
+                                </h:commandButton>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formEditCampo" prependId="false">
+                    <p:remoteCommand name="reinitValorEdit" update="formEditCampo" process="@this"
+                                     actionListener="#{flujosController.reinitValorInsert}"/>
+                    <p:dialog header="Editar campo" id="dlg3" widgetVar="dlg3" 
+                              modal="true" height="280" width="370" onHide="reinitValorEdit()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg3" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label for="txTablaEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Tabla:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txTablaEdit" styleClass="form-control" maxlength="50" disabled="true"
+                                                 value="#{flujosController.campoEdit.tabla==''?'CAMPOS DINÁMICOS':flujosController.campoEdit.tabla}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    <span class="red">* </span> Campo:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txCampoEdit" styleClass="form-control" maxlength="50" 
+                                                 disabled="true" value="#{flujosController.campoEdit.campo}"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txEtiquetaEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiquetaEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.campoEdit.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-4">
+                                    Subtipo
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:selectOneMenu id="slSubtipoEdit" styleClass="form-control"
+                                                     value="#{flujosController.campoEdit.subtipo}">
+                                        <f:selectItem itemLabel="Selecciona.." itemValue=""/>
+                                        <f:selectItem itemLabel="Fecha" itemValue="FECHA"/>
+					<f:selectItem itemLabel="Hora" itemValue="HORA"/>
+					<f:selectItem itemLabel="Área de Texto" itemValue="AREA"/>
+					<f:selectItem itemLabel="Texto Simple" itemValue="SIMPLE"/>
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrdenEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrdenEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.campoEdit.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo Orden es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoEdit.listaHabilitada}"/>
+                                        <span>Lista habilitada</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoEdit.obligatorio}"/>
+                                        <span>Obligatorio</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-4"></div>
+                                <div class="checkbox col-sm-8">
+                                    <label>
+                                        <h:selectBooleanCheckbox value="#{flujosController.campoEdit.soloLectura}"/>
+                                        <span>Solo Lectura</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txEditClase" class="control-label col-sm-4">
+                                    Validación Formulario:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEditClase" styleClass="form-control" maxlength="100"
+                                                 required="false" value="#{flujosController.campoEdit.clase}"/>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formEditCampo" update="msgDlg3 :formCampos :msgs"
+                                            listener="#{flujosController.updateColumn}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg3').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formAddSeccion" prependId="false">
+                    <p:remoteCommand name="reinitValorSeccion" update="formAddSeccion" process="@this"
+                                     actionListener="#{flujosController.reinitValorSeccion}"/>
+                    <p:dialog header="Agregar sección" id="dlg4" widgetVar="dlg4" 
+                              modal="true" height="280" width="370" onHide="reinitValorSeccion()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg4" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label for="txEtiquetaSeccion" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiquetaSeccion" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.seccionInsert.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txNombreSeccion" class="control-label col-sm-4">
+                                    <span class="red">* </span> Nombre sección: 
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txNombreSeccion" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.seccionInsert.nombre}"
+                                                 requiredMessage="El campo Nombre es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrdenSeccion" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden: 
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrdenSeccion" styleClass="form-control" maxlength="3"
+                                                 required="true" value="#{flujosController.seccionInsert.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo Orden es requerido"/>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formAddSeccion" update="msgDlg4 :formCampos :msgs"
+                                            listener="#{flujosController.saveSeccion}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg4').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg4').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+                <h:form id="formDeleteSeccion" prependId="false">
+                    <p:dialog header="Eliminar Sección" id="dlg5" widgetVar="dlg5" 
+                              modal="true" height="60" width="350" resizable="false"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <h4 class="text-center">¿Deseas eliminar la sección 
+                            <b>#{flujosController.seccionDelete.etiqueta}</b>?</h4>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formDeleteSeccion" update=":formCampos :msgs"
+                                            listener="#{flujosController.deleteSeccion}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg5').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg5').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+                
+                
+                <h:form id="formEditSeccion" prependId="false">
+                    <p:remoteCommand name="reinitSeccionEdit" update="formEditSeccion" process="@this"
+                                     actionListener="#{flujosController.reinitSeccionEdit}"/>
+                    <p:dialog header="Editar sección" id="dlg6" widgetVar="dlg6" 
+                              modal="true" height="280" width="370" onHide="reinitSeccionEdit()"
+                              showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                        <div class="small"><p:messages id="msgDlg6" autoUpdate="false"/></div>
+                        <div class="form-horizontal col-sm-12 small">
+                            <div class="form-group">
+                                <label for="txEtiquetaSeccionEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Etiqueta:
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txEtiquetaSeccionEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.seccionEdit.etiqueta}"
+                                                 requiredMessage="El campo Etiqueta es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txNombreSeccionEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Nombre sección: 
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txNombreSeccionEdit" styleClass="form-control" maxlength="100"
+                                                 required="true" value="#{flujosController.seccionEdit.nombre}"
+                                                 requiredMessage="El campo Nombre es requerido"/>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="txOrdenSeccionEdit" class="control-label col-sm-4">
+                                    <span class="red">* </span> Orden: 
+                                </label>
+                                <div class="col-sm-8">
+                                    <h:inputText id="txOrdenSeccionEdit" styleClass="form-control" maxlength="3"
+                                                 required="true" value="#{flujosController.seccionEdit.orden}"
+                                                 converterMessage="El campo Orden debe ser numérico"
+                                                 requiredMessage="El campo ORden es requerido"/>
+                                </div>
+                            </div>
+                        </div>
+                        <f:facet name="footer">
+                            <div class="col-sm-9 col-sm-offset-2">
+                                <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                    <p:ajax process="formEditSeccion" update=":formCampos msgDlg6 :msgs"
+                                            listener="#{flujosController.updateSeccion}"
+                                            oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg6').hide();"/>
+                                </h:commandButton>
+                                <button class="btn btn-danger col-sm-5" onclick="PF('dlg6').hide();
+                                        return false;">Cancelar</button>
+                            </div>
+                        </f:facet>
+                    </p:dialog>
+                </h:form>
+
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

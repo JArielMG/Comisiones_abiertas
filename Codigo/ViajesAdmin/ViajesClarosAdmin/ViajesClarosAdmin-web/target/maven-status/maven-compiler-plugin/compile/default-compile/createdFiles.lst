@@ -1,0 +1,17 @@
+mx\org\inai\viajesclaros\admin\controllers\FlujosController.class
+mx\org\inai\viajesclaros\admin\controllers\TablaCampoController.class
+mx\org\inai\viajesclaros\admin\controllers\FiltroBusquedaController.class
+mx\org\inai\viajesclaros\admin\quartz\EmailJob.class
+mx\org\inai\viajesclaros\admin\controllers\SuscripcionController.class
+mx\org\inai\viajesclaros\admin\shiro\CustomShiroRealm.class
+mx\org\inai\viajesclaros\admin\controllers\CalendarioController.class
+mx\org\inai\viajesclaros\admin\controllers\ViajeController.class
+mx\org\inai\viajesclaros\admin\controllers\CamposBaseController.class
+mx\org\inai\viajesclaros\admin\shiro\CustomSaltedAuthentificationInfo.class
+mx\org\inai\viajesclaros\admin\controllers\LoginController.class
+mx\org\inai\viajesclaros\admin\controllers\CargaController.class
+mx\org\inai\viajesclaros\admin\controllers\CamposDinamicosController.class
+mx\org\inai\viajesclaros\admin\controllers\GraficasController.class
+mx\org\inai\viajesclaros\admin\controllers\GastosController.class
+mx\org\inai\viajesclaros\admin\controllers\ListasController.class
+mx\org\inai\viajesclaros\admin\quartz\EmailSubscripciones.class

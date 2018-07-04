@@ -1,0 +1,269 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div id="carga-masiva" class="container">
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE CARGA MASIVA</strong></h4>
+                    <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+
+                    <h:form id="formDep" prependId="false">
+                        <div id="search-dependencia" class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="form-group col-sm-2">
+                                <h:selectOneMenu  styleClass="form-control" value="#{cargaController.idDependencia}">
+                                    <f:selectItems value="#{cargaController.dependencias}" var="d"
+                                                   itemLabel="#{d.siglas}" itemValue="#{d.id}"/>
+                                    <p:ajax process="@this" update=":formDep :formTabla :formAddColumn"
+                                            listener="#{cargaController.changeDependencia}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-sm-10">
+                                <h4 class="text-center"><h:outputText value="#{cargaController.selectedDependencia.dependencia}"/></h4>
+                            </div>
+                        </div>
+                    </h:form>
+
+
+                    <h:form id="formTabla" prependId="false">
+                        <div id="div-carga" class="col-md-12">
+                            <button class="btn btn-info btn-square pull-right btn-add-filtro"
+                                    onclick="PF('dlg1').show();
+                                            return false;">
+                                <i class="fa fa-plus"></i> <strong>Agregar campo</strong>
+                            </button>
+
+                            <div class="row">
+                                <p:dataTable styleClass="small" id="table1" style="margin-top: 30px;"
+                                             emptyMessage="No se encontraron viajes"
+                                             value="#{cargaController.viajes}" var="viaje"
+                                             rows="5" paginator="true" rowsPerPageTemplate="5,10,15"
+                                             currentPageReportTemplate="{currentPage} de {totalPages}"
+                                             paginatorPosition="bottom"
+                                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                                    <p:columns value="#{cargaController.headers}" var="h" columnIndexVar="index">
+                                        <f:facet name="header">
+                                            <p:commandLink oncomplete="PF('dlg2').show();return false;"
+                                                           update=":formDeleteColumn" immediate="true"
+                                                           rendered="#{h.editable}"
+                                                           styleClass="btn btn-danger btn-xs btn-square pull-left prime-btn-reset">
+                                                <f:setPropertyActionListener value="#{h}" 
+                                                                             target="#{cargaController.columnToDelete}" />
+                                                <i class="fa fa-remove"></i>
+                                            </p:commandLink>
+                                            <p:commandLink oncomplete="PF('dlg3').show();return false;"
+                                                           update=":formEditColumn" immediate="true"
+                                                           rendered="#{h.editable}" 
+                                                           styleClass="btn btn-info btn-xs btn-square pull-left prime-btn-reset">
+                                                <f:setPropertyActionListener value="#{h}" 
+                                                                             target="#{cargaController.columnEdit}" />
+                                                <i class="fa fa-pencil"></i>
+                                            </p:commandLink>
+                                            
+                                            <h:outputText value="#{h.secuencia}" styleClass="small" style="font-weight: normal;"/> <br/>
+                                            <h:outputText value="#{h.despliegue}" />
+                                        </f:facet>
+                                        <h:outputText value="#{viaje.datos[index].length() gt 60 ?  viaje.datos[index].substring(0, 57).concat('...') : viaje.datos[index]}"/>
+                                    </p:columns>
+                                </p:dataTable>
+                            </div>
+                        </div>
+                    </h:form>
+
+
+                    <h:form id="formAddColumn" prependId="false">
+                        <p:remoteCommand name="reinitValorInsert" update="formAddColumn" process="@this"
+                                         actionListener="#{cargaController.reinitValorInsert}"/>
+                        <p:dialog header="Agregar columna" id="dlg1" widgetVar="dlg1" 
+                                  modal="true" height="280" width="370" onHide="reinitValorInsert()"
+                                  showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                            <p:messages id="msgDlg1" autoUpdate="false"/>
+                            <div class="form-horizontal col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">
+                                        <span class="red">* </span> Tabla:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:selectOneMenu id="slTabla" styleClass="form-control" 
+                                                         value="#{cargaController.columnInsert.tabla}" >
+                                            <f:selectItems value="#{cargaController.tablas}" 
+                                                           var="t" itemLabel="#{t.descripcion==''?'CAMPOS DINÁMICOS':t.descripcion}" 
+                                                           itemValue="#{t.descripcion}"/>
+                                            <p:ajax process="@this" update="slCampo"
+                                                    listener="#{cargaController.changeTabla}" />
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">
+                                        <span class="red">* </span> Campo:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:selectOneMenu id="slCampo" styleClass="form-control"
+                                                         value="#{cargaController.columnInsert.campo}">
+                                            <f:selectItems value="#{cargaController.camposPorTabla}"
+                                                           var="c" itemLabel="#{c.campo}" itemValue="#{c.campo}"/>
+                                        </h:selectOneMenu>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txEtiqueta" class="control-label col-sm-4">
+                                        <span class="red">* </span> Etiqueta:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText id="txEtiqueta" styleClass="form-control" maxlength="50"
+                                                     required="true" value="#{cargaController.columnInsert.despliegue}"
+                                                     validatorMessage="No se permiten caracteres especiales en Etiqueta"
+                                                     requiredMessage="El campo Etiqueta es requerido">
+                                            <f:validateRegex pattern="^[0-9a-zA-Z\-\_]+$" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4"></div>
+                                    <div class="checkbox col-sm-8">
+                                        <label>
+                                            <h:selectBooleanCheckbox value="#{cargaController.columnInsert.listaHabilitada}"/>
+                                            <span>Lista habilitada</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txSecuencia" class="control-label col-sm-4">
+                                        <span class="red">* </span> Secuencia:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText id="txSecuencia" styleClass="form-control" maxlength="3"
+                                                     required="true" value="#{cargaController.columnInsert.secuencia}"
+                                                     converterMessage="El campo Secuencia debe ser numérico"
+                                                     requiredMessage="El campo Secuencia es requerido"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <f:facet name="footer">
+                                <div class="col-sm-9 col-sm-offset-2">
+                                    <h:commandButton styleClass="btn btn-info pull-right col-sm-5 col-xs-offset-1" value="Aceptar">
+                                        <p:ajax process="formAddColumn" update="msgDlg1 :formTabla :msgs"
+                                                listener="#{cargaController.saveColumn}"
+                                                oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg1').hide();"/>
+                                    </h:commandButton>
+                                    <button class="btn btn-danger col-sm-5" onclick="PF('dlg1').hide();
+                                            return false;">Cancelar
+                                    </button>
+                                </div>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+
+
+                    <h:form id="formDeleteColumn" prependId="false">
+                        <p:dialog header="Eliminar Filtro" id="dlg2" widgetVar="dlg2" 
+                                  modal="true" height="60" width="350" resizable="false"
+                                  showEffect="fade" hideEffect="explode" closeOnEscape="true">
+
+                            <h4 class="text-center">¿Deseas eliminar la columna 
+                                <b>#{cargaController.columnToDelete.despliegue}</b>?</h4>
+
+                            <f:facet name="footer">
+                                <div class="col-sm-9 col-sm-offset-2">
+                                    <button class="btn btn-danger" onclick="PF('dlg2').hide();
+                                            return false;">Cancelar</button>
+                                    <h:commandButton styleClass="btn btn-info col-xs-offset-1" value="Aceptar">
+                                        <p:ajax process="@this" update=":formTabla :msgs :formAddColumn:slTabla :formAddColumn:slCampo"
+                                                listener="#{cargaController.deleteColumn}"
+                                                oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg2').hide();"/>
+                                    </h:commandButton>
+                                </div>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+                    
+                    
+                    <h:form id="formEditColumn" prependId="false">
+                        <p:dialog header="Editar columna" id="dlg3" widgetVar="dlg3" 
+                                  modal="true" height="280" width="370" 
+                                  showEffect="fade" hideEffect="explode" closeOnEscape="true">
+                            <p:messages id="msgDlg3" autoUpdate="false"/>
+                            <div class="form-horizontal col-sm-12">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">
+                                        <span class="red">* </span> Tabla:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText styleClass="form-control" disabled="true"
+                                                     value="#{cargaController.columnEdit.tabla==''?'CAMPOS DINÁMICOS':cargaController.columnEdit.tabla}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">
+                                        <span class="red">* </span> Campo:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText styleClass="form-control" disabled="true"
+                                                     value="#{cargaController.columnEdit.campo}"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txEtiqueta" class="control-label col-sm-4">
+                                        <span class="red">* </span> Etiqueta:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText id="txEtiquetaEdit" styleClass="form-control" maxlength="50"
+                                                     required="true" value="#{cargaController.columnEdit.despliegue}"
+                                                     validatorMessage="No se permiten caracteres especiales en Etiqueta"
+                                                     requiredMessage="El campo Etiqueta es requerido">
+                                            <f:validateRegex pattern="^[0-9a-zA-Z\-\_]+$" />
+                                        </h:inputText>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-4"></div>
+                                    <div class="checkbox col-sm-8">
+                                        <label>
+                                            <h:selectBooleanCheckbox value="#{cargaController.columnEdit.listaHabilitada}"/>
+                                            <span>Lista habilitada</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txSecuencia" class="control-label col-sm-4">
+                                        <span class="red">* </span> Secuencia:
+                                    </label>
+                                    <div class="col-sm-8">
+                                        <h:inputText id="txSecuenciaEdit" styleClass="form-control" maxlength="3"
+                                                     required="true" value="#{cargaController.columnEdit.secuencia}"
+                                                     converterMessage="El campo Secuencia debe ser numérico"
+                                                     requiredMessage="El campo Secuencia es requerido"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <f:facet name="footer">
+                                <div class="col-sm-9 col-sm-offset-2">
+                                    <button class="btn btn-danger col-sm-5" onclick="PF('dlg3').hide();
+                                            return false;">Cancelar</button>
+                                    <h:commandButton styleClass="btn btn-info col-sm-5 col-xs-offset-1" value="Aceptar">
+                                        <p:ajax process="formEditColumn" update="msgDlg3 :formTabla :msgs"
+                                                listener="#{cargaController.updateColumn}"
+                                                oncomplete="if (args &amp;&amp; !args.validationFailed) PF('dlg3').hide();"/>
+                                    </h:commandButton>
+                                </div>
+                            </f:facet>
+                        </p:dialog>
+                    </h:form>
+
+
+                </div>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

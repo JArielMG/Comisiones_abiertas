@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"  
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+    <h:head>
+        <title>Viajes Claros</title>
+    </h:head>
+
+    <h:body>
+        <ui:composition template="../template/layout.xhtml">
+            <ui:define name="content">
+
+                <div id="graficas" class="container">
+                    <h4 class="text-center"><strong>CONFIGURACIÓN DE GRÁFICAS</strong></h4>
+
+                    <h:form id="formDep" prependId="false">
+                        <p:messages id="msgs" autoUpdate="false" showDetail="true" globalOnly="true" />
+                        
+                        <div id="search-dependencia" class="col-sm-12" style="margin-bottom: 10px;">
+                            <div class="form-group col-sm-2">
+                                <h:selectOneMenu  styleClass="form-control" value="#{graficasController.idDependencia}">
+                                    <f:selectItems value="#{graficasController.dependencias}" var="d"
+                                                   itemLabel="#{d.siglas}" itemValue="#{d.id}"/>
+                                    <p:ajax process="@this" update=":formDep :formGraf"
+                                            listener="#{graficasController.changeDependencia}"/>
+                                </h:selectOneMenu>
+                            </div>
+                            <div class="col-sm-10">
+                                <h4 class="text-center"><h:outputText value="#{graficasController.selectedDependencia.dependencia}"/></h4>
+                            </div>
+                        </div>
+                    </h:form>
+
+                    <h:form id="formGraf" prependId="false">
+                        <c:forEach items="#{graficasController.graficasDependencia}" var="grafica">
+                            <p:outputPanel styleClass="col-sm-4 col-xs-6"
+                                           rendered="#{!(grafica.codigoGrafica=='viajes_por_unidad' and graficasController.idDependencia != 1)}">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <div class="checkbox">
+                                            <label>
+                                                <h:selectBooleanCheckbox value="#{grafica.enabled}">
+                                                    <p:ajax process="@this" update=":formGraf" 
+                                                            listener="#{graficasController.onClickCheckbox}"/>
+                                                </h:selectBooleanCheckbox>
+                                                <span>#{grafica.grafica}</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p:outputPanel>
+                        </c:forEach>
+
+
+                        <div class="col-sm-12 col-xs-12">
+                            <div class="col-sm-2 col-xs-6 col-sm-offset-5 col-xs-offset-3">
+                                <p:commandButton styleClass="btn btn-info prime-btn-reset btn-lg btn-square col-xs-12" 
+                                                 value="Guardar" disabled="#{graficasController.disabledGuardar}">
+                                    <p:ajax process=":formGraf" update=":formGraf :formDep"
+                                            listener="#{graficasController.saveGraficasDependencia}"/>
+                                </p:commandButton>
+                            </div>
+                        </div>
+
+                    </h:form>
+                </div>
+
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
