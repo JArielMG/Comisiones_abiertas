@@ -1,0 +1,41 @@
+<div id="header" ng-controller="HeaderController">
+    <nav class="navbar navbar-default gradient-blue">
+        <div class="container-fluid">
+            <div class="content">
+                <div class="navbar-header">
+                    <button type="button" navbar-toggle class="navbar-toggle collapsed" 
+                            data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" 
+                            aria-expanded="false" ng-click="isCollapsed = !isCollapsed">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a href="http://www.inai.org.mx/" class="navbar-brand" target="_blank"><img src="assets/img/logoifai2014.png" alt="inai"></a>
+                    <a href="#/" class="navbar-brand" ng-click="isCollapsed = true"><img src="assets/img/viajeslogo.png" alt="Viajes Claros"></a>
+                </div>
+
+                <div collapse="isCollapsed" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <form id="header-form-dependencia" class="navbar-form col-sm-2 pull-right">
+                        <div class="form-group">
+                            <select ng-model="slcDependencia" class="form-control" ng-change="changeDependencia(slcDependencia)"
+                                    ng-options="op.siglas for op in listDependencias track by op.idDependencia">
+                            </select>
+                        </div>
+                    </form>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-class="{ active: isActive('/buscador')}"><a href="#/buscador" ng-click="isCollapsed = true"><i class="fa fa-search"></i> Buscador</a></li>
+                        <li><a id="link-comparar" ng-click="openSidebar()"><i class="fa fa-exchange"></i> Comparar</a></li>
+                        <li ng-class="{ active: isActive('/funcionario')}"><a href="#/funcionario" ng-click="isCollapsed = true"><i class="fa fa-group"></i> Funcionarios</a></li>
+                        <li ng-class="{ active: isActive('/graficas')}"><a href="#/graficas" ng-click="isCollapsed = true"><i class="fa fa-bar-chart"></i> Gráficas</a></li>
+                    </ul>
+
+
+                </div>
+            </div>
+
+        </div>
+
+    </nav>
+</div>

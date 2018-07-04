@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<div id="busqueda" class="container-fluid buscador-container">
+    
+    <script type="text/ng-template" id="pagination-template.html">
+        <span class="pull-right">{{currentPage}} / {{numPages}}</span>
+        <div class="pagination" ng-if="pages.length >= 2">
+        <ul class="pagination">
+        <li ng-if="currentPage > 1">
+        <a ng-click="selectPage(1)">&lt;&lt;</a>
+        </li>
+        <li ng-if="currentPage > 1">
+        <a ng-click="selectPage(currentPage-1)">&lt;</a>
+        </li>
+        <li ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a ng-click="selectPage(page)">{{page}}</a>
+        </li>
+        <li ng-if="currentPage < numPages">
+        <a ng-click="selectPage(currentPage+1)">></a>
+        </li>
+        <li ng-if="currentPage < numPages">
+        <a ng-click="selectPage(numPages)">>></a>
+        </li>
+        </ul>
+        </div>
+    </script>
+
+    <div class="row">
+        <div id="search-filters" class="col-xs-12 col-sm-3 col-md-3">
+            <h4 class="text-center">Filtros de búsqueda</h4>
+
+            <form>
+                <div class="form-group small" ng-repeat="f in filtros">
+                    <label for="{{f.nombrePropiedad}}">{{f.descripcion}}</label>
+                    <div ng-switch on="f.tipoControl">
+                        <div ng-switch-when="TEXT">
+                            <input type="text" class="form-control" ng-model="f.json"/>
+                        </div>
+                        <div ng-switch-when="checkbox">
+                            <div ng-repeat="j in f.subcampoList" class="checkbox">
+                                <label><input type="checkbox" ng-model="j.value"> {{j.label}}</label> 
+                            </div>
+                        </div>
+                        <div ng-switch-when="SELECT">
+                            <select class="form-control" ng-model="f.json" 
+                                    ng-options="item.valor for item in f.valoresLista track by item.codigo">
+                                <option value="">Selecciona..</option>
+                            </select>
+                        </div>
+                        <div ng-switch-when="DATE">
+                            <div class="col-md-12">
+                                <p class="input-group">
+                                    <input type="text" class="form-control" id="{{f.nombrePropiedad}}}" 
+                                           datepicker-popup="dd/MM/yyyy" ng-model="f.json.date" readonly="true"
+                                           is-open="f.json.opened" min-date="today" max-date="'2020-06-22'" 
+                                           datepicker-options="dateOptions" date-disabled="disabled(date, mode)" 
+                                           ng-required="true" current-text="Hoy" clear-text="Limpiar" close-text="Cerrar"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-info btn-date" ng-click="f.json.opened = true"><i class="fa fa-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div ng-switch-default>
+                            Tipo de elemento desconocido: {{f.tipoControl}}
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="filtros.length < 1" style="margin-top: 40px;margin-bottom: 20px;">
+                    <h5 class="text-center blue"><strong>Aún no hay filtros de búsqueda configurados para {{slcDependencia.siglas}}</strong></h5>
+                </div>
+            </form>
+
+            <button type="button" scroll-to="tbl-results-mobile" ng-disabled="filtros.length < 1"
+                    class="btn btn-primary pull-right clearfix" ng-click="realizaBusqueda()">
+                <i class="fa fa-search"></i> Buscar</button>
+        </div>
+
+        <!-- TABLA DE RESULTADOS -->
+        <div class="col-xs-12 col-sm-9 col-md-9 pull-right">
+            <div id="search-results">
+                <h4 class="text-center">{{slcDependencia.dependecia}}</h4>
+
+                <div class="export-buttons">
+<!--                    <button type="button" class="btn btn-success pull-right" ng-disabled="!total"
+                            style="margin-bottom: 2px;" ng-click="saveCSV()">
+                        <i class="fa fa-file-excel-o"></i> CSV
+                    </button>-->
+                    <!-- OBTIENE EL ARCHIVO CSV USANDO LA DIRECTIVA NG-CSV -->
+                    <button type="button" add-bom="true" quote-strings="true" text-delimiter='"'
+                            ng-csv="viajesCSVEscaped" csv-header="csvHeaders" charset="utf-8" ng-disabled="!total"
+                            filename="Viajes.csv" class="btn btn-success pull-right" style="margin-bottom: 2px;">
+                        <i class="fa fa-file-excel-o"></i> CSV
+                    </button>
+                    <button type="button" class="btn btn-info pull-right" ng-disabled="!total"
+                            style="margin-bottom: 2px;" ng-click="saveJSON()">
+                        JSON
+                    </button>
+                    <button type="button" class="btn btn-warning pull-right" ng-disabled="!total"
+                            style="margin-bottom: 2px;" ng-click="saveXML()">
+                        XML
+                    </button>
+                </div>
+
+                {{ total}} resultados
+                <table id="tbl-results" st-table="viajes" st-safe-src="viajesSafe" 
+                       class="table table-striped small hidden-xs tbl-results">
+                    <thead>
+                    <th></th>
+                    <th ng-repeat="h in headers">{{h.descripcion}}</th>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="v in viajes">
+                            <td><a href="#/viaje/{{v.id}}" data-toggle="tooltip" data-placement="left" title data-original-title="Default tooltip"><i class="fa fa-search"></i></a></td>
+                            <td ng-repeat="d in v.datos track by $index">{{d}}</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="{{headers.length+1}}" class="text-center">
+                                <div st-pagination="" st-items-by-page="pagItemsByPage" st-displayed-pages="7" st-template="pagination-template.html"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <h4 class="text-center blue" ng-hide="total>0">Aún no hay viajes registrados para <b>{{slcDependencia.siglas}}</b></h4></div>
+
+                <table id="tbl-results-mobile" st-table="viajes" st-safe-src="viajesSafe" 
+                       class="table table-striped small visible-xs-block">
+                    <tbody>
+                        <tr ng-repeat="v in viajes">
+                            <td>
+                                <div class="col-xs-6" ng-repeat="d in v.datos track by $index">
+                                    <strong>{{headers[$index].descripcion}}</strong> <br/>
+                                    {{d}}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="{{headers.length+1}}" class="text-center">
+                                <div st-pagination="" st-items-by-page="pagItemsByPage" st-displayed-pages="7" st-template="pagination-template.html"></div>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    
+
+</div>
+

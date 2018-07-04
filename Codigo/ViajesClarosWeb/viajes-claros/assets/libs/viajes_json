@@ -1,0 +1,217 @@
+[
+  {
+    "datos": [
+      "Chetumal",
+      "3237.95",
+      "20000",
+      "13/07/2015 18:00",
+      "12/07/2015 18:00",
+      "Notificación - 12/jul/15 - Baja California Sur",
+      "Fiesta Inn",
+      "México",
+      "Aéreo",
+      "Nacional"
+    ],
+    "id": 4,
+    "$$hashKey": "object:72"
+  },
+  {
+    "datos": [
+      "Buenos Aires",
+      "90411",
+      "20000",
+      "19/10/2015 00:00",
+      "09/10/2015 00:00",
+      "36 Conferencia Internacional de Autoridades de Protección de Datos y Privacidad",
+      "Hotel Invoice",
+      "Argentina",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 5,
+    "$$hashKey": "object:73"
+  },
+  {
+    "datos": [
+      "Buenos Aires",
+      "49739.22",
+      "20000",
+      "04/10/2015 00:00",
+      "01/09/2015 00:00",
+      "II Congreso Internacional de Transparencia",
+      "Hotel Invoice",
+      "Argentina",
+      null,
+      "Internacional"
+    ],
+    "id": 6,
+    "$$hashKey": "object:74"
+  },
+  {
+    "datos": [
+      "Chetumal",
+      "6014",
+      "20000",
+      "04/07/2015 00:00",
+      "04/07/2015 00:00",
+      "XV Asamblea Nacional Ordinaria de la COMAIP - Quintana Roo 2014",
+      "Fiesta Inn",
+      "México",
+      "Aéreo",
+      "Nacional"
+    ],
+    "id": 7,
+    "$$hashKey": "object:75"
+  },
+  {
+    "datos": [
+      "San Miguel de Allende",
+      "1925.99",
+      "20000",
+      "05/09/2014 18:00",
+      "05/09/2014 00:00",
+      "Transparencia; Acceso a la Información y Protección de Datos en el Sector Ambiental",
+      "Fiesta Inn",
+      "México",
+      "Terrestre",
+      "Nacional"
+    ],
+    "id": 8,
+    "$$hashKey": "object:76"
+  },
+  {
+    "datos": [
+      "Toluca",
+      "935.5",
+      "20000",
+      "19/05/2015 18:00",
+      "19/05/2015 18:00",
+      "XVIII Sesión Ordinaria de la Región Centro de la Conferencia Mexicana para el Acceso a la Información Pública",
+      "Hoteles Posada Real",
+      "México",
+      "Terrestre",
+      "Nacional"
+    ],
+    "id": 9
+  },
+  {
+    "datos": [
+      "Santiago",
+      "38414.74",
+      "20000",
+      "24/04/2015 00:00",
+      "21/04/2015 00:00",
+      "Seminario Internacional de Transparencia 2014 “Libertad de Expresión y Transparencia”",
+      "Crowne Plaza",
+      "Chile",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 10
+  },
+  {
+    "datos": [
+      "Vancouver",
+      "36272.4",
+      "20000",
+      "05/12/2015 00:00",
+      "30/11/2015 00:00",
+      "42° Foro de Autoridades de Privacidad de Asia-Pacífico (APPA)",
+      "Delta Vancouver Suites",
+      "Canadá",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 11
+  },
+  {
+    "datos": [
+      "Saltillo",
+      "6680",
+      "20000",
+      "02/04/2015 00:00",
+      "02/04/2015 00:00",
+      "Notificación - 02/abr/14 - Coahuila",
+      "Hoteles Posada Real",
+      "México",
+      "Aéreo",
+      "Nacional"
+    ],
+    "id": 12
+  },
+  {
+    "datos": [
+      "Ningbo",
+      "51837.52",
+      "20000",
+      "22/02/2015 00:00",
+      "13/02/2015 00:00",
+      "Primera Reunión Ministerial de APEC y reuniones relacionadas, 2014, celebradas en Ningbo, China",
+      "Hotel Malibú",
+      "China",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 13
+  },
+  {
+    "datos": [
+      "Washington, D. C.",
+      "24352.27",
+      "20000",
+      "08/03/2015 00:00",
+      "04/03/2015 00:00",
+      "Reunión Global de la Asociación Internacional de Profesionales de Privacidad",
+      "Hilton",
+      "Estados Unidos de América",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 14
+  },
+  {
+    "datos": [
+      "San Salvador",
+      "613.07",
+      "20000",
+      "08/10/2015 00:00",
+      "05/10/2015 00:00",
+      "Taller Internacional sobre Protección de Datos Personales ",
+      "Maritim Hotel",
+      "El Salvador",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 15
+  },
+  {
+    "datos": [
+      "Port Louis",
+      "101704.94",
+      "20000",
+      "16/10/2015 00:00",
+      "12/10/2015 00:00",
+      "36 Conferencia Internacional de Autoridades de Protección de Datos y Privacidad",
+      null,
+      "Mauricio",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 16
+  },
+  {
+    "datos": [
+      "Brasilia",
+      "97337.77",
+      "20000",
+      "11/11/2015 11:00",
+      "03/11/2015 00:00",
+      "VII Encuentro de la Red de Transparencia y Acceso a la Información (RTA)",
+      null,
+      "Brasil",
+      "Aéreo",
+      "Internacional"
+    ],
+    "id": 17
+  }
+]
