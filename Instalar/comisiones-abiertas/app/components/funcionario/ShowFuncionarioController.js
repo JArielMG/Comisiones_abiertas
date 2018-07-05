@@ -175,7 +175,8 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     	
     $scope.fbShare = function() {
         window.open(
-        'https://www.facebook.com/sharer/sharer.php?u='+'http://viajesclaros.inai.mx/funcionario/'+idFuncionario, 
+        'https://www.facebook.com/sharer/sharer.php?u='+'http://comisionesabiertas.inai.org.mx/comisiones-abiertas/%23/funcionario/'+idFuncionario+'?n='+
+        	funcionario.nombres.split(' ').join('%2520')+'%26a1='+funcionario.apellido1.split(' ').join('%2520')+'%26a2='+funcionario.apellido2.split(' ').join('%2520'), 
         'facebook-share-dialog', 
         'width=520,height=350'); 
         return false;

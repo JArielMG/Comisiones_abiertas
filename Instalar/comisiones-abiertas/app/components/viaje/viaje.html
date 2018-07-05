@@ -50,12 +50,12 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-4">
-                                <a href="" ng-click="fbShare(funcionario.id)" class="share-link animate-all"><strong><small>
+                                <a href="" ng-click="fbShare(viajeResumen.id)" class="share-link animate-all"><strong><small>
                                             <i class="fa fa-facebook fa-lg"></i> COMPARTIR</small></strong></a>
                             </div>
                             <div class="col-sm-4">
                                 <a class="share-link animate-all" target="_blank"
-                                   ng-href="https://twitter.com/intent/tweet/?text=Ve el perfil de {{funcionario.nombres + ' ' + funcionario.apellido1 + ' ' + funcionario.apellido2}} en &hashtags=ComisionesAbiertas&url=http://comisionesabiertas.inai.org.mx/funcionario/{{funcionario.id}}?n={{funcionario.nombres.split(' ').join('%2520')}}%26a1={{funcionario.apellido1.split(' ').join('%2520')}}%26a2={{funcionario.apellido2.split(' ').join('%2520')}}"><strong><small>
+                                   ng-href="https://twitter.com/intent/tweet/?text=Informe de comisión {{viajeResumen.nombreEvento}} en &hashtags=ComisionesAbiertas&url=http://comisionesabiertas.inai.org.mx/comisiones-abiertas/%23/viaje/{{viajeResumen.id}}"><strong><small>
                                             <i class="fa fa-twitter fa-lg"></i> COMPARTIR</small></strong></a>
                             </div>
                         </div>
