@@ -234,6 +234,13 @@ span.monto {
     text-align: center;
 }
 
+#header-wrap {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
 #header .navbar {
     border: none;
     border-radius: 0;
@@ -241,7 +248,7 @@ span.monto {
 }
 
 #header .navbar .content {
-    max-width: 1150px;
+    max-width: 1250px;
     margin: 0 auto;
 }
 
@@ -275,14 +282,21 @@ span.monto {
 }
 
 #header .navbar .navbar-form select {
-    color: black;
-    border: none;
+    color: white;
+    border: 2px solid white;
     font-weight: bold;
     box-shadow: none;
     background-color: transparent;
+    width: 150px;
+}
+
+#header .navbar .navbar-form select option {
+    background: #81BEF7;
+    color: white;
 }
 
 #content {
+    margin-top: 85px;
     min-height: 100%;
     margin-bottom: -85px;
     position: relative;
@@ -467,7 +481,7 @@ span.monto {
 }
 
 .map-container .aside-inner-content {
-    padding: 10px;
+    padding: 20px;
 }
 
 .map-container .aside .arrow-button {
@@ -475,9 +489,9 @@ span.monto {
     background-size: 15px;
     display: block;
     height: 100%;
-    left: -28px;
+    left: 0px;
     position: absolute;
-    width: 28px;
+    width: 20px;
 }
 
 .map-container .map-marker-monto {

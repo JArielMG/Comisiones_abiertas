@@ -12,6 +12,16 @@ myApp.service('BuscadorService', ['$http', '$resource', 'config', '$log', '$root
         }
     }
     
+    /* Obtiene el anio seleccionado */
+    function getAnioSeleccionado() {
+        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&$rootScope.anioConsulta!='todos los años')
+    		return $rootScope.anioConsulta;
+    	else if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta=='todos los años')
+    		return 0;
+    	else
+    		return new Date().getFullYear();
+    }
+    
     /**
      * Obtiene los filtros de búsqueda (dinámicos) para la dependencia indicada
      */
@@ -44,6 +54,22 @@ myApp.service('BuscadorService', ['$http', '$resource', 'config', '$log', '$root
     };
     
     /**
+     * Obtiene los encabezados de la tabla de resultados
+     * @param {type} dependencia
+     */
+    this.getEncabezadosComplete = function(dependencia) {
+     	var idDep = 1;
+        if (typeof dependencia !== "undefined") {
+            idDep = dependencia.idDependencia;
+        }
+        var url = config.restUrl + "busqueda/encabezadosComplete/" + idDep;
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
+    /**
      * Muestra todos los viajes en un inicio
      */
     this.realizaBusqueda = function(dependencia) {
@@ -51,7 +77,22 @@ myApp.service('BuscadorService', ['$http', '$resource', 'config', '$log', '$root
         if (typeof dependencia !== "undefined") {
             idDep = dependencia.idDependencia;
         }
-        var url = config.restUrl + "busqueda/viajes/" + idDep;
+        var url = config.restUrl + "busqueda/viajes/" + idDep+','+getAnioSeleccionado();
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
+    /**
+     * Muestra todos los viajes en un inicio
+     */
+    this.realizaBusquedaComplete = function(dependencia) {
+        var idDep = 1;
+        if (typeof dependencia !== "undefined") {
+            idDep = dependencia.idDependencia;
+        }
+        var url = config.restUrl + "busqueda/viajesComplete/" + idDep+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -63,7 +104,23 @@ myApp.service('BuscadorService', ['$http', '$resource', 'config', '$log', '$root
      * @param filtros   Objeto JSON que contiene los filtros de búsqueda
      */
     this.buscaByFiltros = function(filtros) {
-        var url = config.restUrl + "busqueda/" + getIdDependencia();
+        var url = config.restUrl + "busqueda/" + getIdDependencia()+','+getAnioSeleccionado();
+        var objBusqueda = {"parametros": []};
+        /* Procesar los filtros */
+        objBusqueda.parametros = filtrosToRESTObjects(filtros);
+        var promise = $http.post(url, objBusqueda).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
+    
+    /**
+     * Procesa los filtros de búsqueda para poder realizar la búsqueda dinámica del lado del servidor
+     * @param filtros   Objeto JSON que contiene los filtros de búsqueda
+     */
+    this.buscaByFiltrosComplete = function(filtros) {
+        var url = config.restUrl + "busqueda/complete/" + getIdDependencia()+','+getAnioSeleccionado();
         var objBusqueda = {"parametros": []};
         /* Procesar los filtros */
         objBusqueda.parametros = filtrosToRESTObjects(filtros);

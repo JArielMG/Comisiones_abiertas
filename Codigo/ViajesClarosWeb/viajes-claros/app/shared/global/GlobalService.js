@@ -17,12 +17,13 @@ myApp.service('GlobalService', ['$rootScope', '$http', 'config', '$log', functio
     
     /* Obtiene el anio seleccionado */
     function getAnioSeleccionado() {
-        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&$rootScope.anioConsulta!='todos los años')
+        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&!isNaN($rootScope.anioConsulta)){
     		return $rootScope.anioConsulta;
-    	else if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta=='todos los años')
+    	}else if ($rootScope.anioConsulta!=null&&isNaN($rootScope.anioConsulta)){
     		return 0;
-    	else
+    	}else{
     		return new Date().getFullYear();
+    	}
     }
         
     /**
@@ -37,7 +38,7 @@ myApp.service('GlobalService', ['$rootScope', '$http', 'config', '$log', functio
     };
     
     this.getPorcentajeDiasComisionFuncionario = function(funcionarioObj) {
-        var url = config.restUrl + "funcionario/getPorcentajeDiasComision/";
+        var url = config.restUrl + "funcionario/getPorcentajeDiasComision/"+getAnioSeleccionado();
         var promise = $http.post(url, funcionarioObj).then(function (response) {
             return response.data;
         });

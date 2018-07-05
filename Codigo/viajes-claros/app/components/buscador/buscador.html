@@ -42,7 +42,7 @@
                         <div ng-switch-when="SELECT">
                             <select class="form-control" ng-model="f.json" 
                                     ng-options="item.valor for item in f.valoresLista track by item.codigo">
-                                <option value="">Selecciona..</option>
+                                <option value="">Selecciona...</option>
                             </select>
                         </div>
                         <div ng-switch-when="DATE">
@@ -100,7 +100,7 @@
                     </button>
                 </div>
 
-                {{ total}} resultados
+                {{viajes.length}} resultados de {{total}}
                 <table id="tbl-results" st-table="viajes" st-safe-src="viajesSafe" 
                        class="table table-striped small hidden-xs tbl-results">
                     <thead>

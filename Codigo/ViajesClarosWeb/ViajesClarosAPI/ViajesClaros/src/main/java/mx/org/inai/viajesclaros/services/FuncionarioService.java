@@ -221,12 +221,45 @@ public class FuncionarioService {
      * Obtiene los funcionarios de la dependencia indicada
      *
      * @param idDependencia
+     * @param anio
      * @return
      */
-    public List<FuncionarioModel> getFuncionariosByDependencia(Integer idDependencia) {
+    public List<FuncionarioModel> getFuncionariosByDependencia(Integer idDependencia, Integer anio) {
         Session session = em.unwrap(Session.class);
 
-        List<FuncionarioModel> funcionarios = session.createSQLQuery("CALL get_funcionarios_por_dependencia(:idDep)")
+        List<FuncionarioModel> funcionarios;
+            if (anio>0){
+                funcionarios = session.createSQLQuery("CALL get_funcionarios_por_dependencia_anio(:idDep,:anio)")
+                .setParameter("idDep", idDependencia)
+                .setParameter("anio", anio)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        FuncionarioModel funcionario = new FuncionarioModel();
+                        funcionario.setId(Integer.valueOf(tuple[0].toString()));
+                        funcionario.setNombres((String) tuple[1]);
+                        funcionario.setApellido1((String) tuple[2]);
+                        funcionario.setApellido2((String) tuple[3]);
+                        funcionario.setNombreCompleto(funcionario.getNombres() + ' ' + funcionario.getApellido1() + ' ' + funcionario.getApellido2());
+                        funcionario.setTitulo((String) tuple[4]);
+                        funcionario.setEmail((String) tuple[5]);
+                        funcionario.setIdCategoria(Integer.valueOf(tuple[6].toString()));
+                        funcionario.setCategoria((String) tuple[7]);
+                        funcionario.setIdTipoPersona(Integer.valueOf(tuple[8].toString()));
+                        funcionario.setTipoPersona((String) tuple[9]);
+                        funcionario.setIdArea(Integer.valueOf(tuple[10].toString()));
+                        funcionario.setArea((String) tuple[11]);
+                        funcionario.setCargo((String) tuple[12]);
+                        funcionario.setTotalViajes(((BigInteger) tuple[13]).intValue());
+                        funcionario.setTotalGasto((Double) tuple[14]);
+                        return funcionario;
+                    }
+                })
+                .list();
+            }else{
+                funcionarios = session.createSQLQuery("CALL get_funcionarios_por_dependencia(:idDep)")
                 .setParameter("idDep", idDependencia)
                 .setResultTransformer(new BasicTransformerAdapter() {
                     private static final long serialVersionUID = 1L;
@@ -254,7 +287,7 @@ public class FuncionarioService {
                     }
                 })
                 .list();
-
+            }
         session.flush();
         session.clear();
         return funcionarios;
@@ -265,12 +298,42 @@ public class FuncionarioService {
      * total, total viajes)
      *
      * @param func
+     * @param anio
      * @return
      */
-    public FuncionarioModel getResumenById(FuncionarioModel func) {
+    public FuncionarioModel getResumenById(FuncionarioModel func, Integer anio) {
         Session session = em.unwrap(Session.class);
 
-        List<FuncionarioModel> list = session.createSQLQuery("CALL get_funcionario_resumen(:idFuncionario, :nom, :ap1, :ap2)")
+        List<FuncionarioModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_funcionario_resumen_anio(:idFuncionario, :nom, :ap1, :ap2, :anio)")
+                .setParameter("idFuncionario", func.getId())
+                .setParameter(("nom"), func.getNombres())
+                .setParameter("ap1", func.getApellido1())
+                .setParameter("ap2", func.getApellido2())
+                .setParameter("anio", anio)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        FuncionarioModel funcionario = new FuncionarioModel();
+                        funcionario.setId(Integer.valueOf(tuple[0].toString()));
+                        funcionario.setNombres((String) tuple[1]);
+                        funcionario.setApellido1((String) tuple[2]);
+                        funcionario.setApellido2((String) tuple[3]);
+                        funcionario.setCargo((String) tuple[4]);
+                        funcionario.setIdDependencia(Integer.valueOf(tuple[5].toString()));
+                        funcionario.setDependencia((String) tuple[6]);
+                        funcionario.setTotalViajes(((BigInteger) tuple[7]).intValue());
+                        funcionario.setTotalGasto((Double) tuple[8]);
+                        funcionario.setFechaIngreso((Date) tuple[9]);
+                        return funcionario;
+                    }
+                })
+                .list();
+            }else{
+                list = session.createSQLQuery("CALL get_funcionario_resumen(:idFuncionario, :nom, :ap1, :ap2)")
                 .setParameter("idFuncionario", func.getId())
                 .setParameter(("nom"), func.getNombres())
                 .setParameter("ap1", func.getApellido1())
@@ -295,6 +358,7 @@ public class FuncionarioService {
                     }
                 })
                 .list();
+            }
 
         session.flush();
         session.clear();
@@ -304,18 +368,77 @@ public class FuncionarioService {
             return new FuncionarioModel();
         }
     }
+    
+    /**
+     * Obtiene el cargo actual del funcionario
+     *
+     * @param func
+     * @return
+     */
+    public String getFuncionarioCargo(FuncionarioModel func) {
+        Session session = em.unwrap(Session.class);
+
+        List<String> list;
+            list = session.createSQLQuery("CALL get_funcionario_cargo_actual(:idFuncionario, :nom, :ap1, :ap2)")
+                .setParameter("idFuncionario", func.getId())
+                .setParameter(("nom"), func.getNombres())
+                .setParameter("ap1", func.getApellido1())
+                .setParameter("ap2", func.getApellido2())
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        String cargo = (String) tuple[0];
+                        return cargo;
+                    }
+                })
+                .list();
+
+        session.flush();
+        session.clear();
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return new String("");
+        }
+    }
 
     /**
      * Obtiene los porcentajde de días de comisión y días en las institución
      *
      * @param funcionario
+     * @param anio
      * @return
      */
-    public PorcentajeDiasComisionModel getPorcentajeDiasComision(FuncionarioModel funcionario) {
+    public PorcentajeDiasComisionModel getPorcentajeDiasComision(FuncionarioModel funcionario, Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<PorcentajeDiasComisionModel> list = session.createSQLQuery("CALL grafica_porcentajes_viajes_funcionario(:idFuncionario, :nom, :ap1, :ap2)")
+            List<PorcentajeDiasComisionModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL grafica_porcentajes_viajes_funcionario_anio(:idFuncionario, :nom, :ap1, :ap2, :anio)")
+                    .setParameter("idFuncionario", funcionario.getId())
+                    .setParameter("nom", funcionario.getNombres())
+                    .setParameter(("ap1"), funcionario.getApellido1())
+                    .setParameter("ap2", funcionario.getApellido2())
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            PorcentajeDiasComisionModel model = new PorcentajeDiasComisionModel();
+                            model.setTotalDiasViaje(((BigDecimal) tuple[0]).intValue());
+                            model.setTotalDiasInstitucion(((BigInteger) tuple[1]).intValue());
+                            model.setPorcentajeViaje(((BigDecimal) tuple[2]).floatValue());
+                            model.setPorcentajeInstitucion(((BigDecimal) tuple[3]).floatValue());
+                            return model;
+                        }
+                    })
+                    .list();
+            }else{
+            list = session.createSQLQuery("CALL grafica_porcentajes_viajes_funcionario(:idFuncionario, :nom, :ap1, :ap2)")
                     .setParameter("idFuncionario", funcionario.getId())
                     .setParameter("nom", funcionario.getNombres())
                     .setParameter(("ap1"), funcionario.getApellido1())
@@ -334,7 +457,7 @@ public class FuncionarioService {
                         }
                     })
                     .list();
-
+            }
             session.flush();
             session.clear();
             if (list.size() > 0) {

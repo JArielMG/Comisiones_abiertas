@@ -12,6 +12,16 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
             return 1;
         }
     }
+    
+    /* Obtiene el anio seleccionado */
+    function getAnioSeleccionado() {
+        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&$rootScope.anioConsulta!='todos los años')
+    		return $rootScope.anioConsulta;
+    	else if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta=='todos los años')
+    		return 0;
+    	else
+    		return new Date().getFullYear();
+    }
 
         /**
          * Obtiene los datos del funcionario
@@ -32,7 +42,20 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
          * @returns {undefined}
          */
         this.getFuncionarioResumen = function (funcionario) {
-            var url = config.restUrl + "funcionario/getResumenById";
+            var url = config.restUrl + "funcionario/getResumenById/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionario).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+        
+        /**
+         * obtiene el cargo de funcionario
+         * @param {type} idFuncionario
+         * @returns {undefined}
+         */
+        this.getCargoFuncionario = function (funcionario) {
+            var url = config.restUrl + "funcionario/getCargoFuncionario";
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });
@@ -45,7 +68,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
          * @returns {unresolved}
          */
         this.getViajesByFuncionario = function (funcionario) {
-            var url = config.restUrl + "viaje/getViajesByFuncionario";
+            var url = config.restUrl + "viaje/getViajesByFuncionario/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
             	angular.forEach(response.data, function (viajes) {
 		  viajes.costoTotal = parseFloat(viajes.costoTotal);
@@ -76,7 +99,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
         };
 
         this.getPorcentajeDiasComisionFuncionario = function (funcionario) {
-            var url = config.restUrl + "funcionario/getPorcentajeDiasComision";
+            var url = config.restUrl + "funcionario/getPorcentajeDiasComision/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });
@@ -84,7 +107,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
         };
 
         this.getGraficaViaticosPorFuncionario = function (funcionario) {
-            var url = config.restUrl + "grafica/getGraficaViaticosPorFuncionario";
+            var url = config.restUrl + "grafica/getGraficaViaticosPorFuncionario/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });
@@ -112,7 +135,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
          * @returns {unresolved}
          */
         this.getUbicaciones = function(funcionario) {
-            var url = config.restUrl + "viaje/getUbicacionesPorFuncionario";
+            var url = config.restUrl + "viaje/getUbicacionesPorFuncionario/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });
@@ -126,7 +149,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
          * @returns {unresolved}
          */
         this.getViajesOnMarker = function(funcionario, ciudad, pais) {
-            var url = config.restUrl + "viaje/getViajesPorCiudadPaisFuncionario";
+            var url = config.restUrl + "viaje/getViajesPorCiudadPaisFuncionario/"+getAnioSeleccionado();
             var viaje = {idFuncionario: funcionario.id, nombres: funcionario.nombres, apellido1: funcionario.apellido1, apellido2: funcionario.apellido2, ciudadDestino: ciudad, paisDestino: pais};
             var promise = $http.post(url, viaje).then(function (response) {
                 return response.data;

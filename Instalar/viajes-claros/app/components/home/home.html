@@ -8,9 +8,9 @@
                     <div class="text-airplane">
                         <a href="#/"><img src="assets/img/logosolo.png" alt="logo" class="logo"></a>
                         <h1><strong>Viajes</strong>Claros</h1>
-                        <p>Conoce los gastos y resultados de los viajes de trabajo de todos los servidores públicos del <strong>{{slcDependencia.siglas}}</strong>.</p>
+                        <p>Conoce los gastos y resultados de las comisiones oficiales de trabajo de los servidores públicos del <strong>{{slcDependencia.siglas}}</strong>.</p>
 			<!--<p>Seleccione un año para ver el detalle correspondiente: <select ng-model="thisYear" ng-style="form-group" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select></p>-->
-                        <p class="total-viajes"><span count-to="{{totalViajes}}" value="0" duration="1" type="int"></span> viajes realizados en {{thisYear}}</p>
+                        <p class="total-viajes"><span>{{totalViajes}}</span> viajes realizados en {{thisYear}}</p>
 				
 			
                         <a href="#/" class="custom-button bordered animate-color btn-ver-mapa" ng-click="toggleAirplane = !toggleAirplane">Ver mapa</a>
@@ -38,8 +38,8 @@
             </div>  
         </div>
         <div class="total-money gradient-blue">
-            <h1><span count-to="{{totalGastado}}" value="{{gasto_parcial}}" duration="1" currency-name='USD'></span></h1>
-            <p>Presupuesto gastado en viajes de trabajo durante <strong>{{thisYear}}</strong></p>
+            <h1><span>{{totalGastado | currency:"$":0}}</span></h1>
+            <p>Presupuesto gastado en comisiones oficiales  de trabajo durante <strong>{{thisYear}}</strong></p>
         </div>
     </div>
 
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="col panel panel-default">
-                    <div class="panel-heading text-center"><h5>Los <b>TRES ÚLTIMOS</b> viajes de <strong>{{slcDependencia.siglas}}</strong></h5></div>
+                    <div class="panel-heading text-center"><h5><b>ÚLTIMOS</b> viajes de <strong>{{slcDependencia.siglas}}</strong></h5></div>
                     <div class="list-group">
                         <div class="list-group-item clearfix" ng-repeat="f in tresViajes">
                             <div class="col-sm-2">
@@ -63,7 +63,7 @@
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="col panel panel-default ">
-                    <div class="panel-heading text-center"><h5 class="text-center">Los tres servidores públicos con <strong>MAYOR GASTO</strong></h5></div>
+                    <div class="panel-heading text-center"><h5 class="text-center">Servidores públicos con <strong>MAYOR GASTO</strong></h5></div>
                     <div class="list-group">
                         <div class="list-group-item clearfix" ng-repeat="f in tresServidores">
                             <div class="col-sm-2">
@@ -80,11 +80,11 @@
             </div>
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="col panel panel-default ">
-                    <div class="panel-heading text-center"><h5 class="text-center">Los tres servidores públicos con <strong>MÁS VIAJES</strong></h5></div>
+                    <div class="panel-heading text-center"><h5 class="text-center">Servidores públicos con <strong>MÁS VIAJES</strong></h5></div>
                     <div class="list-group">
                         <div class="list-group-item clearfix" ng-repeat="f in tresServidoresViajes">
                             <div class="col-sm-2">
-                                <h3><i class="fa fa-map-marker icon-circle size-4 gray"></i></h3>
+                                <h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
                             </div>
                             <div class="col-sm-10">
                                 <p><a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>

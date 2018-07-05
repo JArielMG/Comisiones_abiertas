@@ -10,7 +10,7 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
     $rootScope.funcionariosCompara = [];
     $scope.funcSelected;
     
-    $scope.years=['todos los años',2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
+    $scope.years=['todos los años',2014,2015,2016];
     
     $rootScope.metaService = MetaService;
     
@@ -46,7 +46,7 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
             $item.chartPorc = {data: [], labels: [], options:{ showTooltips: false}};
             $item.chartPorc.data = [$filter('number')(porcentajes.porcentajeViaje, 2), $filter('number')(porcentajes.porcentajeInstitucion, 2)];
             $item.chartPorc.labels = [$filter('number')(porcentajes.porcentajeViaje, 2) + ' % de días de comisión del total de días laborales', 'Tiempo en la institución'];
-            $item.totalDiasViaje = porcentajes.totalDiasViaje;
+            $item.totalDiasViaje = Math.abs(porcentajes.totalDiasViaje);
             $item.totalDiasInstitucion = porcentajes.totalDiasInstitucion;
             
             /* quitarlo de la lista de funcionarios y pasarlo a la lista de seleccionados*/

@@ -8,9 +8,9 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
     $scope.selectedMarker = {};
     
     if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!='')
-    	$scope.thisYear = $rootScope.anioConsulta;
+    	$rootScope.thisYear = $rootScope.anioConsulta;
     else
-    	$scope.thisYear = new Date().getFullYear();
+    	$rootScope.thisYear = new Date().getFullYear();
     
     HomeService.countViajes($scope.dependencia).then(function (d) {
 	    $scope.totalViajes = d.descripcion;
@@ -49,8 +49,8 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
     HomeService.getUbicaciones().then(function (d) {
         $scope.markers = [];
         for (var i=0; i<d.length; i++) {
-            var msg = "<span class='map-marker-monto text-center'> $" + d[i].gastoTotal + 
-                    " MXP</span><br/> Gasto hasta el día de hoy de viajes en <b>" + d[i].ciudad + "</b>";
+            var msg = "<span class='map-marker-monto text-center'> $" + formatNumber(d[i].gastoTotal) + 
+                    " MXP</span><br/> Gasto en el periodo seleccionado en <b>" + d[i].ciudad + "</b>";
             var m = {lat: parseFloat(d[i].lat), lng: parseFloat(d[i].lng), message: msg, focus: false, 
                         icon: leafIcon, ciudad: d[i].ciudad, pais: d[i].pais};
             $scope.markers.push(m);
@@ -84,4 +84,8 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
         });
     };
     
+    function formatNumber (num) {
+    	num = Math.round(num * 100) / 100;
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }    
 }]);

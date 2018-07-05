@@ -89,12 +89,39 @@ public class ViajeService {
      * Obtiene los viajes del funcionario indicado
      *
      * @param func
+     * @param anio
      * @return
      */
-    public List<ViajeResumenModel> getViajesResumenByFuncionario(FuncionarioModel func) {
+    public List<ViajeResumenModel> getViajesResumenByFuncionario(FuncionarioModel func, Integer anio) {
         Session session = em.unwrap(Session.class);
 
-        List<ViajeResumenModel> viajes = session.createSQLQuery("CALL get_viajes_resumen_por_persona(:idFun, :nom, :ap1, :ap2)")
+        List<ViajeResumenModel> viajes;
+            if (anio>0){
+                viajes = session.createSQLQuery("CALL get_viajes_resumen_por_persona_anio(:idFun, :nom, :ap1, :ap2, :anio)")
+                .setParameter("idFun", func.getId())
+                .setParameter("nom", func.getNombres())
+                .setParameter("ap1", func.getApellido1())
+                .setParameter("ap2", func.getApellido2())
+                .setParameter("anio", anio)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        ViajeResumenModel viaje = new ViajeResumenModel();
+                        viaje.setId((Integer) tuple[0]);
+                        viaje.setCostoTotal(tuple[1].toString());
+                        viaje.setFechaInicio(tuple[2].toString());
+                        viaje.setFechaFin(tuple[3].toString());
+                        viaje.setPaisDestino((String) tuple[4]);
+                        viaje.setCiudadDestino((String) tuple[5]);
+                        viaje.setNombreEvento((String) tuple[6]);
+                        return viaje;
+                    }
+                })
+                .list();
+            }else{
+                viajes = session.createSQLQuery("CALL get_viajes_resumen_por_persona(:idFun, :nom, :ap1, :ap2)")
                 .setParameter("idFun", func.getId())
                 .setParameter("nom", func.getNombres())
                 .setParameter("ap1", func.getApellido1())
@@ -116,7 +143,7 @@ public class ViajeService {
                     }
                 })
                 .list();
-
+            }
         session.flush();
         session.clear();
         return viajes;
@@ -221,13 +248,39 @@ public class ViajeService {
     /**
      * Obtiene la latitud y longitud de las ciudades visitadas del funcionario
      * @param func
+     * @param anio
      * @return 
      */
-    public List<MapMarkerModel> getUbicacionesPorFuncionario(FuncionarioModel func) {
+    public List<MapMarkerModel> getUbicacionesPorFuncionario(FuncionarioModel func, Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<MapMarkerModel> list = session.createSQLQuery("CALL get_ubicaciones_mapa_por_persona(:idFun, :nombres, :ap1, :ap2)")
+            List<MapMarkerModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_ubicaciones_mapa_por_persona_anio(:idFun, :nombres, :ap1, :ap2, :anio)")
+                    .setParameter("idFun", func.getId())
+                    .setParameter("nombres", func.getNombres())
+                    .setParameter("ap1", func.getApellido1())
+                    .setParameter("ap2", func.getApellido2())
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            MapMarkerModel model = new MapMarkerModel();
+                            model.setCiudad(tuple[0].toString());
+                            model.setPais(tuple[1].toString());
+                            model.setGastoTotal(tuple[2].toString());
+                            model.setLat(tuple[3].toString());
+                            model.setLng(tuple[4].toString());
+                            model.setMessage(model.getGastoTotal() + " gasto hasta el día de hoy");
+                            return model;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("CALL get_ubicaciones_mapa_por_persona(:idFun, :nombres, :ap1, :ap2)")
                     .setParameter("idFun", func.getId())
                     .setParameter("nombres", func.getNombres())
                     .setParameter("ap1", func.getApellido1())
@@ -248,7 +301,7 @@ public class ViajeService {
                         }
                     })
                     .list();
-            
+            }
             session.flush();
             session.clear();
             return list;
@@ -329,13 +382,43 @@ public class ViajeService {
     /**
      * Obtiene los viajes realizados de la ciudad-pais indicados
      * @param viaje
+     * @param anio
      * @return 
      */
-    public List<ViajeResumenModel> getViajesResumenPorCiudadPaisFuncionario(ViajeResumenModel viaje) {
+    public List<ViajeResumenModel> getViajesResumenPorCiudadPaisFuncionario(ViajeResumenModel viaje, Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<ViajeResumenModel> list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais_funcionario(:idFun, :nombre, :primerApellido, :segundoApellido, :ciudad, :pais)")
+            List<ViajeResumenModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais_funcionario_anio(:idFun, :nombre, :primerApellido, :segundoApellido, :ciudad, :pais, :anio)")
+                    .setParameter("idFun", viaje.getIdFuncionario())
+                    .setParameter("nombre", viaje.getNombres())
+                    .setParameter("primerApellido", viaje.getApellido1())
+                    .setParameter("segundoApellido", viaje.getApellido2())
+                    .setParameter("ciudad", viaje.getCiudadDestino())
+                    .setParameter("pais", viaje.getPaisDestino())
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ViajeResumenModel v = new ViajeResumenModel();
+                            v.setId(Integer.valueOf(tuple[0].toString()));
+                            v.setCiudadDestino(tuple[1].toString());
+                            v.setPaisDestino(tuple[2].toString());
+                            v.setFechaInicio(tuple[3].toString());
+                            v.setIdFuncionario(Integer.valueOf(tuple[4].toString()));
+                            v.setNombres(tuple[5].toString());
+                            v.setApellido1(tuple[6].toString());
+                            v.setApellido2(tuple[7].toString());
+                            return v;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais_funcionario(:idFun, :nombre, :primerApellido, :segundoApellido, :ciudad, :pais)")
                     .setParameter("idFun", viaje.getIdFuncionario())
                     .setParameter("nombre", viaje.getNombres())
                     .setParameter("primerApellido", viaje.getApellido1())
@@ -360,7 +443,7 @@ public class ViajeService {
                         }
                     })
                     .list();
-            
+            }
             session.flush();
             session.clear();
             return list;

@@ -77,6 +77,10 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     ShowFuncionarioService.getFuncionarioResumen(funcionario).then(function(d) {
        $scope.funcionarioResumen = d; 
     });
+
+    ShowFuncionarioService.getCargoFuncionario(funcionario).then(function(d) {
+       $scope.cargoFuncionario = d; 
+    });
     
     ShowFuncionarioService.getViajesByFuncionario(funcionario).then(function(d) {
         $scope.viajes = d;
@@ -136,7 +140,7 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
         $scope.markers = [];
         for (var i=0; i<d.length; i++) {
             var msg = "<span class='map-marker-monto text-center'> $" + d[i].gastoTotal + 
-                    " MXP</span><br/> Gasto hasta el día de hoy de viajes en <b>" + d[i].ciudad + "</b>";
+                    " MXP</span><br/> Gasto en el periodo seleccionado en <b>" + d[i].ciudad + "</b>";
             var m = {lat: parseFloat(d[i].lat), lng: parseFloat(d[i].lng), message: msg, focus: false, 
                         icon: leafIcon, ciudad: d[i].ciudad, pais: d[i].pais};
             $scope.markers.push(m);

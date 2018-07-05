@@ -81,7 +81,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     }
     
     this.getGraficaViajesPorUnidad = function(idUnidad) {
-        var url = config.restUrl + "grafica/getUltimosViajesPorUnidad/" + idUnidad;
+        var url = config.restUrl + "grafica/getUltimosViajesPorUnidad/" + idUnidad+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -104,6 +104,14 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
         return promise;
     };
     
+    this.getTotalPasajes = function() {
+        var url = config.restUrl + "grafica/getTotalPasajes/" + getIdDependencia()+','+getAnioSeleccionado();
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
     this.getTotalGasto = function() {
         var url = config.restUrl + "util/totalGastoByDependenciaAnio/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
@@ -114,6 +122,14 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     
     this.getGraficasParam = function() {
         var url = config.restUrl + "grafica/getGraficasParametrizadas/" + getIdDependencia();
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
+    this.countViajes = function(dependencia) {
+        var url = config.restUrl + "util/totalViajesByDependenciaAnio/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });

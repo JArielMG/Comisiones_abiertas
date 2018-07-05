@@ -17,7 +17,6 @@
 package mx.org.inai.viajesclaros.services;
 
 import au.com.bytecode.opencsv.CSVWriter;
-import java.io.FileWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,6 @@ import javax.persistence.PersistenceContext;
 import mx.org.inai.viajesclaros.model.BusquedaModel;
 import mx.org.inai.viajesclaros.model.ElementoCatalogoModel;
 import mx.org.inai.viajesclaros.model.FiltroBusquedaModel;
-import mx.org.inai.viajesclaros.model.SimpleObjectModel;
 import mx.org.inai.viajesclaros.model.ValorListaModel;
 import mx.org.inai.viajesclaros.model.ViajeResultModel;
 import org.apache.log4j.Logger;
@@ -104,13 +102,15 @@ public class BusquedaService {
      * resultados de búsqueda
      *
      * @param idDependencia
+     * @param complete
      * @return Encabezados (lista de objetos ElementoCatalogoModel)
      */
-    public List<ElementoCatalogoModel> getEncabezadoViajes(Integer idDependencia) {
+    public List<ElementoCatalogoModel> getEncabezadoViajes(Integer idDependencia,Byte complete) {
         Session session = em.unwrap(Session.class);
 
-        List<ElementoCatalogoModel> encabezados = session.createSQLQuery("CALL get_headers_viajes(:idDep)")
+        List<ElementoCatalogoModel> encabezados = session.createSQLQuery("CALL get_headers_viajes(:idDep, :complete)")
                 .setParameter("idDep", idDependencia)
+                .setParameter("complete", complete)
                 .setResultTransformer(new BasicTransformerAdapter() {
                     private static final long serialVersionUID = 1L;
 
@@ -134,13 +134,19 @@ public class BusquedaService {
      * son dinámicos)
      *
      * @param idDependencia
+     * @param anio
+     * @param complete
      * @return Lista de viajes
      */
-    public List<ViajeResultModel> getViajesByDependencia(Integer idDependencia) {
+    public List<ViajeResultModel> getViajesByDependencia(Integer idDependencia, Integer anio, Byte complete) {
         Session session = em.unwrap(Session.class);
 
-        List<ViajeResultModel> viajes = session.createSQLQuery("CALL get_viajes_por_dependencia(:idDep)")
+        List<ViajeResultModel> viajes;
+            if (anio>0){
+                viajes = session.createSQLQuery("CALL get_viajes_por_dependencia_anio(:idDep,:anio, :despliegueCompleto)")
                 .setParameter("idDep", idDependencia)
+                .setParameter("anio", anio)
+                .setParameter("despliegueCompleto", complete)
                 .setResultTransformer(new BasicTransformerAdapter() {
                     private static final long serialVersionUID = 1L;
 
@@ -159,7 +165,29 @@ public class BusquedaService {
                     }
                 })
                 .list();
+            }else{
+            viajes = session.createSQLQuery("CALL get_viajes_por_dependencia(:idDep,:despliegueCompleto)")
+                .setParameter("idDep", idDependencia)
+                .setParameter("despliegueCompleto", complete)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
 
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        ViajeResultModel v = new ViajeResultModel();
+
+                        List<String> datos = new ArrayList<>();
+                        for (int i = 1; i < tuple.length; i++) {
+                            datos.add((String) tuple[i]);
+                        }
+
+                        v.setId((Integer) tuple[0]);
+                        v.setDatos(datos);
+                        return v;
+                    }
+                })
+                .list();
+            }
         session.flush();
         session.clear();
         return viajes;
@@ -170,13 +198,15 @@ public class BusquedaService {
      *
      * @param idDependencia Id de la dependencia
      * @param busquedaModel Filtros de búsqueda
+     * @param anio
+     * @param complete
      * @return viajes
      */
-    public List<ViajeResultModel> getViajesByFiltros(Integer idDependencia, BusquedaModel busquedaModel) {
+    public List<ViajeResultModel> getViajesByFiltros(Integer idDependencia, BusquedaModel busquedaModel, Integer anio, Byte complete) {
         /* Obtener el String con la parte WHERE */
         String queryWhere = procesaFiltros(busquedaModel);
         /* Llamar al SP de búsqueda y enviar la parte WHERE como parámetro */
-        return callViajesByFiltros(idDependencia, queryWhere);
+        return callViajesByFiltros(idDependencia, queryWhere, anio, complete);
     }
 
     /**
@@ -184,15 +214,16 @@ public class BusquedaService {
      *
      * @param idDep
      * @param busquedaModel
+     * @param anio
      * @return
      */
-    public String getViajesCSV(Integer idDep, BusquedaModel busquedaModel) {
+    public String getViajesCSV(Integer idDep, BusquedaModel busquedaModel, Integer anio) {
         try {
             log.info("AQUÍ OBTENIENDO EL CSV");
             /* Obtener el String con la parte WHERE */
             String queryWhere = procesaFiltros(busquedaModel);
             /* Llamar al SP de búsqueda y enviar la parte WHERE como parámetro */
-            List<ViajeResultModel> viajes = callViajesByFiltros(idDep, queryWhere);
+            List<ViajeResultModel> viajes = callViajesByFiltros(idDep, queryWhere, anio, Byte.valueOf("1"));
             
             StringWriter sw = new StringWriter();
             CSVWriter writer = new CSVWriter(sw, '\t');
@@ -257,13 +288,18 @@ public class BusquedaService {
      *
      * @param idDependencia
      * @param queryWhere
+     * @param complete
      * @return
      */
-    private List<ViajeResultModel> callViajesByFiltros(Integer idDependencia, String queryWhere) {
+    private List<ViajeResultModel> callViajesByFiltros(Integer idDependencia, String queryWhere, Integer anio, Byte complete) {
         Session session = em.unwrap(Session.class);
-        List<ViajeResultModel> viajes = session.createSQLQuery("CALL get_viajes_por_filtros(:idDep, :queryWhere)")
+        List<ViajeResultModel> viajes;
+            if (anio>0){
+                viajes = session.createSQLQuery("CALL get_viajes_por_filtros_anio(:idDep, :queryWhere, :anio, :despliegueCompleto)")
                 .setParameter("idDep", idDependencia)
                 .setParameter("queryWhere", queryWhere)
+                .setParameter("anio", anio)
+                .setParameter("despliegueCompleto", complete)
                 .setResultTransformer(new BasicTransformerAdapter() {
                     private static final long serialVersionUID = 1L;
 
@@ -282,7 +318,30 @@ public class BusquedaService {
                     }
                 })
                 .list();
-        
+            }else{
+                viajes = session.createSQLQuery("CALL get_viajes_por_filtros(:idDep, :queryWhere, :despliegueCompleto)")
+                .setParameter("idDep", idDependencia)
+                .setParameter("queryWhere", queryWhere)
+                .setParameter("despliegueCompleto", complete)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        ViajeResultModel v = new ViajeResultModel();
+
+                        List<String> datos = new ArrayList<>();
+                        for (int i = 1; i < tuple.length; i++) {
+                            datos.add((String) tuple[i]);
+                        }
+
+                        v.setId((Integer) tuple[0]);
+                        v.setDatos(datos);
+                        return v;
+                    }
+                })
+                .list();
+            }
         session.flush();
         session.clear();
         return viajes;

@@ -14,7 +14,6 @@ import javax.ws.rs.core.Response;
 import mx.org.inai.viajesclaros.model.BusquedaModel;
 import mx.org.inai.viajesclaros.model.ElementoCatalogoModel;
 import mx.org.inai.viajesclaros.model.FiltroBusquedaModel;
-import mx.org.inai.viajesclaros.model.SimpleObjectModel;
 import mx.org.inai.viajesclaros.model.ViajeResultModel;
 import mx.org.inai.viajesclaros.services.BusquedaService;
 
@@ -40,30 +39,52 @@ public class BusquedaREST {
     @Path("encabezados/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public List<ElementoCatalogoModel> getEncabezadosByDependencia(@PathParam("id") Integer id) throws Exception {
-        return busquedaService.getEncabezadoViajes(id);
+        return busquedaService.getEncabezadoViajes(id,Byte.valueOf("0"));
     }
     
     @GET
-    @Path("viajes/{id}")
+    @Path("encabezadosComplete/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ElementoCatalogoModel> getEncabezadosCompleteByDependencia(@PathParam("id") Integer id) throws Exception {
+        return busquedaService.getEncabezadoViajes(id,Byte.valueOf("1"));
+    }
+    
+    @GET
+    @Path("viajes/{id},{anio}")
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<ViajeResultModel> getViajesByDependencia(@PathParam("id") Integer id) throws Exception {
-        return busquedaService.getViajesByDependencia(id);
+    public List<ViajeResultModel> getViajesByDependencia(@PathParam("id") Integer id, @PathParam("anio") Integer anio) throws Exception {
+        return busquedaService.getViajesByDependencia(id,anio,Byte.valueOf("0"));
+    }
+    
+    @GET
+    @Path("viajesComplete/{id},{anio}")
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<ViajeResultModel> getViajesCompleteByDependencia(@PathParam("id") Integer id, @PathParam("anio") Integer anio) throws Exception {
+        return busquedaService.getViajesByDependencia(id,anio,Byte.valueOf("1"));
     }
     
     @POST
-    @Path("/{id}")
+    @Path("/{id},{anio}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    public List<ViajeResultModel> getViajesByFiltros(@PathParam("id") Integer id, BusquedaModel busquedaModel) {
-        return busquedaService.getViajesByFiltros(id, busquedaModel);
+    public List<ViajeResultModel> getViajesByFiltros(@PathParam("id") Integer id, BusquedaModel busquedaModel, @PathParam("anio") Integer anio) {
+        return busquedaService.getViajesByFiltros(id, busquedaModel,anio,Byte.valueOf("0"));
     }
     
     @POST
-    @Path("viajesCSV/{id}")
+    @Path("complete/{id},{anio}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    public List<ViajeResultModel> getViajesCompleteByFiltros(@PathParam("id") Integer id, BusquedaModel busquedaModel, @PathParam("anio") Integer anio) {
+        return busquedaService.getViajesByFiltros(id, busquedaModel,anio,Byte.valueOf("1"));
+    }
+    
+    @POST
+    @Path("viajesCSV/{id},{anio}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response getViajesCSV(@PathParam("id") Integer id, BusquedaModel busquedaModel) {
-        String csvText = busquedaService.getViajesCSV(id, busquedaModel);
+    public Response getViajesCSV(@PathParam("id") Integer id, BusquedaModel busquedaModel, @PathParam("anio") Integer anio) {
+        String csvText = busquedaService.getViajesCSV(id, busquedaModel, anio);
         return Response.ok(csvText).header("Content-Disposition", "attachment; filename=" + "viajes.csv").build();
     }
 

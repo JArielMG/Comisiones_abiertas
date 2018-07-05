@@ -10,7 +10,7 @@ myApp.service('HomeService', ['$rootScope', '$http', '$log', 'config', function 
         if (typeof $rootScope.slcDependencia !== "undefined") {
             return $rootScope.slcDependencia.idDependencia;
         } else {
-            return 1;
+            return 4;
         }
     }
     
@@ -57,7 +57,7 @@ myApp.service('HomeService', ['$rootScope', '$http', '$log', 'config', function 
     };
     
     this.getUltimosViajes = function(dependencia) {
-        var url = config.restUrl + "grafica/getUltimosViajes/" + getIdDependencia()+','+getAnioSeleccionado();
+        var url = config.restUrl + "grafica/getUltimosViajes/" + getIdDependencia();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });

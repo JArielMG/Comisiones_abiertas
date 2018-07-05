@@ -9,6 +9,7 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
         $scope.pagItemsByPage = 20;
         $scope.dependencia = $rootScope.slcDependencia;
         $scope.viajesSafe = "";
+        $scope.viajesSafeComplete = "";
 
         /**
          * Obtiene los filtros de búsqueda (parametrizados en base de datos) para mostrarlos en la pantalla
@@ -22,9 +23,16 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
          */
         BuscadorService.getEncabezados($scope.dependencia).then(function (d) {
             $scope.headers = d;
+        });
+        
+        /**
+         * Obtiene los encabezados de las columnas de la tabla de resultados
+         */
+        BuscadorService.getEncabezadosComplete($scope.dependencia).then(function (d) {
+            $scope.headersComplete = d;
             /* Encabezados para la exportación a CSV */
-            for (var i = 0; i < $scope.headers.length; i++) {
-                $scope.csvHeaders.push($scope.headers[i].descripcion);
+            for (var i = 0; i < $scope.headersComplete.length; i++) {
+                $scope.csvHeaders.push($scope.headersComplete[i].descripcion);
             }
         });
 
@@ -35,6 +43,17 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
             $scope.viajes = d;
             $scope.viajesSafe = d;
 
+            $scope.total = d.length;
+            $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
+        });
+        
+        /**
+         * Mostrar los viajes sin filtros en un inicio
+         */
+        BuscadorService.realizaBusquedaComplete($scope.dependencia).then(function (d) {
+            $scope.viajesComplete = d;
+            $scope.viajesSafeComplete = d;
+
             /* Escapar los datos para la exportación a CSV */
             var A = [];
             for (var i = 0; i < d.length; i++) {
@@ -44,11 +63,9 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
                 }
             }
             $scope.viajesCSVEscaped = A;
-            $scope.total = d.length;
-            $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
         });
 
-        /**
+       /**
          * Realiza la búsqueda
          */
         $scope.realizaBusqueda = function () {
@@ -56,25 +73,30 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
                 $scope.viajes = d;
                 $scope.viajesSafe = d;
 
-                /* Escapar los datos para la exportación a CSV */
-                var A = [];
-                for (var i = 0; i < d.length; i++) {
-                    A.push({datos: []});
-                    for (var j = 0; j < d[i].datos.length; j++) {
-                        A[i].datos.push("\"" + d[i].datos[j] + "\"");
-                    }
-                }
-                $scope.viajesCSVEscaped = A;
-
                 $scope.total = d.length;
                 $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
+                
+                BuscadorService.buscaByFiltrosComplete($scope.filtros).then(function (d) {
+	                $scope.viajesComplete = d;
+	                $scope.viajesSafeComplete = d;
+	
+	                /* Escapar los datos para la exportación a CSV */
+	                var A = [];
+	                for (var i = 0; i < d.length; i++) {
+	                    A.push({datos: []});
+	                    for (var j = 0; j < d[i].datos.length; j++) {
+	                        A[i].datos.push("\"" + d[i].datos[j] + "\"");
+	                    }
+	                }
+	                $scope.viajesCSVEscaped = A;
+	            });
             });
         };
 
         $scope.saveJSON = function () {
             var data = "";
-            if (typeof $scope.viajesSafe === 'object') {
-                data = angular.toJson($scope.viajesSafe);
+            if (typeof $scope.viajesSafeComplete === 'object') {
+                data = angular.toJson($scope.viajesSafeComplete);
             }
 
             var blob = new Blob([data], {type: 'text/json'}),
@@ -90,7 +112,7 @@ myApp.controller('BuscadorController', ['$scope', '$rootScope', '$log', 'Buscado
         };
 
         $scope.saveXML = function () {
-            var data = json2xml($scope.viajesSafe, " ");
+            var data = json2xml($scope.viajesSafeComplete, " ");
 
             var blob = new Blob([data], {type: 'application/xml'}),
                     e = document.createEvent('MouseEvents'),

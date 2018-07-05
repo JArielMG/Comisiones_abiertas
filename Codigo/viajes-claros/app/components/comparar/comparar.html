@@ -17,15 +17,15 @@
 
 			<br/>
 
-			<h3 class="blue"><strong><span count-to="{{f.totalViajes}}" value="0" duration="1"></span></strong></h3>
+			<h3 class="blue"><strong><span>{{f.totalViajes}}</span></strong></h3>
                         <h5><strong>Número total de viajes</strong></h5>
 
                         <br/>
-                        <h3 class="blue"><strong><span count-to="{{f.totalGasto}}" value="0" duration="1" currency-name='USD'></span></strong></h3>
-                        <h5><strong>Gastos hasta la fecha en viajes</strong></h5>
+                        <h3 class="blue"><strong><span>{{f.totalGasto | currency:"$":0}}</span></strong></h3>
+                        <h5><strong>Gasto en comisiones en el periodo seleccionado</strong></h5>
 
                         <br/>
-                        <a href="#/viaje/{{f.idViajeMasCostoso}}"><h4 class="blue"><strong><span count-to="{{f.viajeMasCostoso}}" value="0" duration="1" currency-name='USD'></span></strong></h4></a>
+                        <a href="#/viaje/{{f.idViajeMasCostoso}}"><h4 class="blue"><strong><span>{{f.viajeMasCostoso | currency:"$":0}}</span></strong></h4></a>
                         <h5><strong>Viaje más costoso</strong></h5>
 
                         <br/>
@@ -36,7 +36,7 @@
                             <canvas ng-show="f.fechaIngreso" id="doughnut" class="chart chart-doughnut" chart-legend="true" chart-options="f.chartPorc.options"
                                     chart-data="f.chartPorc.data" chart-labels="f.chartPorc.labels">
                             </canvas>-->
-                            <b>{{f.totalDiasViaje}} días de viaje</b>
+                            <b>{{f.totalDiasViaje}} días de comisión</b>
                             <!--<div class="no-fecha-ingreso" ng-hide="{{f.fechaIngreso}}">
                                 <h4>NO TIENE REGISTRADA UNA FECHA DE INGRESO</h4>
                             </div>-->

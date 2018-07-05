@@ -10,12 +10,12 @@
             <div class="inner-content gradient-blue text-center">
                 <i class="fa fa-user icon-circle funcionario-icon"></i>
                 <h2>{{funcionario.nombres + " " + funcionario.apellido1 + " " + funcionario.apellido2}}</h2>
-                <p><strong>CARGO: </strong> {{funcionarioResumen.cargo}}</p>
+                <p><strong>CARGO: </strong> {{cargoFuncionario}}</p>
                 <p><strong>INSTITUCIÓN: </strong> {{funcionarioResumen.dependencia}}</p>
                 <p><strong>NÚMERO TOTAL DE VIAJES: </strong> {{funcionarioResumen.totalViajes}}</p>
                 <!--<p><strong>FECHA DE INGRESO: </strong> {{funcionarioResumen.fechaIngreso ? funcionarioResumen.fechaIngreso : '[No registrada]'}}</p>-->
 
-                <h2><strong><span count-to="{{funcionarioResumen.totalGasto}}" value="" duration="1" currency-name='USD'></span></strong></h2>
+                <h2><strong><span>{{funcionarioResumen.totalGasto | currency:"$":0}}</span></strong></h2>
                 <p><strong>GASTO HASTA EL MOMENTO EN VIAJES</strong></p>
 
                 <br/>
@@ -58,7 +58,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="panel panel-default panel-graf">
-                <div class="panel-heading">Monto de viáticos usados a la fecha</div>
+                <div class="panel-heading">Monto de viáticos usados a la fecha. <br><i>Los gastos sin comprobantes, son aquellos permitidos por la normativa aplicable.</i></div>
                 <div class="panel-body">
                     <canvas id="bar" class="chart chart-bar" chart-legend="true" chart-series="grafViaticos.series"
                             chart-data="grafViaticos.values" chart-labels="grafViaticos.labels">
@@ -67,7 +67,7 @@
             </div>
         </div>
 
-        <div class="col-xs-12 col-sm-6 col-md-6">
+        <!--<div class="col-xs-12 col-sm-6 col-md-6">
             <div class="panel panel-default panel-graf">
                 <div class="panel-heading">Días de comisión vs. días laborales</div>
                 <div class="panel-body text-center">
@@ -78,7 +78,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <div class="col-md-12 gray">
         <div class="inner-content table-container panel panel-default">

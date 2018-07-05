@@ -172,35 +172,13 @@ public class GraficaService {
      * Obtiene los ultimos viajes de la dependencia indicada
      *
      * @param idDependencia
-     * @param anio
      * @return
      */
-    public List<ViajeResumenModel> getUltimosViajesPorDep(Integer idDependencia, Integer anio) {
+    public List<ViajeResumenModel> getUltimosViajesPorDep(Integer idDependencia) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<ViajeResumenModel> list;
-            if (anio>0){
-                list = session.createSQLQuery("CALL grafica_ultimos_viajes_por_dep_anio(:idDep,:anio)")
-                    .setParameter("idDep", idDependencia)
-                    .setParameter("anio", anio)
-                    .setResultTransformer(new BasicTransformerAdapter() {
-                        private static final long serialVersionUID = 1L;
-
-                        @Override
-                        public Object transformTuple(Object[] tuple, String[] aliases) {
-                            ViajeResumenModel viaje = new ViajeResumenModel();
-                            viaje.setId((Integer) tuple[0]);
-                            viaje.setFechaPublicacion((String) tuple[2]);
-                            viaje.setNombreEvento((String) tuple[4]);
-                            viaje.setPaisDestino((String) tuple[5]);
-                            viaje.setCiudadDestino((String) tuple[6]);
-                            return viaje;
-                        }
-                    })
-                    .list();
-            }else{
-                list = session.createSQLQuery("CALL grafica_ultimos_viajes_por_dep(:idDep)")
+            List<ViajeResumenModel> list = session.createSQLQuery("CALL grafica_ultimos_viajes_por_dep(:idDep)")
                     .setParameter("idDep", idDependencia)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
@@ -217,7 +195,6 @@ public class GraficaService {
                         }
                     })
                     .list();
-            }
             session.flush();
             session.clear();
             return list;
@@ -453,8 +430,13 @@ public class GraficaService {
             return getGraficaGeneric("grafica_viajes_por_mes(" + idDependencia + ")");
     }
     
-    public GraficaModel getGraficaViaticosPorFuncionario(FuncionarioModel func) {
-        return getGraficaGeneric("grafica_viaticos_por_funcionario(" + func.getId() + ", '" 
+    public GraficaModel getGraficaViaticosPorFuncionario(FuncionarioModel func, Integer anio) {
+        if (anio>0)
+            return getGraficaGeneric("grafica_viaticos_por_funcionario_anio(" + func.getId() + ", '" 
+                + func.getNombres() + "', '" + func.getApellido1() + "', '" + func.getApellido2() + "', "+
+                    anio+")");
+        else
+            return getGraficaGeneric("grafica_viaticos_por_funcionario(" + func.getId() + ", '" 
                 + func.getNombres() + "', '" + func.getApellido1() + "', '" + func.getApellido2() + "')");
     }
     
@@ -521,6 +503,59 @@ public class GraficaService {
                     .list();
             }else{
                 list = session.createSQLQuery("call get_total_viaticos_por_dependencia(:idDep)")
+                    .setParameter("idDep", idDependencia)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            SimpleObjectModel model = new SimpleObjectModel();
+                            model.setDescripcion(((Double) tuple[0]).toString());
+                            return model;
+                        }
+                    })
+                    .list();
+            }
+            session.flush();
+            session.clear();
+            if (list.size() > 0) {
+                return list.get(0);
+            } else {
+                return new SimpleObjectModel();
+            }
+        } catch(Exception e) {
+            log.error("ERROR AL CONSULTAR LA GRÁFICA", e);
+            return new SimpleObjectModel();
+        }
+    }
+    
+    /**
+     * 
+     * @param idDependencia
+     * @param anio
+     * @return 
+     */
+    public SimpleObjectModel getTotalPasajes(Integer idDependencia, Integer anio) {
+        try {
+            Session session = em.unwrap(Session.class);
+            List<SimpleObjectModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("call get_total_pasajes_por_dependencia_anio(:idDep,:anio)")
+                    .setParameter("idDep", idDependencia)
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            SimpleObjectModel model = new SimpleObjectModel();
+                            model.setDescripcion(((Double) tuple[0]).toString());
+                            return model;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("call get_total_pasajes_por_dependencia(:idDep)")
                     .setParameter("idDep", idDependencia)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;

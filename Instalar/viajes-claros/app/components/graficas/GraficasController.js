@@ -12,6 +12,8 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
   $scope.graficasParam = [];
   $scope.viajesPorUnidad = [];
   
+  $scope.legendAnio = $rootScope.anioConsulta;
+  
   GraficasService.getHotelesMasVisitados().then(function(d) {
       $scope.hotelesMas = d;
   });
@@ -33,7 +35,7 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
   });
   
   GraficasService.getGraficaAerolineas().then(function(d) {
-      $scope.aerolineas = {labels: [], values: [[]]};
+      $scope.aerolineas = {labels: [], values: [[]], series: [$rootScope.anioConsulta]};
       var n = d.values.length;
       for (var i=0; i<n; i++) {
           $scope.aerolineas.labels.push(d.values[i].label);
@@ -50,7 +52,10 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
   });
   
   GraficasService.getGraficaViajesPorMes().then(function(d) {
-      $scope.viajesPorMes = {labels: [], values: [[]], series: [new Date().getFullYear(), ""]};
+      var anioLeyenda = $rootScope.anioConsulta;
+      if (isNaN(anioLeyenda))
+      	anioLeyenda = new Date().getFullYear();
+      $scope.viajesPorMes = {labels: [], values: [[]], series: [anioLeyenda, ""]};
       for (var i=0; i<d.values.length; i++) {
           $scope.viajesPorMes.labels.push(d.values[i].label);
           $scope.viajesPorMes.values[0].push(d.values[i].value);
@@ -61,12 +66,20 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
       $scope.totalViaticos = d.descripcion;
   });
   
+  GraficasService.getTotalPasajes().then(function(d) {
+      $scope.totalPasajes = d.descripcion;
+  });
+  
   GraficasService.getTotalGasto().then(function(d) {
       $scope.totalGasto = d;
   });
   
   GraficasService.getGraficasParam().then(function(d) {
       $scope.graficasParam = d;
+  });
+  
+  GraficasService.countViajes($scope.dependencia).then(function (d) {
+      $scope.totalViajes = d.descripcion;
   });
   
   
@@ -79,7 +92,7 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
   }
   /* PARA INAI, Obtener las unidades administrativas que tienen viajes */
   
-  if (getIdDependencia() === 1) {
+  if (getIdDependencia() === 4) {
     GraficasService.getUnidadesAdministrativas().then(function(d) {
         $scope.unidades = d;
         $scope.unidadSelected = d[0];

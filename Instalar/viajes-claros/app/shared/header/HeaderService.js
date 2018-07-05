@@ -35,4 +35,12 @@ myApp.service('HeaderService', ['$rootScope','$http', 'config', function ($rootS
         return promise;
     };
     
+    this.getPorcentajeDiasComisionFuncionario = function(funcionarioObj) {
+        var url = config.restUrl + "funcionario/getPorcentajeDiasComision/"+getAnioSeleccionado();
+        var promise = $http.post(url, funcionarioObj).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
 }]);

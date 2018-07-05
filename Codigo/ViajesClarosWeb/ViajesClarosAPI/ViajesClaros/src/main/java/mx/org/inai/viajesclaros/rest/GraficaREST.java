@@ -59,10 +59,10 @@ public class GraficaREST {
     }
     
     @GET
-    @Path("getUltimosViajes/{id},{anio}")
+    @Path("getUltimosViajes/{id}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<ViajeResumenModel> getUltimosViajes(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
-        return graficaService.getUltimosViajesPorDep(id,anio);
+    public List<ViajeResumenModel> getUltimosViajes(@PathParam("id") Integer id) {
+        return graficaService.getUltimosViajesPorDep(id);
     }
     
     @GET
@@ -135,12 +135,19 @@ public class GraficaREST {
         return graficaService.getTotalViaticos(id,anio);
     }
     
+    @GET
+    @Path("getTotalPasajes/{id},{anio}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    public SimpleObjectModel getTotalPasajesPorDependencia(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getTotalPasajes(id,anio);
+    }
+    
     @POST
-    @Path("getGraficaViaticosPorFuncionario")
+    @Path("getGraficaViaticosPorFuncionario/{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
     @Consumes(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaViaticosPorFuncionario(FuncionarioModel funcionario) {
-        return graficaService.getGraficaViaticosPorFuncionario(funcionario);
+    public GraficaModel getGraficaViaticosPorFuncionario(FuncionarioModel funcionario,@PathParam("anio") Integer anio) {
+        return graficaService.getGraficaViaticosPorFuncionario(funcionario,anio);
     }
     
     @GET

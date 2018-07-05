@@ -1,3 +1,4 @@
+<div id="header-wrap">
 <div id="header" ng-controller="HeaderController">
     <nav class="navbar navbar-default gradient-blue">
         <div class="container-fluid">
@@ -16,29 +17,29 @@
                 </div>
 
                 <div collapse="isCollapsed" class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <form id="header-form-dependencia" class="navbar-form col-sm-2 pull-right">
-                        <div class="form-group">
-                            <select ng-model="slcDependencia" class="form-control" ng-change="changeDependencia(slcDependencia)"
-                                    ng-options="op.siglas for op in listDependencias track by op.idDependencia">
-                            </select>
-                        </div>
-                        <div class="form-group">
-			    <select ng-model="thisYear" ng-style="form-group" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select>
+			
+			<div class="navbar-form col-sm-2">
+	                	<select ng-model="slcDependencia" class="form-control" ng-change="changeDependencia(slcDependencia)"
+	                        	ng-options="op.siglas for op in listDependencias track by op.idDependencia">
+	                        </select>
+	                </div>
+			<div class="navbar-form col-sm-2">
+				<select ng-model="thisYear" class="form-control" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select>
 			</div>
-                    </form>
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li ng-class="{ active: isActive('/buscador')}"><a href="#/buscador" ng-click="isCollapsed = true"><i class="fa fa-search"></i> Buscador</a></li>
-                        <li><a id="link-comparar" ng-click="openSidebar()"><i class="fa fa-exchange"></i> Comparar</a></li>
+                    <ul class="nav navbar-nav">
                         <li ng-class="{ active: isActive('/funcionario')}"><a href="#/funcionario" ng-click="isCollapsed = true"><i class="fa fa-group"></i> Funcionarios</a></li>
+                        <li><a id="link-comparar" ng-click="openSidebar()"><i class="fa fa-exchange"></i> Comparar</a></li>
                         <li ng-class="{ active: isActive('/graficas')}"><a href="#/graficas" ng-click="isCollapsed = true"><i class="fa fa-bar-chart"></i> Gráficas</a></li>
+                        <li ng-class="{ active: isActive('/buscador')}"><a href="#/buscador" ng-click="isCollapsed = true"><i class="fa fa-search"></i>  Datos abiertos</a></li>
                     </ul>
 
 
                 </div>
+		<br/>
             </div>
 
         </div>
 
     </nav>
+</div>
 </div>

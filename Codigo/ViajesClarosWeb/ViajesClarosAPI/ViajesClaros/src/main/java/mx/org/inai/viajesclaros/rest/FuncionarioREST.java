@@ -50,18 +50,26 @@ public class FuncionarioREST {
     }
     
     @GET
-    @Path("funcionariosByDependencia/{id}")
+    @Path("funcionariosByDependencia/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<FuncionarioModel> getFiltrosByDependencia(@PathParam("id") Integer id) throws Exception {
-        return funcionarioService.getFuncionariosByDependencia(id); 
+    public List<FuncionarioModel> getFiltrosByDependencia(@PathParam("id") Integer id, @PathParam("anio") Integer anio) throws Exception {
+        return funcionarioService.getFuncionariosByDependencia(id,anio); 
     }
     
     @POST
-    @Path("getResumenById")
+    @Path("getResumenById/{anio}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public FuncionarioModel getResumenById(FuncionarioModel funcionario) throws Exception {
-        return funcionarioService.getResumenById(funcionario);
+    public FuncionarioModel getResumenById(FuncionarioModel funcionario, @PathParam("anio") Integer anio) throws Exception {
+        return funcionarioService.getResumenById(funcionario,anio);
+    }
+    
+    @POST
+    @Path("getCargoFuncionario")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getCargoFuncionario(FuncionarioModel funcionario) throws Exception {
+        return funcionarioService.getFuncionarioCargo(funcionario);
     }
     
     @GET
@@ -79,11 +87,11 @@ public class FuncionarioREST {
     }
     
     @POST
-    @Path("getPorcentajeDiasComision")
+    @Path("getPorcentajeDiasComision/{anio}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public PorcentajeDiasComisionModel getPorcentajeDiasComision(FuncionarioModel funcionario) {
-        return funcionarioService.getPorcentajeDiasComision(funcionario);
+    public PorcentajeDiasComisionModel getPorcentajeDiasComision(FuncionarioModel funcionario, @PathParam("anio") Integer anio) {
+        return funcionarioService.getPorcentajeDiasComision(funcionario,anio);
     }
     
     @POST
