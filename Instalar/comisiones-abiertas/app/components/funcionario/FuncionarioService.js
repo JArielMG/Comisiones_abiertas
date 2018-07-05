@@ -24,8 +24,16 @@ myApp.service('FuncionarioService', ['$http', 'config', '$log', '$rootScope',
     }
 
     this.getFuncionariosByDependencia = function () {
-        var url = config.restUrl + "funcionario/funcionariosByDependencia/" + getIdDependencia()+','+getAnioSeleccionado();
-        var promise = $http.get(url).then(function (response) {
+		var url = config.restUrl + "funcionario/funcionariosByDependencia/" + getIdDependencia()+','+getAnioSeleccionado();
+		
+		var req = {
+			method: 'GET',
+			url: url,
+			cache: false
+		}
+
+		//var promise = $http.get(url).then(function (response) {
+		var promise = $http(req).then(function (response) {
             return response.data;
         });
         return promise;
