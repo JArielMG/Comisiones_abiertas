@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteFormularioSolicitud_secciones" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="07eec4a7-766a-42e1-8c24-e214e9d0efbc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_FLUJO" class="java.lang.Integer"/>
+	<parameter name="ID_COMISION" class="java.lang.Integer"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="ID_TIPO_PERSONA" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+id_seccion,
+etiqueta
+from secciones_formulario
+where id_flujo = $P{ID_FLUJO}
+order by orden_seccion]]>
+	</queryString>
+	<field name="id_seccion" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etiqueta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="45" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="572" height="24" uuid="50c7f606-3e2f-4748-bdda-afc245c7c04a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etiqueta}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="1" y="24" width="572" height="18" uuid="aa34c3ca-831c-4829-8fdb-e6f9cc5b51fb"/>
+				<subreportParameter name="ID_TIPO_PERSONA">
+					<subreportParameterExpression><![CDATA[$P{ID_TIPO_PERSONA}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID_SECCION">
+					<subreportParameterExpression><![CDATA[$F{id_seccion}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_CONNECTION">
+					<subreportParameterExpression><![CDATA[$P{REPORT_CONNECTION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="ID_COMISION">
+					<subreportParameterExpression><![CDATA[$P{ID_COMISION}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "reporteFormularioSolicitud_datos_seccion.jasper"]]></subreportExpression>
+			</subreport>
+			<line>
+				<reportElement x="0" y="24" width="572" height="1" isPrintWhenDetailOverflows="true" uuid="97ff0f79-1b44-4f50-a2d2-9f945acc040c"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="44" width="572" height="1" uuid="baab6d90-0d5d-43c7-b696-8c3ecc8eab8d"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="0" y="25" width="1" height="20" isPrintWhenDetailOverflows="true" uuid="f6d6d36b-46c6-4bc8-a5f4-59c352fac6ff"/>
+			</line>
+			<line>
+				<reportElement stretchType="RelativeToBandHeight" x="572" y="24" width="1" height="21" isPrintWhenDetailOverflows="true" uuid="36f5c2c5-47b7-48c1-a861-4005eab433db"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
