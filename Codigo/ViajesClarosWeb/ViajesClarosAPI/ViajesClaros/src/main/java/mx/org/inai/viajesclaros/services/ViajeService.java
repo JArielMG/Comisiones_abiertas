@@ -160,13 +160,36 @@ public class ViajeService {
     /**
      * Obtiene la latitud y longitud de las ciudades visitadas de la dependencia
      * @param idDependencia
+     * @param anio
      * @return 
      */
-    public List<MapMarkerModel> getUbicacionesPorDependencia(Integer idDependencia) {
+    public List<MapMarkerModel> getUbicacionesPorDependencia(Integer idDependencia, Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<MapMarkerModel> list = session.createSQLQuery("CALL get_ubicaciones_mapa(:idDep)")
+            List<MapMarkerModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_ubicaciones_mapa_anio(:idDep,:anio)")
+                    .setParameter("idDep", idDependencia)
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            MapMarkerModel model = new MapMarkerModel();
+                            model.setCiudad(tuple[0].toString());
+                            model.setPais(tuple[1].toString());
+                            model.setGastoTotal(tuple[2].toString());
+                            model.setLat(tuple[3].toString());
+                            model.setLng(tuple[4].toString());
+                            model.setMessage(model.getGastoTotal() + " gasto hasta el día de hoy");
+                            return model;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("CALL get_ubicaciones_mapa(:idDep)")
                     .setParameter("idDep", idDependencia)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
@@ -184,6 +207,7 @@ public class ViajeService {
                         }
                     })
                     .list();
+            }
             
             session.flush();
             session.clear();
@@ -237,14 +261,85 @@ public class ViajeService {
     /**
      * Obtiene los viajes realizados de la ciudad-pais indicados
      * @param viaje
+     * @param anio
      * @return 
      */
-    public List<ViajeResumenModel> getViajesResumenPorCiudadPais(ViajeResumenModel viaje) {
+    public List<ViajeResumenModel> getViajesResumenPorCiudadPais(ViajeResumenModel viaje, Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<ViajeResumenModel> list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais(:idDep, :ciudad, :pais)")
+            List<ViajeResumenModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais_anio(:idDep, :ciudad, :pais, :anio)")
                     .setParameter("idDep", viaje.getIdDependencia())
+                    .setParameter("ciudad", viaje.getCiudadDestino())
+                    .setParameter("pais", viaje.getPaisDestino())
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ViajeResumenModel v = new ViajeResumenModel();
+                            v.setId(Integer.valueOf(tuple[0].toString()));
+                            v.setCiudadDestino(tuple[1].toString());
+                            v.setPaisDestino(tuple[2].toString());
+                            v.setFechaInicio(tuple[3].toString());
+                            v.setIdFuncionario(Integer.valueOf(tuple[4].toString()));
+                            v.setNombres(tuple[5].toString());
+                            v.setApellido1(tuple[6].toString());
+                            v.setApellido2(tuple[7].toString());
+                            return v;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais(:idDep, :ciudad, :pais)")
+                    .setParameter("idDep", viaje.getIdDependencia())
+                    .setParameter("ciudad", viaje.getCiudadDestino())
+                    .setParameter("pais", viaje.getPaisDestino())
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ViajeResumenModel v = new ViajeResumenModel();
+                            v.setId(Integer.valueOf(tuple[0].toString()));
+                            v.setCiudadDestino(tuple[1].toString());
+                            v.setPaisDestino(tuple[2].toString());
+                            v.setFechaInicio(tuple[3].toString());
+                            v.setIdFuncionario(Integer.valueOf(tuple[4].toString()));
+                            v.setNombres(tuple[5].toString());
+                            v.setApellido1(tuple[6].toString());
+                            v.setApellido2(tuple[7].toString());
+                            return v;
+                        }
+                    })
+                    .list();
+            }
+            session.flush();
+            session.clear();
+            return list;
+        } catch(Exception e) {
+            log.error("ERROR AL CONSULTAR LOS VIAJES DE LA CIUDAD-PAIS", e);
+            return new ArrayList<>();
+        }
+    }
+    
+    /**
+     * Obtiene los viajes realizados de la ciudad-pais indicados
+     * @param viaje
+     * @return 
+     */
+    public List<ViajeResumenModel> getViajesResumenPorCiudadPaisFuncionario(ViajeResumenModel viaje) {
+        try {
+            Session session = em.unwrap(Session.class);
+
+            List<ViajeResumenModel> list = session.createSQLQuery("CALL get_mapa_viajes_por_ciudad_pais_funcionario(:idFun, :nombre, :primerApellido, :segundoApellido, :ciudad, :pais)")
+                    .setParameter("idFun", viaje.getIdFuncionario())
+                    .setParameter("nombre", viaje.getNombres())
+                    .setParameter("primerApellido", viaje.getApellido1())
+                    .setParameter("segundoApellido", viaje.getApellido2())
                     .setParameter("ciudad", viaje.getCiudadDestino())
                     .setParameter("pais", viaje.getPaisDestino())
                     .setResultTransformer(new BasicTransformerAdapter() {

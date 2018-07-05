@@ -7,8 +7,10 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
     function ($scope, $rootScope, $location, $filter, GlobalService, MetaService) {
     
     $scope.toggleComparador = false;
-    $scope.funcionariosCompara = [];
+    $rootScope.funcionariosCompara = [];
     $scope.funcSelected;
+    
+    $scope.years=['todos los años',2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
     
     $rootScope.metaService = MetaService;
     
@@ -27,12 +29,12 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
 //        return $rootScope.slcDependencia;
 //    }, function() {
 //        GlobalService.getFuncionarios().then(function(d) {
-//            $scope.funcionarios = d;
+//            $rootScope.funcionarios = d;
 //        });
 //    }, true);
 
     GlobalService.getFuncionarios().then(function(d) {
-        $scope.funcionarios = d;
+        $rootScope.funcionarios = d;
     });
     
     /* Agregar el funcionario seleccionado en el comparador */
@@ -49,16 +51,16 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
             
             /* quitarlo de la lista de funcionarios y pasarlo a la lista de seleccionados*/
             removeFuncionarioByNombre($item);
-            $scope.funcionariosCompara.push($item);
+            $rootScope.funcionariosCompara.push($item);
             $scope.funcSelected = "";
         });
     };
     
     $scope.removeFuncionarioCompara = function(index) {
         /* Regresar el funcionario a la lista original */
-        $scope.funcionarios.push($scope.funcionariosCompara[index]);
+        $scope.funcionarios.push($rootScope.funcionariosCompara[index]);
         /* Eliminarlo de los funcionarios seleccionados */
-        $scope.funcionariosCompara.splice(index, 1);
+        $rootScope.funcionariosCompara.splice(index, 1);
     };
     
     /**
@@ -70,20 +72,20 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
     
     /* Quita de la lista original de funcionarios el que coincida con el id */
     function removeFuncionarioById(idFunc) {
-        for (var i=0; i<$scope.funcionarios.length; i++) {
-            if ($scope.funcionarios[i].id === idFunc) {
-                $scope.funcionarios.splice(i, 1);
+        for (var i=0; i<$rootScope.funcionarios.length; i++) {
+            if ($rootScope.funcionarios[i].id === idFunc) {
+                $rootScope.funcionarios.splice(i, 1);
             }
         }
     }
     
     function removeFuncionarioByNombre(func) {
-        for (var i=0; i < $scope.funcionarios.length; i++) {
-            if ($scope.funcionarios[i].id === func.id 
-                    && $scope.funcionarios[i].nombres === func.nombres
-                    && $scope.funcionarios[i].apellido1 === func.apellido1
-                    && $scope.funcionarios[i].apellido2 === func.apellido2) {
-                $scope.funcionarios.splice(i, 1);
+        for (var i=0; i < $rootScope.funcionarios.length; i++) {
+            if ($rootScope.funcionarios[i].id === func.id 
+                    && $rootScope.funcionarios[i].nombres === func.nombres
+                    && $rootScope.funcionarios[i].apellido1 === func.apellido1
+                    && $rootScope.funcionarios[i].apellido2 === func.apellido2) {
+                $rootScope.funcionarios.splice(i, 1);
             }
         }
     }

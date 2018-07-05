@@ -72,10 +72,10 @@ public class FuncionarioREST {
     }
     
     @GET
-    @Path("getAllResumen")
+    @Path("getAllResumen/{anio}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<FuncionarioModel> getAllResumen() {
-        return funcionarioService.findAllResumen();
+    public List<FuncionarioModel> getAllResumen(@PathParam("anio") Integer anio) {
+        return funcionarioService.findAllResumen(anio);
     }
     
     @POST

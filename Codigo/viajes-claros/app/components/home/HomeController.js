@@ -12,15 +12,6 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
     else
     	$scope.thisYear = new Date().getFullYear();
     
-    
-    
-    $scope.years=['todos los años',2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025];
-    
-    $scope.changeAnio = function(anio) {
-        $rootScope.anioConsulta = anio;
-        $route.reload();
-    };
-    
     HomeService.countViajes($scope.dependencia).then(function (d) {
 	    $scope.totalViajes = d.descripcion;
 	});

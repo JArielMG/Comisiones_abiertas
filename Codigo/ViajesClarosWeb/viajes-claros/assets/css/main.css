@@ -241,7 +241,7 @@ span.monto {
 }
 
 #header .navbar .content {
-    max-width: 995px;
+    max-width: 1150px;
     margin: 0 auto;
 }
 
@@ -706,7 +706,7 @@ span.monto {
 
 #compara-funcionarios .panel {
     margin-top: 20px;
-    min-height: 500px;
+    min-height: 200px;
 }
 
 #compara-funcionarios .list-group .list-group-item {

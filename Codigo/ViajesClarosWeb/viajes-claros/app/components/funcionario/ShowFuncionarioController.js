@@ -2,8 +2,8 @@
 /**
  * Controlador para ver el detalle del funcionario indicado por su ID
  */
-myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routeParams', '$filter', '$modal', 'ShowFuncionarioService', 'MetaService', 'leafletData', 
-    function ($scope, $rootScope, $routeParams, $filter, $modal, ShowFuncionarioService, MetaService, leafletData) {
+myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routeParams', '$filter', '$modal', 'ShowFuncionarioService', 'MetaService', 'leafletData', 'filterFilter', 'orderByFilter',
+    function ($scope, $rootScope, $routeParams, $filter, $modal, ShowFuncionarioService, MetaService, leafletData, filterFilter, orderByFilter) {
        
     var idFuncionario = $routeParams.idFuncionario;
     var funcionario = {id: idFuncionario, nombres: $routeParams.n, apellido1: $routeParams.a1, apellido2: $routeParams.a2};
@@ -14,6 +14,28 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     $scope.isReversed = false;
     $scope.filterNacionales = true;
     $scope.filterInternacionales = true;
+    $scope.filterList = [];
+    $scope.pageSize = 5;
+    
+    
+    $scope.$watchGroup(['filterNacionales','filterInternacionales', 'orderField', 'isReversed'], function (filterValues) {
+    		
+            var obj = "";
+            if(filterValues[0] && filterValues[1]){
+	    	$scope.filterList = $scope.viajesSafe;
+	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	    }else if(filterValues[0] && !filterValues[1]){
+	        obj = { paisDestino: 'México' };
+	        $scope.filterList = filterFilter($scope.viajes, obj);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	    }else if(!filterValues[0] && filterValues[1]){
+	    	obj = { paisDestino: '!México' };
+	        $scope.filterList = filterFilter($scope.viajes, obj);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	    }
+	    
+	    $scope.currentPage = 1;
+    });
     
     $scope.filterTipo = function (item){ 
         if($scope.filterNacionales && $scope.filterInternacionales){
@@ -59,6 +81,7 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     ShowFuncionarioService.getViajesByFuncionario(funcionario).then(function(d) {
         $scope.viajes = d;
         $scope.viajesSafe = d;
+        $scope.filterList = d;
     });
     
     ShowFuncionarioService.getPorcentajeDiasComisionFuncionario(funcionario).then(function(d) {
@@ -125,7 +148,7 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
         var lng = args.leafletEvent.latlng.lng;
         $scope.selectedMarker = args.model;
         /* Consultar los viajes de la ciudad seleccionada */
-        getViajesOnMarker($scope.selectedMarker.ciudad, $scope.selectedMarker.pais);
+        getViajesOnMarker($scope.funcionario, $scope.selectedMarker.ciudad, $scope.selectedMarker.pais);
         $scope.mapCenter = {
             lng : lng,
             lat : lat,
@@ -139,11 +162,18 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     });
     
     /* Consulta los viajes de la ciudad que se seleccionó en el mapa */
-    function getViajesOnMarker(ciudad, pais) {
+    function getViajesOnMarker(funcionario, ciudad, pais) {
         $scope.toggleSidebar = true;
-        ShowFuncionarioService.getViajesOnMarker(ciudad, pais).then(function (d) {
+        ShowFuncionarioService.getViajesOnMarker(funcionario, ciudad, pais).then(function (d) {
             $scope.viajesOnMarker = d;
         });
     };
 
-}]);
+}]).filter('start', function () {
+                return function (input, start) {
+                    if (!input || !input.length) { return; }
+ 
+                    start = +start;
+                    return input.slice(start);
+                };
+            });

@@ -100,14 +100,18 @@ public class FuncionarioService {
 
     /**
      * Obtiene todos los funcionarios
-     *
+     *@param anio
+     * 
      * @return
      */
-    public List<FuncionarioModel> findAllResumen() {
+    public List<FuncionarioModel> findAllResumen(Integer anio) {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<FuncionarioModel> list = session.createSQLQuery("CALL get_funcionarios_resumen()")
+            List<FuncionarioModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_funcionarios_resumen_anio(:anio)")
+                    .setParameter("anio", anio)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
 
@@ -125,11 +129,36 @@ public class FuncionarioService {
                             f.setIdViajeMasCostoso((Integer) tuple[7]);
                             f.setFechaIngreso((Date) tuple[8]);
                             f.setDependencia((String) tuple[9]);
+                            f.setTotalViajes(((BigInteger) tuple[10]).intValue());
                             return f;
                         }
                     })
                     .list();
+            }else{
+                list = session.createSQLQuery("CALL get_funcionarios_resumen()")
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
 
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            FuncionarioModel f = new FuncionarioModel();
+                            f.setId(Integer.valueOf(tuple[0].toString()));
+                            f.setNombres((String) tuple[1]);
+                            f.setApellido1((String) tuple[2]);
+                            f.setApellido2((String) tuple[3]);
+                            f.setNombreCompleto(f.getNombres() + " " + f.getApellido1() + " " + f.getApellido2());
+                            f.setCargo((String) tuple[4]);
+                            f.setTotalGasto((Double) tuple[5]);
+                            f.setViajeMasCostoso((Double) tuple[6]);
+                            f.setIdViajeMasCostoso((Integer) tuple[7]);
+                            f.setFechaIngreso((Date) tuple[8]);
+                            f.setDependencia((String) tuple[9]);
+                            f.setTotalViajes(((BigInteger) tuple[10]).intValue());
+                            return f;
+                        }
+                    })
+                    .list();
+            }
             session.flush();
             session.clear();
             return list;

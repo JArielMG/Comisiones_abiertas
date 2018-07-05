@@ -4,6 +4,15 @@
  */
 myApp.controller('HeaderController', ['$scope', '$rootScope', '$location', '$route', 'HeaderService', function($scope, $rootScope, $location, $route, HeaderService) {
 
+    $scope.changeAnio = function(anio) {
+        $rootScope.anioConsulta = anio;
+        $route.reload();
+        HeaderService.getFuncionarios().then(function(d) {
+	        $rootScope.funcionarios = d;
+	    });
+	$rootScope.funcionariosCompara = [];
+    };
+
     $scope.isCollapsed = true;
 
     $scope.isActive = function (viewLocation) { 

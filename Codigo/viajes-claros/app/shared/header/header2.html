@@ -22,6 +22,9 @@
                                     ng-options="op.siglas for op in listDependencias track by op.idDependencia">
                             </select>
                         </div>
+                        <div class="form-group">
+			    <select ng-model="thisYear" ng-style="form-group" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select>
+			</div>
                     </form>
 
                     <ul class="nav navbar-nav navbar-right">

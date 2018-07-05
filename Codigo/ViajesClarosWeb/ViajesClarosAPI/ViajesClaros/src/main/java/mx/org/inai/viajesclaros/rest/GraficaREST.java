@@ -45,31 +45,31 @@ public class GraficaREST {
     GraficaService graficaService;
     
     @GET
-    @Path("getFuncionariosMayorGasto/{id}")
+    @Path("getFuncionariosMayorGasto/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<FuncionarioModel> getFuncionariosMayorGasto(@PathParam("id") Integer id) {
-        return graficaService.getFuncionariosMayorGasto(id);
+    public List<FuncionarioModel> getFuncionariosMayorGasto(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getFuncionariosMayorGasto(id,anio);
     }
     
     @GET
-    @Path("getFuncionariosMasViajes/{id}")
+    @Path("getFuncionariosMasViajes/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<FuncionarioModel> getFuncionariosMasViajes(@PathParam("id") Integer id) {
-        return graficaService.getFuncionariosMasViajes(id);
+    public List<FuncionarioModel> getFuncionariosMasViajes(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getFuncionariosMasViajes(id,anio);
     }
     
     @GET
-    @Path("getUltimosViajes/{id}")
+    @Path("getUltimosViajes/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<ViajeResumenModel> getUltimosViajes(@PathParam("id") Integer id) {
-        return graficaService.getUltimosViajesPorDep(id);
+    public List<ViajeResumenModel> getUltimosViajes(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getUltimosViajesPorDep(id,anio);
     }
     
     @GET
-    @Path("getUltimosViajesPorUnidad/{id}")
+    @Path("getUltimosViajesPorUnidad/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<ViajeResumenModel> getUltimosViajesPorUnidad(@PathParam("id") Integer id) {
-        return graficaService.getUltimosViajesPorUnidad(id);
+    public List<ViajeResumenModel> getUltimosViajesPorUnidad(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getUltimosViajesPorUnidad(id,anio);
     }
     
     @GET
@@ -80,52 +80,59 @@ public class GraficaREST {
     }
     
     @GET
-    @Path("getHotelesMasVisitados/{id}")
+    @Path("getHotelesMasVisitados/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<HotelModel> getHotelesMasVisitados(@PathParam("id") Integer id) {
-        return graficaService.getHotelesMasVisitadosPorDep(id);
+    public List<HotelModel> getHotelesMasVisitados(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getHotelesMasVisitadosPorDep(id,anio);
     }
     
     @GET
-    @Path("getGraficaTipoViaje/{id}")
+    @Path("getGraficaTipoViaje/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaTipoViaje(@PathParam("id") Integer id) {
-        return graficaService.getGraficaTipoViaje(id);
+    public GraficaModel getGraficaTipoViaje(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaTipoViaje(id,anio);
     }
     
     @GET
-    @Path("getGraficaTipoPasaje/{id}")
+    @Path("getGraficaTipoPasaje/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaTipoPasaje(@PathParam("id") Integer id) {
-        return graficaService.getGraficaTipoPasaje(id);
+    public GraficaModel getGraficaTipoPasaje(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaTipoPasaje(id,anio);
     }
     
     @GET
-    @Path("getGraficaAerolineas/{id}")
+    @Path("getGraficaAerolineas/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaAerolineas(@PathParam("id") Integer id) {
-        return graficaService.getGraficaAerolineas(id);
+    public GraficaModel getGraficaAerolineas(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaAerolineas(id,anio);
     }
     
     @GET
-    @Path("getGraficaCiudadesInternacionales/{id}")
+    @Path("getGraficaCiudadesInternacionales/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaCiudadesInternacionales(@PathParam("id") Integer id) {
-        return graficaService.getGraficaCiudadesInternacionales(id);
+    public GraficaModel getGraficaCiudadesInternacionales(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaCiudadesInternacionales(id,anio);
     }
     
     @GET
-    @Path("getGraficaViajesPorMes/{id}")
+    @Path("getGraficaCiudadesNacionales/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public GraficaModel getGraficaViajesPorMes(@PathParam("id") Integer id) {
-        return graficaService.getGraficaViajesPorMes(id);
+    public GraficaModel getGraficaCiudadesNacionales(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaCiudadesNacionales(id,anio);
     }
     
     @GET
-    @Path("getTotalViaticos/{id}")
+    @Path("getGraficaViajesPorMes/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public SimpleObjectModel getTotalViaticosPorDependencia(@PathParam("id") Integer id) {
-        return graficaService.getTotalViaticos(id);
+    public GraficaModel getGraficaViajesPorMes(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getGraficaViajesPorMes(id,anio);
+    }
+    
+    @GET
+    @Path("getTotalViaticos/{id},{anio}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    public SimpleObjectModel getTotalViaticosPorDependencia(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getTotalViaticos(id,anio);
     }
     
     @POST

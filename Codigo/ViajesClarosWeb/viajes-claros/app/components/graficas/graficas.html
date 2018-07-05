@@ -69,7 +69,7 @@
 
         <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 4">
             <div class="panel panel-default">
-                <div class="panel-heading">Viajes por tipo</div>
+                <div class="panel-heading">Viajes por tipo de transportación</div>
                 <div class="panel-body">
                     <canvas id="doughnut" class="chart chart-doughnut" chart-legend="true"
                             chart-data="tiposPasaje.values" chart-labels="tiposPasaje.labels">
@@ -121,7 +121,7 @@
                 <div class="panel-heading">Las aerolíneas más usadas</div>
                 <div class="panel-body">
                     <canvas id="bar" class="chart chart-bar" chart-legend="true"
-                            chart-data="aerolineas.values" chart-labels="aerolineas.labels">
+              4             chart-data="aerolineas.values" chart-labels="aerolineas.labels">
                     </canvas>
                 </div>
             </div>
@@ -151,6 +151,30 @@
                                     Fecha de publicación: <strong>{{x.fechaPublicacion}}</strong> <br/>
                                     <a href="#/viaje/{{x.id}}" class="blue">{{x.nombreEvento | limitTo:100}}...</a>
                                 </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+	<div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Ciudades nacionales más visitadas</div>
+                <div class="panel-body">
+                    <table class="table table-striped small">
+                        <tr ng-repeat="c in cdNacionales| limitTo: 3">
+                            <td>
+                                <div class="pull-left lightgray" style="font-size: 16px;">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                        <i class="fa fa-map-marker fa-stack-1x"></i>
+                                    </span>
+                                </div>
+                                <div class="pull-left col-xs-offset-1">
+                                    <span class="big-blue">{{c.label}}</span>
+                                    <p class="location">{{c.value}} {{c.value>1?'viajes':'viaje'}}</p>
+                                </div>
                             </td>
                         </tr>
                     </table>

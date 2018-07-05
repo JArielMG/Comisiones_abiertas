@@ -66,10 +66,10 @@ public class ViajeREST {
     }
     
     @GET
-    @Path("getUbicacionesPorDependencia/{id}")
+    @Path("getUbicacionesPorDependencia/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
-    public List<MapMarkerModel> getUbicacionesPorDependencia(@PathParam("id") Integer id) {
-        return viajeService.getUbicacionesPorDependencia(id);
+    public List<MapMarkerModel> getUbicacionesPorDependencia(@PathParam("id") Integer id,@PathParam("anio") Integer anio) {
+        return viajeService.getUbicacionesPorDependencia(id,anio);
     }
     
     @POST
@@ -81,11 +81,17 @@ public class ViajeREST {
     }
     
     @POST
-    @Path("getViajesPorCiudadPais")
+    @Path("getViajesPorCiudadPais/{anio}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<ViajeResumenModel> getViajesPorCiudadPais(ViajeResumenModel viaje) {
-        return viajeService.getViajesResumenPorCiudadPais(viaje);
+    public List<ViajeResumenModel> getViajesPorCiudadPais(ViajeResumenModel viaje,@PathParam("anio") Integer anio) {
+        return viajeService.getViajesResumenPorCiudadPais(viaje,anio);
     }
-    
+    @POST
+    @Path("getViajesPorCiudadPaisFuncionario")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<ViajeResumenModel> getViajesPorCiudadPaisFuncionario(ViajeResumenModel viaje) {
+        return viajeService.getViajesResumenPorCiudadPaisFuncionario(viaje);
+    }
 }

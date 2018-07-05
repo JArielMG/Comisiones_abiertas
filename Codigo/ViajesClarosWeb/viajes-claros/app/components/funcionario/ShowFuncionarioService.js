@@ -47,6 +47,13 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
         this.getViajesByFuncionario = function (funcionario) {
             var url = config.restUrl + "viaje/getViajesByFuncionario";
             var promise = $http.post(url, funcionario).then(function (response) {
+            	angular.forEach(response.data, function (viajes) {
+		  viajes.costoTotal = parseFloat(viajes.costoTotal);
+		  var fechaInicioArray = viajes.fechaInicio.split('/');
+		  var fechaFinArray = viajes.fechaFin.split('/');
+		  viajes.fechaInicio = new Date(parseInt(fechaInicioArray[2]),parseInt(fechaInicioArray[1])-1,parseInt(fechaInicioArray[0]));
+  		  viajes.fechaFin = new Date(parseInt(fechaFinArray[2]),parseInt(fechaFinArray[1])-1,parseInt(fechaFinArray[0]));
+		});
                 return response.data;
             });
             return promise;
@@ -118,9 +125,9 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
          * @param {type} pais
          * @returns {unresolved}
          */
-        this.getViajesOnMarker = function(ciudad, pais) {
-            var url = config.restUrl + "viaje/getViajesPorCiudadPais";
-            var viaje = {idDependencia: getIdDependencia(), ciudadDestino: ciudad, paisDestino: pais};
+        this.getViajesOnMarker = function(funcionario, ciudad, pais) {
+            var url = config.restUrl + "viaje/getViajesPorCiudadPaisFuncionario";
+            var viaje = {idFuncionario: funcionario.id, nombres: funcionario.nombres, apellido1: funcionario.apellido1, apellido2: funcionario.apellido2, ciudadDestino: ciudad, paisDestino: pais};
             var promise = $http.post(url, viaje).then(function (response) {
                 return response.data;
             });

@@ -45,6 +45,10 @@ myApp.controller("GraficasController", ['$scope', '$rootScope', 'GraficasService
       $scope.cdInternacionales = d.values;
   });
   
+  GraficasService.getGraficaCdNacionales().then(function(d) {
+      $scope.cdNacionales = d.values;
+  });
+  
   GraficasService.getGraficaViajesPorMes().then(function(d) {
       $scope.viajesPorMes = {labels: [], values: [[]], series: [new Date().getFullYear(), ""]};
       for (var i=0; i<d.values.length; i++) {

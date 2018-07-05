@@ -58,9 +58,19 @@ public class FiltroBusquedaService {
         /* Si el filtro es catálogo, se deben traer los elementos del catálogo */
         for (FiltroBusquedaDomain f : filtros) {
             if (f.getTipoControl().equals(TipoControl.SELECT) && !f.getTabla().equals("")) {
+                String campo = "";
+                if (f.getCampo().equals("pais_origen")||f.getCampo().equals("pais_destino"))
+                    campo = "nombre_pais";
+                else if (f.getCampo().equals("ciudad_origen")||f.getCampo().equals("ciudad_destino"))
+                    campo = "nombre_ciudad";
+                else if (f.getCampo().equals("estado_origen")||f.getCampo().equals("estado_destino"))
+                    campo = "nombre_estado";
+                else
+                    campo = f.getCampo();
+                System.out.println("************************campo**********************: "+campo);
                 List<SimpleElementDomain> cat = session.createSQLQuery("CALL get_catalogo_tabla_campo(:tabla, :campo)")
                         .setParameter("tabla", f.getTabla())
-                        .setParameter("campo", f.getCampo())
+                        .setParameter("campo", campo)
                         .setResultTransformer(new BasicTransformerAdapter() {
                             private static final long serialVersionUID = 1L;
 
@@ -74,7 +84,7 @@ public class FiltroBusquedaService {
                         })
                         .list();
                 f.setCatalogo(cat);
-            } else if (f.getTipoControl().equals(TipoControl.SELECT) && f.getIdLista() != null) {
+            } else if (f.getTipoControl().equals(TipoControl.SELECT) && f.getIdLista() != null && f.getTabla().equals("")) {
                 /* Es un catálogo de campos dinámicos */
                 List<SimpleElementDomain> cat = session.createSQLQuery("CALL get_valores_dinamicos_por_id(:idLista)")
                         .setParameter("idLista", f.getIdLista())
