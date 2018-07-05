@@ -1,5 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `viajes_claros` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `viajes_claros`;
+
 -- MySQL dump 10.13  Distrib 5.5.46, for Linux (x86_64)
 --
 -- Host: localhost    Database: viajes_claros
@@ -55,7 +56,7 @@ CREATE TABLE `archivo_lineas` (
   PRIMARY KEY (`id_error`),
   KEY `fk_archivo_lineas_archivos_procesados2_idx` (`id_archivo`),
   CONSTRAINT `fk_archivo_lineas_archivos_procesados2` FOREIGN KEY (`id_archivo`) REFERENCES `archivos_procesados` (`id_archivo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=206983 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=257965 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,9 +91,8 @@ CREATE TABLE `areas` (
   PRIMARY KEY (`id_area`),
   KEY `fk_areas_dependencias1_idx` (`id_dependencia`),
   CONSTRAINT `fk_areas_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1051 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `buscador_despliegue_config`
@@ -105,13 +105,14 @@ CREATE TABLE `buscador_despliegue_config` (
   `id_dependencia` int(11) NOT NULL,
   `tabla` varchar(50) NOT NULL,
   `campo` varchar(50) NOT NULL,
+  `orden` tinyint(4) DEFAULT NULL,
+  `mostrar` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`id_dependencia`,`tabla`,`campo`),
   KEY `fk_buscador_despliegue_config_viajes_claros_config1_idx` (`tabla`,`campo`),
   CONSTRAINT `fk_buscador_despliegue_config_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_buscador_despliegue_config_viajes_claros_config1` FOREIGN KEY (`tabla`, `campo`) REFERENCES `viajes_claros_config` (`tabla`, `campo`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `buscador_filtros_config`
@@ -125,6 +126,7 @@ CREATE TABLE `buscador_filtros_config` (
   `tabla` varchar(50) NOT NULL,
   `campo` varchar(50) NOT NULL,
   `operador` varchar(20) DEFAULT NULL,
+  `orden` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`id_dependencia`,`tabla`,`campo`),
   KEY `fk_table1_viajes_claros_config1_idx` (`tabla`,`campo`),
   CONSTRAINT `fk_table1_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -164,7 +166,7 @@ CREATE TABLE `campos_dinamicos` (
   `tipo_dato` int(11) DEFAULT NULL,
   `id_lista` int(11) DEFAULT NULL,
   `descripcion` varchar(250) DEFAULT NULL,
-  `despliegue` varchar(50) DEFAULT NULL,
+  `despliegue` varchar(250) DEFAULT NULL,
   `busqueda_defecto` tinyint(1) DEFAULT NULL,
   `tipo_control` int(11) DEFAULT NULL,
   `categoria` varchar(50) DEFAULT NULL,
@@ -175,7 +177,6 @@ CREATE TABLE `campos_dinamicos` (
   CONSTRAINT `fk_campos_dinamicos_listas_valores1` FOREIGN KEY (`id_lista`) REFERENCES `listas_valores` (`id_lista`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `categoria`
@@ -226,7 +227,7 @@ CREATE TABLE `ciudades` (
   KEY `fk_ciudades_estados1_idx` (`id_estado`),
   CONSTRAINT `fk_ciudades_estados1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ciudades_paises1` FOREIGN KEY (`id_pais`) REFERENCES `paises` (`id_pais`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,7 +250,7 @@ CREATE TABLE `comisiones` (
   CONSTRAINT `fk_comisiones_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_comisiones_personas1` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id_persona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_comisiones_usuarios1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +295,7 @@ CREATE TABLE `comisiones_detalle` (
   PRIMARY KEY (`id_detalle`),
   KEY `fk_comisiones_detalle_comisiones1_idx` (`id_comision`),
   CONSTRAINT `fk_comisiones_detalle_comisiones1` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1301 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1331 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -321,7 +322,7 @@ CREATE TABLE `configuracion_aprobacion` (
   CONSTRAINT `fk_configuracion_aprobacion_areas1` FOREIGN KEY (`id_area`) REFERENCES `areas` (`id_area`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_configuracion_aprobacion_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_configuracion_aprobacion_jerarquias1` FOREIGN KEY (`id_jerarquia`) REFERENCES `jerarquias` (`id_jerarquia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +338,7 @@ CREATE TABLE `dependencias` (
   `nombre_dependencia` varchar(400) DEFAULT NULL,
   `predeterminada` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_dependencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -354,7 +355,7 @@ CREATE TABLE `estados` (
   PRIMARY KEY (`id_estado`),
   KEY `fk_estados_paises1_idx` (`id_pais`),
   CONSTRAINT `fk_estados_paises1` FOREIGN KEY (`id_pais`) REFERENCES `paises` (`id_pais`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -444,7 +445,6 @@ CREATE TABLE `gastos_campos_config` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
-
 --
 -- Table structure for table `graficas`
 --
@@ -459,7 +459,6 @@ CREATE TABLE `graficas` (
   PRIMARY KEY (`id_grafica`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 
 --
 -- Table structure for table `graficas_config`
@@ -499,13 +498,6 @@ CREATE TABLE `interfaz_config` (
   CONSTRAINT `interfaz_config_dependencias_FK` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `interfaz_config`
---
-
-LOCK TABLES `interfaz_config` WRITE;
-UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
@@ -515,7 +507,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER delete_on_buscador AFTER DELETE on interfaz_config
+/*!50003 CREATE*/ /*!50017 DEFINER=`viajes_admin`@`localhost`*/ /*!50003 TRIGGER delete_on_buscador AFTER DELETE on interfaz_config
 FOR EACH ROW
 BEGIN
 	
@@ -598,7 +590,7 @@ CREATE TABLE `paises` (
   `nombre_pais` varchar(300) NOT NULL,
   `predeterminado` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id_pais`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -806,7 +798,7 @@ CREATE TABLE `usuarios` (
   CONSTRAINT `fk_usuarios_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_usuarios_funcionarios1` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id_persona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_usuarios_perfiles` FOREIGN KEY (`id_perfil`) REFERENCES `perfiles` (`id_perfil`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -879,7 +871,7 @@ CREATE TABLE `viajes_claros_instancias` (
   KEY `fk_viajes_claros_instancias_comisiones1_idx` (`id_comision`),
   CONSTRAINT `fk_viajes_claros_instancias_comisiones1` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_viajes_claros_instancias_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=7579 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11285 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2870,16 +2862,23 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_areas_con_comisiones`()
 BEGIN
 
-SELECT a.id_area, a.nombre_area 
+SELECT a.id_area AS id_area, a.nombre_area AS nombre_area
 FROM areas a
 INNER JOIN usuarios u ON u.id_area=a.id_area
 INNER JOIN personas p ON p.id_persona=u.id_persona
 INNER JOIN comisiones c ON c.id_persona=p.id_persona
+WHERE a.id_dependencia = 4
+GROUP BY id_area
+UNION
+SELECT a.id_area AS id_area, a.nombre_area AS nombre_area
+FROM areas a
+INNER JOIN viajes_claros_detalle vcd ON a.id_area = vcd.valor_numerico AND vcd.campo = 'id_area' AND vcd.tabla = 'areas'
+INNER JOIN viajes_claros_instancias vci ON vcd.id_viaje = vci.id_viaje
 GROUP BY id_area;
 	
 END ;;
@@ -3186,17 +3185,19 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_campos_despliegue_por_dependencia`(idDep INT)
 BEGIN
 	
 	SELECT conf.id_dependencia, conf.tabla, conf.campo,
-	CASE WHEN base.despliegue IS NULL THEN din.despliegue ELSE base.despliegue END as despliegue
+	CASE WHEN base.despliegue IS NULL THEN din.despliegue ELSE base.despliegue END as despliegue,
+    conf.orden, conf.mostrar
 FROM buscador_despliegue_config conf
 LEFT JOIN campos_base base ON base.tabla = conf.tabla AND base.campo = conf.campo
 LEFT JOIN campos_dinamicos din ON din.nombre_campo = conf.campo
-WHERE conf.id_dependencia = idDep;
+WHERE conf.id_dependencia = idDep
+ORDER BY conf.orden;
 	
 END ;;
 DELIMITER ;
@@ -3611,12 +3612,12 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_dependencias`()
 BEGIN
 	
-	SELECT id_dependencia, nombre_dependencia, siglas, predeterminada FROM dependencias;
+	SELECT id_dependencia, nombre_dependencia, siglas, predeterminada FROM dependencias ORDER BY predeterminada DESC, id_dependencia;
 	
 END ;;
 DELIMITER ;
@@ -3707,19 +3708,16 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_filtros_por_dependencia`(IN idDependencia INT(10))
 BEGIN
-	
-	
-	
 	SELECT id_dependencia, tabla, campo, despliegue, 
 	CASE WHEN tipo_dato=1 THEN 'INT' ELSE (CASE WHEN tipo_dato=2 THEN 'VARCHAR' ELSE (CASE WHEN tipo_dato=3 THEN 'DATE' ELSE 'UNDEFINED' END)  END) END as tipo_dato, 
 	CASE WHEN tipo_control=1 THEN 'TEXT' ELSE (CASE WHEN tipo_control=2 THEN 'SELECT' ELSE (CASE WHEN tipo_control=3 THEN 'DATE' ELSE 'UNDEFINED' END) END) END as tipo_control, 
-	operador, id_lista FROM 
+	operador, id_lista, orden FROM 
 	(
-	SELECT b.id_dependencia, b.tabla, b.campo, b.operador, din.id_lista,
+	SELECT b.id_dependencia, b.tabla, b.campo, b.operador, b.orden, din.id_lista, 
 	CASE WHEN base.despliegue IS NULL THEN din.despliegue ELSE base.despliegue END as despliegue, 
 	CASE WHEN base.tipo_dato IS NULL THEN din.tipo_dato ELSE base.tipo_dato END as tipo_dato,
 	CASE WHEN base.tipo_control IS NULL THEN din.tipo_control ELSE base.tipo_control END as tipo_control
@@ -3728,7 +3726,7 @@ BEGIN
 	LEFT JOIN campos_dinamicos din ON din.nombre_campo = b.campo
 	WHERE b.id_dependencia=idDependencia
 	) A
-	;
+	ORDER BY orden;
 	
 END ;;
 DELIMITER ;
@@ -4034,6 +4032,64 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_funcionarios_por_dependencia_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_funcionarios_por_dependencia_anio`(IN idDependencia INT(11), IN anio INT(11))
+BEGIN
+
+
+IF idDependencia=1 THEN
+	SELECT p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, p.titulo,
+	p.email, p.id_categoria, cat.nombre_categoria, p.id_tipo_persona, t.descripcion,
+	u.id_area, a.nombre_area, p.cargo, count(ins.id_viaje) num_viajes, COALESCE(SUM(v.valor_numerico), 0) as total_gasto
+	FROM personas p
+	INNER JOIN categoria cat ON cat.id_categoria=p.id_categoria
+	INNER JOIN tipo_persona t ON t.id_tipo=p.id_tipo_persona
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+	INNER JOIN areas a ON a.id_area=u.id_area
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+	INNER JOIN viajes_claros_instancias ins ON ins.id_comision=c.id_comision
+	LEFT JOIN viajes_claros_detalle v ON v.id_viaje=ins.id_viaje AND v.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE t.codigo_tipo='FUN'
+    AND YEAR(anio_viaje.valor_fecha) = anio
+	AND u.id_dependencia=idDependencia
+	GROUP BY p.id_persona;
+
+ELSE
+	SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1, 
+		IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(tit.valor_texto, 0) as titulo,
+		IFNULL(em.valor_texto, '') as email, 0 as id_categoria, '' as nombre_categoria,
+		2 as id_tipo_persona, 'Funcionario' as descripcion, 0 as id_area, '' as nombre_area,
+		ca.valor_texto as cargo, COUNT(*) as num_viajes, SUM(c.valor_numerico) as gasto_total
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle tit ON tit.id_viaje=i.id_viaje AND tit.tabla='personas' AND tit.campo='titulo'
+	LEFT JOIN viajes_claros_detalle em ON em.id_viaje=i.id_viaje AND em.tabla='personas' AND em.campo='email'
+	LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE i.id_dependencia=idDependencia
+    AND YEAR(anio_viaje.valor_fecha) = anio
+	GROUP BY nombres, apellido1, apellido2;
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_funcionarios_resumen` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -4157,6 +4213,43 @@ SELECT 0 as id_persona, nom.valor_texto as nombres,
 	GROUP BY nombres, apellido1, apellido2, id_viaje ORDER BY nombres, apellido1, apellido2, costo_viaje DESC) FR
     GROUP BY FR.nombres, FR.apellido1, FR.apellido2;
 
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_funcionario_cargo_actual` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_funcionario_cargo_actual`(IN idFuncionario INT(11), IN idNombres VARCHAR(200), 
+IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200))
+BEGIN
+
+IF idFuncionario > 0 THEN
+	SELECT p.cargo
+	FROM personas p
+	WHERE p.id_persona=idFuncionario;
+ELSE 
+SELECT cargo.valor_texto AS cargo
+FROM viajes_claros_instancias i
+LEFT JOIN viajes_claros_detalle nom ON nom.id_viaje = i.id_viaje AND nom.tabla = 'personas' AND nom.campo='nombres'
+LEFT JOIN viajes_claros_detalle ap ON ap.id_viaje = i.id_viaje  AND ap.tabla = 'personas' AND ap.campo='apellido_paterno'
+LEFT JOIN viajes_claros_detalle am ON am.id_viaje = i.id_viaje  AND am.tabla = 'personas' AND am.campo='apellido_materno'
+LEFT JOIN viajes_claros_detalle cargo ON cargo.id_viaje = i.id_viaje  AND cargo.tabla = 'personas' AND cargo.campo='cargo'
+LEFT JOIN viajes_claros_detalle fv ON fv.id_viaje = i.id_viaje  AND fv.tabla = '' AND fv.campo='fecha_hora_salida'
+WHERE nom.valor_texto=idNombres AND ap.valor_texto=apellido1 AND am.valor_texto=apellido2
+ORDER BY fv.valor_fecha DESC LIMIT 1;
+
+END IF;
 
 END ;;
 DELIMITER ;
@@ -4310,6 +4403,63 @@ SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1
 	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
 	INNER JOIN dependencias d ON d.id_dependencia=i.id_dependencia
     WHERE nom.valor_texto=idNombres AND ap1.valor_texto=apellido1 AND ap2.valor_texto=apellido2
+	GROUP BY nombres, apellido1, apellido2;
+
+
+END IF;
+
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_funcionario_resumen_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_funcionario_resumen_anio`(IN idFuncionario INT(11), IN idNombres VARCHAR(200), 
+IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200),IN anio INT(11))
+BEGIN
+
+
+IF idFuncionario > 0 THEN
+	SELECT  p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, p.cargo,
+		u.id_dependencia, d.siglas, count(i.id_viaje) as total_viajes, 
+		COALESCE(SUM(v.valor_numerico), 0) as total_costo,
+		p.fecha_ingreso
+	FROM personas p
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+	INNER JOIN dependencias d ON d.id_dependencia=u.id_dependencia
+	LEFT JOIN comisiones c ON c.id_persona=p.id_persona
+	LEFT JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+	LEFT JOIN viajes_claros_detalle v ON v.id_viaje=i.id_viaje AND v.campo='costo_total'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE p.id_persona=idFuncionario AND YEAR(anio_viaje.valor_fecha)=anio;
+ELSE 
+SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1, 
+		IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(ca.valor_texto, '') as cargo,
+		i.id_dependencia, d.siglas, count(*) as total_viajes, 
+		IFNULL(SUM(c.valor_numerico), 0) as total_costo,
+		DATE(f.valor_fecha) as fecha_ingreso 
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
+	LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='personas' AND f.campo='fecha_ingreso'	
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	INNER JOIN dependencias d ON d.id_dependencia=i.id_dependencia
+    WHERE nom.valor_texto=idNombres AND ap1.valor_texto=apellido1 AND ap2.valor_texto=apellido2
+    AND YEAR(anio_viaje.valor_fecha)=anio
 	GROUP BY nombres, apellido1, apellido2;
 
 
@@ -4494,17 +4644,27 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_headers_viajes`(idDependencia INT)
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_headers_viajes`(idDependencia INT, complete TINYINT)
 BEGIN
-	
+IF complete = 1 THEN
 	SELECT des.tabla, des.campo, 
 	CASE WHEN b.despliegue IS NULL THEN d.despliegue ELSE b.despliegue END as despliegue
-FROM buscador_despliegue_config des
-LEFT JOIN campos_base b ON b.tabla=des.tabla AND b.campo=des.campo
-LEFT JOIN campos_dinamicos d ON d.nombre_campo=des.campo AND des.tabla=''
-WHERE id_dependencia = idDependencia;
+	FROM buscador_despliegue_config des
+	LEFT JOIN campos_base b ON b.tabla=des.tabla AND b.campo=des.campo
+	LEFT JOIN campos_dinamicos d ON d.nombre_campo=des.campo AND des.tabla=''
+	WHERE id_dependencia = idDependencia
+	ORDER BY des.orden;
+ELSE 
+	SELECT des.tabla, des.campo, 
+	CASE WHEN b.despliegue IS NULL THEN d.despliegue ELSE b.despliegue END as despliegue
+	FROM buscador_despliegue_config des
+	LEFT JOIN campos_base b ON b.tabla=des.tabla AND b.campo=des.campo
+	LEFT JOIN campos_dinamicos d ON d.nombre_campo=des.campo AND des.tabla=''
+	WHERE id_dependencia = idDependencia AND des.mostrar = 1
+	ORDER BY des.orden;
+END IF;
 	
 END ;;
 DELIMITER ;
@@ -4550,8 +4710,6 @@ DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_mapa_viajes_por_ciudad_pais`(idDependencia INT(11),
 	inCiudad VARCHAR(200), inPais VARCHAR(200))
 BEGIN
-	
-	
 
 IF idDependencia = 1 THEN 
 
@@ -4567,7 +4725,7 @@ IF idDependencia = 1 THEN
 	WHERE i.id_dependencia=idDependencia
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
-	;
+    ORDER BY f.valor_fecha DESC;
 
 ELSE 
 
@@ -4584,7 +4742,7 @@ ELSE
 	WHERE i.id_dependencia=idDependencia
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
-	;
+    ORDER BY f.valor_fecha DESC;
 
 END IF;
 
@@ -4623,7 +4781,7 @@ IF idDependencia = 1 THEN
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
 	AND YEAR(f.valor_fecha) = anio
-	;
+    ORDER BY f.valor_fecha DESC;
 
 ELSE 
 
@@ -4641,7 +4799,7 @@ ELSE
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
 	AND YEAR(f.valor_fecha) = anio
-	;
+    ORDER BY f.valor_fecha DESC;
 
 END IF;
 
@@ -4665,8 +4823,6 @@ CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_mapa_viajes_por_ciudad_
 IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200), inCiudad VARCHAR(200), inPais VARCHAR(200))
 BEGIN
 	
-	
-
 IF idFuncionario > 0 THEN 
 
 	SELECT i.id_viaje, cd.valor_texto as ciudad, pa.valor_texto as pais, 
@@ -4681,7 +4837,7 @@ IF idFuncionario > 0 THEN
 	WHERE p.id_persona=idFuncionario
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
-	;
+    ORDER BY f.valor_fecha DESC;
 
 ELSE 
 
@@ -4698,7 +4854,64 @@ ELSE
 	WHERE n.valor_texto=idNombres AND a1.valor_texto=apellido1 AND a2.valor_texto=apellido2
 	AND cd.valor_texto=inCiudad
 	AND pa.valor_texto=inPais
-	;
+    ORDER BY f.valor_fecha DESC;
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_mapa_viajes_por_ciudad_pais_funcionario_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_mapa_viajes_por_ciudad_pais_funcionario_anio`(IN idFuncionario INT(11), IN idNombres VARCHAR(200), 
+IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200), inCiudad VARCHAR(200), inPais VARCHAR(200),IN anio INT(11))
+BEGIN
+
+IF idFuncionario > 0 THEN 
+
+	SELECT i.id_viaje, cd.valor_texto as ciudad, pa.valor_texto as pais, 
+		DATE_FORMAT(f.valor_fecha, '%d/%m/%Y') as fecha, c.id_persona,
+		p.nombres, p.apellido_paterno, p.apellido_materno
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	INNER JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='' AND f.campo='fecha_hora_salida'
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+	INNER JOIN personas p ON p.id_persona=c.id_persona
+	WHERE p.id_persona=idFuncionario
+    AND YEAR(f.valor_fecha)=anio
+	AND cd.valor_texto=inCiudad
+	AND pa.valor_texto=inPais
+    ORDER BY f.valor_fecha DESC;
+
+ELSE 
+
+	SELECT i.id_viaje, cd.valor_texto as ciudad, pa.valor_texto as pais, 
+		DATE_FORMAT(f.valor_fecha, '%d/%m/%Y') as fecha, 0 as id_persona,
+		n.valor_texto as nombres, a1.valor_texto as apellido1, IFNULL(a2.valor_texto, '') as apellido2
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='' AND f.campo='fecha_hora_salida'
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	WHERE n.valor_texto=idNombres AND a1.valor_texto=apellido1 AND a2.valor_texto=apellido2
+    AND YEAR(f.valor_fecha)=anio
+	AND cd.valor_texto=inCiudad
+	AND pa.valor_texto=inPais
+    ORDER BY f.valor_fecha DESC;
 
 END IF;
 
@@ -5217,6 +5430,68 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_pasajes_por_dependencia` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_total_pasajes_por_dependencia`(idDependencia INT(10))
+BEGIN
+
+SELECT CASE 
+	WHEN t.pasajes IS NOT NULL THEN
+		t.pasajes
+	ELSE 0 END AS total_pasajes
+FROM
+(SELECT SUM(v.valor_numerico) AS pasajes
+FROM viajes_claros_detalle v
+INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+WHERE campo='INAI_gasto_total_pasaje'
+AND i.id_dependencia=idDependencia) t;
+	
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_total_pasajes_por_dependencia_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_total_pasajes_por_dependencia_anio`(idDependencia INT(10),anio INT(11))
+BEGIN
+	
+SELECT CASE 
+	WHEN t.pasajes IS NOT NULL THEN
+		t.pasajes
+	ELSE 0 END AS total_pasajes
+FROM
+(SELECT SUM(v.valor_numerico) AS pasajes
+FROM viajes_claros_detalle v
+INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+WHERE v.campo='INAI_gasto_total_pasaje'
+AND i.id_dependencia=idDependencia
+AND YEAR(anio_viaje.valor_fecha) = anio) t;
+	
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_total_viajes_por_dependencia` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -5251,12 +5526,12 @@ DELIMITER ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_total_viajes_por_dependencia_anio`(idDependencia INT(11))
-BEGIN
-	
+BEGIN	
 	
 SELECT count(*) 
-FROM viajes_claros_instancias
-WHERE id_dependencia=idDependencia;
+FROM viajes_claros_instancias i
+WHERE i.id_dependencia=idDependencia;
+	
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -5296,16 +5571,21 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_total_viaticos_por_dependencia`(idDependencia INT(10))
 BEGIN
-	
-	SELECT SUM(v.valor_numerico)
-FROM viajes_claros_detalle v
-INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-WHERE campo='costo_viaticos'
-AND i.id_dependencia=idDependencia;
+
+SELECT ROUND(CASE 
+	WHEN t.viaticos IS NOT NULL THEN
+		t.viaticos
+	ELSE 0 END,2) AS total_viaticos
+FROM
+(SELECT SUM(viaticos_comp.valor_numerico+viaticos_sin_comp.valor_numerico) AS viaticos
+FROM viajes_claros_instancias i 
+INNER JOIN viajes_claros_detalle viaticos_comp ON i.id_viaje=viaticos_comp.id_viaje AND viaticos_comp.tabla='' AND viaticos_comp.campo='viaticos_comprobados' 
+INNER JOIN viajes_claros_detalle viaticos_sin_comp ON i.id_viaje=viaticos_sin_comp.id_viaje AND viaticos_sin_comp.tabla='' AND viaticos_sin_comp.campo='viaticos_sin_comprobar' 
+WHERE i.id_dependencia=idDependencia) t;
 	
 END ;;
 DELIMITER ;
@@ -5326,13 +5606,18 @@ DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_total_viaticos_por_dependencia_anio`(idDependencia INT(10),anio INT(11))
 BEGIN
 	
-	SELECT SUM(v.valor_numerico)
-FROM viajes_claros_detalle v
-INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-WHERE campo='costo_viaticos'
-AND i.id_dependencia=idDependencia
-AND YEAR(anio_viaje.valor_fecha) = anio;
+SELECT ROUND(CASE 
+	WHEN t.viaticos IS NOT NULL THEN
+		t.viaticos
+	ELSE 0 END,2) AS total_viaticos
+FROM
+(SELECT SUM(viaticos_comp.valor_numerico+viaticos_sin_comp.valor_numerico) AS viaticos
+FROM viajes_claros_instancias i 
+INNER JOIN viajes_claros_detalle viaticos_comp ON i.id_viaje=viaticos_comp.id_viaje AND viaticos_comp.tabla='' AND viaticos_comp.campo='viaticos_comprobados' 
+INNER JOIN viajes_claros_detalle viaticos_sin_comp ON i.id_viaje=viaticos_sin_comp.id_viaje AND viaticos_sin_comp.tabla='' AND viaticos_sin_comp.campo='viaticos_sin_comprobar' 
+INNER JOIN viajes_claros_detalle anio_viaje ON i.id_viaje=anio_viaje.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+WHERE i.id_dependencia=idDependencia
+AND YEAR(anio_viaje.valor_fecha) = anio) t;
 	
 END ;;
 DELIMITER ;
@@ -5354,7 +5639,7 @@ CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_ubicaciones_mapa`(idDep
 BEGIN
 	
 SELECT cd.valor_texto as ciudad, pa.valor_texto as pais, 
-	g.valor_numerico as gasto_total, A.latitud, A.longitud
+	SUM(g.valor_numerico) as gasto_total, A.latitud, A.longitud
 FROM viajes_claros_instancias i
 INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
 INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
@@ -5363,7 +5648,8 @@ INNER JOIN (
 	SELECT c.nombre_ciudad, p.nombre_pais, c.latitud, c.longitud
 	FROM ciudades c
 	INNER JOIN paises p ON p.id_pais=c.id_pais) A ON A.nombre_ciudad=cd.valor_texto AND A.nombre_pais=pa.valor_texto
-WHERE i.id_dependencia=idDependencia;	
+WHERE i.id_dependencia=idDependencia
+GROUP BY ciudad, pais;	
 
 
 END ;;
@@ -5386,7 +5672,7 @@ CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_ubicaciones_mapa_anio`(
 BEGIN
 	
 SELECT cd.valor_texto as ciudad, pa.valor_texto as pais, 
-	g.valor_numerico as gasto_total, A.latitud, A.longitud
+	SUM(g.valor_numerico) as gasto_total, A.latitud, A.longitud
 FROM viajes_claros_instancias i
 INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
 INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
@@ -5397,8 +5683,8 @@ INNER JOIN (
 	FROM ciudades c
 	INNER JOIN paises p ON p.id_pais=c.id_pais) A ON A.nombre_ciudad=cd.valor_texto AND A.nombre_pais=pa.valor_texto
 WHERE i.id_dependencia=idDependencia
-	AND YEAR(anio_viaje.valor_fecha) = anio;	
-
+	AND YEAR(anio_viaje.valor_fecha) = anio	
+GROUP BY ciudad, pais;
 
 END ;;
 DELIMITER ;
@@ -5456,6 +5742,73 @@ ELSE
 		FROM ciudades c
 		INNER JOIN paises p ON p.id_pais=c.id_pais) A ON A.nombre_ciudad=cd.valor_texto AND A.nombre_pais=pa.valor_texto
 	WHERE n.valor_texto=inNombres
+	AND a1.valor_texto=inApellido1
+	AND a2.valor_texto=inApellido2
+	;
+
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_ubicaciones_mapa_por_persona_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_ubicaciones_mapa_por_persona_anio`(idPersona INT(11), inNombres VARCHAR(200),
+	inApellido1 varchar(200), inApellido2 varchar(200),IN anio INT(11))
+BEGIN
+
+
+IF idPersona > 0 THEN
+
+	SELECT cd.valor_texto as ciudad, pa.valor_texto as pais, 
+	g.valor_numerico as gasto_total, A.latitud, A.longitud, 
+	p.nombres, p.apellido_paterno, p.apellido_materno
+	FROM viajes_claros_instancias i
+	INNER JOIN comisiones com ON com.id_comision=i.id_comision
+	INNER JOIN personas p ON p.id_persona=com.id_persona
+	INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	INNER JOIN (
+		SELECT c.nombre_ciudad, p.nombre_pais, c.latitud, c.longitud
+		FROM ciudades c
+		INNER JOIN paises p ON p.id_pais=c.id_pais) A ON A.nombre_ciudad=cd.valor_texto AND A.nombre_pais=pa.valor_texto
+	WHERE p.id_persona=idPersona
+    AND YEAR(anio_viaje.valor_fecha)=anio
+	;
+
+
+ELSE
+	SELECT cd.valor_texto as ciudad, pa.valor_texto as pais, 
+	g.valor_numerico as gasto_total, A.latitud, A.longitud, 
+	n.valor_texto as nombres, a1.valor_texto as apellido1, a2.valor_texto as apellido2
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	INNER JOIN (
+		SELECT c.nombre_ciudad, p.nombre_pais, c.latitud, c.longitud
+		FROM ciudades c
+		INNER JOIN paises p ON p.id_pais=c.id_pais) A ON A.nombre_ciudad=cd.valor_texto AND A.nombre_pais=pa.valor_texto
+	WHERE n.valor_texto=inNombres
+    AND YEAR(anio_viaje.valor_fecha)=anio
 	AND a1.valor_texto=inApellido1
 	AND a2.valor_texto=inApellido2
 	;
@@ -5615,17 +5968,23 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_dependencia`(IN idDependencia INT(11))
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_dependencia`(IN idDependencia INT(11), IN despliegueCompleto TINYINT (1))
 BEGIN
 	
-
 SET SESSION group_concat_max_len = 1000000;
 
+IF (despliegueCompleto=1) THEN
+	SET @qry_select = (SELECT 
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'")  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia);
 
-SET @qry_select = (SELECT 
-	GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'") SEPARATOR ',')
-FROM buscador_despliegue_config des
-WHERE id_dependencia = idDependencia);
+ELSE  
+	SET @qry_select = (SELECT 
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'")  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia AND mostrar = 1);
+END IF;
 
 
 set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '\'\'' ELSE @qry_select END), ' FROM
@@ -5653,6 +6012,76 @@ set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '
 	FROM viajes_claros_detalle v 
 	INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
 	WHERE ins.id_dependencia=', idDependencia, 
+	' ORDER BY v.id_viaje
+) A
+GROUP BY id_viaje');
+
+
+PREPARE QUERY FROM @query;
+EXECUTE QUERY;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_viajes_por_dependencia_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_dependencia_anio`(IN idDependencia INT(11),IN anio INT(11), IN despliegueCompleto TINYINT(1))
+BEGIN
+	
+
+SET SESSION group_concat_max_len = 1000000;
+
+IF (despliegueCompleto=1) THEN
+	SET @qry_select = (SELECT 
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'")  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia);
+
+ELSE  
+	SET @qry_select = (SELECT 
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'")  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia AND mostrar = 1);
+END IF;
+
+
+set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '\'\'' ELSE @qry_select END), ' FROM
+(
+	SELECT v.id_viaje, v.tabla, v.campo, 
+	CASE WHEN v.valor_texto IS NULL THEN 
+		(CASE WHEN v.valor_numerico IS NULL THEN 
+			DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
+		ELSE v.valor_numerico END) 
+	ELSE (CASE WHEN EXISTS (
+						SELECT vd.valor AS valor
+                        FROM valores_dinamicos vd 
+						INNER JOIN campos_dinamicos cd ON vd.id_lista = cd.id_lista
+						INNER JOIN viajes_claros_detalle vcd ON cd.nombre_campo = vcd.campo
+						WHERE vcd.id_viaje = v.id_viaje and vcd.campo = v.campo and vd.codigo = v.valor_texto
+                    ) THEN 
+					(
+						SELECT vd.valor AS valor
+                        FROM valores_dinamicos vd 
+						INNER JOIN campos_dinamicos cd ON vd.id_lista = cd.id_lista
+						INNER JOIN viajes_claros_detalle vcd ON cd.nombre_campo = vcd.campo
+						WHERE vcd.id_viaje = v.id_viaje and vcd.campo = v.campo and vd.codigo = v.valor_texto
+                    )
+		ELSE v.valor_texto END) END AS valor
+	FROM viajes_claros_detalle v 
+	INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla=\'\' AND anio_viaje.campo=\'fecha_hora_salida\'
+	WHERE ins.id_dependencia=', idDependencia, ' AND YEAR(anio_viaje.valor_fecha)=', anio,
 	' ORDER BY v.id_viaje
 ) A
 GROUP BY id_viaje');
@@ -5730,16 +6159,20 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_filtros`(IN idDependencia INT(11), IN filtros VARCHAR(2000))
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_filtros`(IN idDependencia INT(11), IN filtros VARCHAR(2000), IN despliegueCompleto TINYINT(1))
 BEGIN
 	
 SET SESSION group_concat_max_len = 1000000;
 
-
-SET @qry_select_final = (SELECT GROUP_CONCAT(DISTINCT campo SEPARATOR ',')
-FROM buscador_despliegue_config des
-WHERE id_dependencia = idDependencia);
-
+IF (despliegueCompleto=1) THEN
+	SET @qry_select_final = (SELECT GROUP_CONCAT(DISTINCT campo  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia);
+ELSE
+	SET @qry_select_final = (SELECT GROUP_CONCAT(DISTINCT campo  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia  AND mostrar = 1);
+END IF;
 
 SET @qry_select = (SELECT 
 	GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'") SEPARATOR ',')
@@ -5777,6 +6210,88 @@ set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '
 	FROM viajes_claros_detalle v 
 	INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
 	WHERE ins.id_dependencia=', idDependencia, 
+	' ORDER BY v.id_viaje
+) A
+GROUP BY id_viaje');
+
+
+
+set @query_where = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select_final is null) THEN '''' ELSE @qry_select_final END), ' FROM (', @query, ') B WHERE 1=1 ', filtros);
+
+PREPARE QUERY FROM @query_where;
+EXECUTE QUERY;
+	
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_viajes_por_filtros_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_por_filtros_anio`(IN idDependencia INT(11), IN filtros VARCHAR(2000),IN anio INT(11), IN despliegueCompleto TINYINT(1))
+BEGIN
+	
+SET SESSION group_concat_max_len = 1000000;
+
+
+IF (despliegueCompleto=1) THEN
+	SET @qry_select_final = (SELECT GROUP_CONCAT(DISTINCT campo  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia);
+ELSE
+	SET @qry_select_final = (SELECT GROUP_CONCAT(DISTINCT campo  ORDER BY orden SEPARATOR ',')
+	FROM buscador_despliegue_config des
+	WHERE id_dependencia = idDependencia  AND mostrar = 1);
+END IF;
+
+
+SET @qry_select = (SELECT 
+	GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE '' END) AS '", campo, "'") SEPARATOR ',')
+FROM 
+(
+	SELECT id_dependencia, tabla, campo FROM buscador_filtros_config
+	UNION ALL
+	SELECT id_dependencia, tabla, campo FROM buscador_despliegue_config
+) T
+WHERE id_dependencia = idDependencia);
+
+
+set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
+(
+	SELECT v.id_viaje, v.tabla, v.campo, 
+	CASE WHEN v.valor_texto IS NULL THEN 
+		CASE WHEN v.valor_numerico IS NULL THEN 
+			DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
+		ELSE v.valor_numerico END 
+	ELSE (CASE WHEN EXISTS (
+						SELECT vd.valor AS valor
+                        FROM valores_dinamicos vd 
+						INNER JOIN campos_dinamicos cd ON vd.id_lista = cd.id_lista
+						INNER JOIN viajes_claros_detalle vcd ON cd.nombre_campo = vcd.campo
+						WHERE vcd.id_viaje = v.id_viaje and vcd.campo = v.campo and vd.codigo = v.valor_texto
+                    ) THEN 
+					(
+						SELECT vd.valor AS valor
+                        FROM valores_dinamicos vd 
+						INNER JOIN campos_dinamicos cd ON vd.id_lista = cd.id_lista
+						INNER JOIN viajes_claros_detalle vcd ON cd.nombre_campo = vcd.campo
+						WHERE vcd.id_viaje = v.id_viaje and vcd.campo = v.campo and vd.codigo = v.valor_texto
+                    )
+		ELSE v.valor_texto END) END AS valor
+	FROM viajes_claros_detalle v 
+	INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla=\'\' AND anio_viaje.campo=\'fecha_hora_salida\'
+	WHERE ins.id_dependencia=', idDependencia, ' AND YEAR(anio_viaje.valor_fecha)=', anio,
 	' ORDER BY v.id_viaje
 ) A
 GROUP BY id_viaje');
@@ -5916,6 +6431,84 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_viajes_resumen_por_persona_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viajes_resumen_por_persona_anio`(IN idPersona INT(11),
+	nom VARCHAR(200), ap1 VARCHAR(200), ap2 VARCHAR(200),IN anio INT(11))
+BEGIN
+
+SET SESSION group_concat_max_len = 1000000;
+
+IF idPersona > 0 THEN
+
+	SET @qry_select = (SELECT 
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE NULL END) AS '", campo, "'") SEPARATOR ',')
+	FROM viajes_claros_config des);
+	
+	
+	set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
+	(
+		SELECT v.id_viaje, v.tabla, v.campo, 
+		CASE WHEN v.valor_texto IS NULL THEN 
+			CASE WHEN v.valor_numerico IS NULL THEN 
+				DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
+			ELSE v.valor_numerico END 
+		ELSE v.valor_texto END AS valor
+		FROM viajes_claros_detalle v 
+		INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
+		INNER JOIN comisiones c ON c.id_comision=ins.id_comision
+        INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo=''fecha_hora_salida''
+		INNER JOIN personas p ON p.id_persona = c.id_persona
+		WHERE  p.id_persona=', idPersona, ' AND YEAR(anio_viaje.valor_fecha)=', anio,
+	') A
+	GROUP BY id_viaje');
+	
+	set @query_select = CONCAT('SELECT id_viaje, costo_total, fecha_hora_salida, fecha_hora_regreso, 
+	pais_destino, ciudad_destino, nombre_evento FROM (',
+	@query, ') B');
+	
+	
+	PREPARE QUERY FROM @query_select;
+	EXECUTE QUERY;
+
+
+ELSE
+
+	SELECT i.id_viaje, c.valor_numerico as costo_total, 
+		DATE_FORMAT(ini.valor_fecha, '%d/%m/%Y') as fecha_inicio, 
+		DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y') as fecha_fin,
+		pa.valor_texto as pais_destino,	cd.valor_texto as ciudad_destino, ev.valor_texto as nombre_evento
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+	LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
+	LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.tabla='' AND fin.campo='fecha_hora_regreso'
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+	LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
+	WHERE nom.valor_texto=nom
+    AND YEAR(ini.valor_fecha)=anio
+	AND ap1.valor_texto=ap1
+	AND IF(ap2.valor_texto IS NULL, '', ap2.valor_texto)=ap2
+;
+
+END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_viaje_datos_por_categoria` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -5935,10 +6528,14 @@ BEGIN
 		CASE WHEN v.valor_numerico IS NULL THEN 
 			v.valor_fecha 
 		ELSE (CASE WHEN LOWER(v.campo) LIKE '%gasto%' OR LOWER(v.campo) LIKE '%costo%' OR 
-			LOWER(v.campo) LIKE '%importe%' OR LOWER(v.campo) LIKE '%tarifa%' OR 
+			LOWER(v.campo) LIKE '%importe%' OR LOWER(v.campo) LIKE 'viaticos_%' OR LOWER(v.campo) LIKE '%tarifa%' OR 
             LOWER(v.campo) LIKE '%monto%' THEN 
 					CONCAT('$', FORMAT(v.valor_numerico, 2))
-			  ELSE v.valor_numerico END) END) 
+			  ELSE (CASE WHEN v.tabla='areas' and v.campo='id_area' THEN 
+					(SELECT areas.nombre_area AS valor
+                        FROM areas
+						WHERE areas.id_area = v.valor_numerico)
+			  ELSE v.valor_numerico END) END) END) 
 	ELSE (CASE WHEN EXISTS (
 						SELECT vd.valor AS valor
                         FROM valores_dinamicos vd 
@@ -5949,7 +6546,7 @@ BEGIN
 					(
 						SELECT 
 							CASE WHEN LOWER(v.campo) LIKE '%gasto%' OR LOWER(v.campo) LIKE '%costo%' OR 
-							LOWER(v.campo) LIKE '%importe%' OR LOWER(v.campo) LIKE '%tarifa%' OR 
+							LOWER(v.campo) LIKE '%importe%' OR  LOWER(v.campo) LIKE 'viaticos_%' OR LOWER(v.campo) LIKE '%tarifa%' OR 
 							LOWER(v.campo) LIKE '%monto%' THEN 
 							CONCAT('$', FORMAT(CONVERT(vd.valor,SIGNED INTEGER), 2))
 						ELSE vd.valor END AS valor
@@ -5967,6 +6564,7 @@ BEGIN
 	where v.id_viaje=idViaje
 	AND (b.categoria=codigoCat OR d.categoria=codigoCat) ORDER BY ic.secuencia;
 	
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6550,13 +7148,10 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_porcentajes_viajes_funcionario`(IN idPersona INT(11), IN inNombres VARCHAR(200), IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200))
 BEGIN
-
-	
-	
 
 IF idPersona > 0 THEN
 	SELECT B.total_dias_viaje, B.dias_institucion, 
@@ -6568,8 +7163,8 @@ IF idPersona > 0 THEN
 		FROM (
 			SELECT p.id_persona, ini.id_viaje, ini.valor_fecha as ini, fin.valor_fecha as fin, 
 				p.nombres, p.apellido_paterno, p.apellido_materno,
-				DATEDIFF(fin.valor_fecha, ini.valor_fecha) as dias_viaje, 
-				DATEDIFF(NOW(), p.fecha_ingreso) as dias_desde_ingreso
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), p.fecha_ingreso)+1 as dias_desde_ingreso
 			FROM personas p
 			LEFT JOIN comisiones c ON c.id_persona=p.id_persona
 			LEFT JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
@@ -6594,8 +7189,8 @@ ELSE
 			SELECT n.id_viaje, n.valor_texto as nombres, ap1.valor_texto as apellido1, 
 				ap2.valor_texto as apellido2, f.valor_fecha as fecha_ingreso, 
 				ini.valor_fecha as fecha_ini, fin.valor_fecha as fecha_fin,
-				DATEDIFF(fin.valor_fecha, ini.valor_fecha) as dias_viaje, 
-				DATEDIFF(NOW(), f.valor_fecha) as dias_desde_ingreso
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), f.valor_fecha)+1 as dias_desde_ingreso
 			FROM viajes_claros_instancias i
 			INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
 			INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
@@ -6612,6 +7207,76 @@ ELSE
 END IF;
 
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_porcentajes_viajes_funcionario_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_porcentajes_viajes_funcionario_anio`(IN idPersona INT(11), IN inNombres VARCHAR(200), IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200),IN anio INT(11))
+BEGIN
+
+IF idPersona > 0 THEN
+	SELECT B.total_dias_viaje, B.dias_institucion, 
+		B.total_dias_viaje*100/(B.total_dias_viaje + B.dias_institucion) as porcentaje_viaje,
+		B.dias_institucion*100/(B.total_dias_viaje + B.dias_institucion) as porcentaje_institucion
+	FROM (
+		SELECT IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT p.id_persona, ini.id_viaje, ini.valor_fecha as ini, fin.valor_fecha as fin, 
+				p.nombres, p.apellido_paterno, p.apellido_materno,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), p.fecha_ingreso)+1 as dias_desde_ingreso
+			FROM personas p
+			LEFT JOIN comisiones c ON c.id_persona=p.id_persona
+			LEFT JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+			WHERE p.id_persona=idPersona
+            AND YEAR(ini.valor_fecha) = anio
+		) A
+		GROUP BY A.id_persona
+	) B;
+ELSE
+	SELECT IFNULL(B.total_dias_viaje, 0), IFNULL(B.dias_institucion, 0), 
+		IFNULL(B.total_dias_viaje*100/(B.total_dias_viaje + B.dias_institucion), 0) as porcentaje_viaje,
+		IFNULL(B.dias_institucion*100/(B.total_dias_viaje + B.dias_institucion), 0) as porcentaje_institucion
+	FROM (
+		SELECT 
+			IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT n.id_viaje, n.valor_texto as nombres, ap1.valor_texto as apellido1, 
+				ap2.valor_texto as apellido2, f.valor_fecha as fecha_ingreso, 
+				ini.valor_fecha as fecha_ini, fin.valor_fecha as fecha_fin,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), f.valor_fecha)+1 as dias_desde_ingreso
+			FROM viajes_claros_instancias i
+			INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+			INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+			LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+			LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='personas' AND f.campo='fecha_ingreso'
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+			WHERE n.valor_texto=inNombres
+            AND YEAR(ini.valor_fecha) = anio
+			AND ap1.valor_texto=apellido1
+			AND ap2.valor_texto=apellido2
+		) A
+	) B;
+
+END IF;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6797,6 +7462,41 @@ DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_ultimos_viajes_por_area`(idArea INT(11))
 BEGIN
 	
+SELECT i.id_viaje, DATE_FORMAT(i.fecha_publicacion, '%d/%m/%Y') fecha_publicacion,
+	IFNULL(ev.valor_texto, '') as nombre_evento,
+	IFNULL(pa.valor_texto, '') as pais_destino,
+	IFNULL(cd.valor_texto, '') as ciudad_destino,
+	IFNULL(costo.valor_numerico, 0) as costo_total
+FROM viajes_claros_instancias i
+LEFT JOIN viajes_claros_detalle costo ON costo.id_viaje=i.id_viaje AND costo.tabla='' AND costo.campo='costo_total'
+LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
+INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+INNER JOIN viajes_claros_detalle area ON area.id_viaje=i.id_viaje AND area.tabla='areas' AND area.campo='id_area'
+WHERE area.valor_numerico=idArea
+ORDER BY anio_viaje.valor_fecha DESC LIMIT 3
+;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_ultimos_viajes_por_area_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_ultimos_viajes_por_area_anio`(idArea INT(11),anio INT(11))
+BEGIN
+	
 
 SELECT i.id_viaje, DATE_FORMAT(i.fecha_publicacion, '%d/%m/%Y') fecha_publicacion,
 	IFNULL(ev.valor_texto, '') as nombre_evento,
@@ -6804,18 +7504,16 @@ SELECT i.id_viaje, DATE_FORMAT(i.fecha_publicacion, '%d/%m/%Y') fecha_publicacio
 	IFNULL(cd.valor_texto, '') as ciudad_destino,
 	IFNULL(costo.valor_numerico, 0) as costo_total
 FROM viajes_claros_instancias i
-INNER JOIN comisiones c ON c.id_comision=i.id_comision
-INNER JOIN personas p ON p.id_persona=c.id_persona
-INNER JOIN usuarios u ON u.id_persona=p.id_persona
 LEFT JOIN viajes_claros_detalle costo ON costo.id_viaje=i.id_viaje AND costo.tabla='' AND costo.campo='costo_total'
 LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
 LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
 LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
-WHERE u.id_area=idArea
-ORDER BY i.fecha_publicacion DESC LIMIT 3
+INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+INNER JOIN viajes_claros_detalle area ON area.id_viaje=i.id_viaje AND area.tabla='areas' AND area.campo='id_area'
+WHERE area.valor_numerico=idArea
+AND YEAR(anio_viaje.valor_fecha) = anio 
+ORDER BY anio_viaje.valor_fecha DESC LIMIT 3
 ;
-
-
 
 END ;;
 DELIMITER ;
@@ -6831,7 +7529,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_ultimos_viajes_por_dep`(IN idDependencia INT(11))
 BEGIN
@@ -6845,8 +7543,9 @@ from viajes_claros_instancias v
 INNER JOIN viajes_claros_detalle ev ON ev.id_viaje=v.id_viaje AND ev.campo='nombre_evento'
 INNER JOIN viajes_claros_detalle pais ON pais.id_viaje=v.id_viaje AND pais.campo='pais_destino'
 INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciudad_destino'
+INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
 WHERE v.id_dependencia=idDependencia
-ORDER BY v.fecha_publicacion DESC LIMIT 3;
+ORDER BY anio_viaje.valor_fecha DESC LIMIT 3;
 
 	
 END ;;
@@ -6877,7 +7576,7 @@ INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciud
 INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=v.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
 WHERE v.id_dependencia=idDependencia
 AND YEAR(anio_viaje.valor_fecha) = anio
-ORDER BY v.fecha_publicacion DESC LIMIT 3;
+ORDER BY anio_viaje.valor_fecha DESC LIMIT 3;
 
 	
 END ;;
@@ -6983,7 +7682,7 @@ BEGIN
 
 
 IF idPersona > 0 THEN
-	SELECT v.campo, SUM(v.valor_numerico)
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
 	FROM viajes_claros_detalle v
 	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
 	INNER JOIN comisiones c ON c.id_comision=i.id_comision
@@ -6991,7 +7690,7 @@ IF idPersona > 0 THEN
 	AND c.id_persona=idPersona
 	GROUP BY c.id_persona
 UNION ALL
-	SELECT v.campo, SUM(v.valor_numerico)
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
 	FROM viajes_claros_detalle v
 	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
 	INNER JOIN comisiones c ON c.id_comision=i.id_comision
@@ -6999,7 +7698,7 @@ UNION ALL
 	AND c.id_persona=idPersona
 	GROUP BY c.id_persona
 UNION ALL
-	SELECT v.campo, SUM(v.valor_numerico)
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
 	FROM viajes_claros_detalle v
 	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
 	INNER JOIN comisiones c ON c.id_comision=i.id_comision
@@ -7011,7 +7710,7 @@ UNION ALL
 ELSE
 
 	SELECT 'Viáticos comprobados',
-		IFNULL(SUM(v1.valor_numerico), 0) as valor
+		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
 	FROM viajes_claros_instancias i
 	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
 	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
@@ -7021,8 +7720,8 @@ ELSE
 	AND ap1.valor_texto=inApellido1
 	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
 UNION ALL
-	SELECT 'Viáticos sin comprobar',
-		IFNULL(SUM(v2.valor_numerico), 0) as valor
+	SELECT 'Gastos sin comprobantes',
+		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
 	FROM viajes_claros_instancias i
 	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
 	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
@@ -7033,7 +7732,7 @@ UNION ALL
 	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
 UNION ALL
 	SELECT 'Viáticos devueltos',
-		IFNULL(SUM(v3.valor_numerico), 0) as valor
+		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
 	FROM viajes_claros_instancias i
 	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
 	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
@@ -7045,6 +7744,101 @@ UNION ALL
 
 END IF;
 
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_viaticos_por_funcionario_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_viaticos_por_funcionario_anio`(IN idPersona INT(11),
+	inNombres VARCHAR(200), inApellido1 VARCHAR(200), inApellido2 VARCHAR(200),IN anio INT(11))
+BEGIN
+
+IF idPersona > 0 THEN
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+	FROM viajes_claros_detalle v
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE v.campo='viaticos_comprobados'
+	AND c.id_persona=idPersona
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	GROUP BY c.id_persona
+UNION ALL
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+	FROM viajes_claros_detalle v
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE v.campo='viaticos_sin_comprobar'
+	AND c.id_persona=idPersona
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	GROUP BY c.id_persona
+UNION ALL
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+	FROM viajes_claros_detalle v
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE v.campo='viaticos_devueltos'
+	AND c.id_persona=idPersona
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	GROUP BY c.id_persona;
+	
+
+ELSE
+
+	SELECT 'Viáticos comprobados',
+		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE nom.valor_texto=inNombres
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+UNION ALL
+	SELECT 'Gastos sin comprobantes',
+		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v2 ON v2.id_viaje=i.id_viaje AND v2.tabla='' AND v2.campo='viaticos_sin_comprobar'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE nom.valor_texto=inNombres
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+UNION ALL
+	SELECT 'Viáticos devueltos',
+		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v3 ON v3.id_viaje=i.id_viaje AND v3.tabla='' AND v3.campo='viaticos_devueltos'	
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE nom.valor_texto=inNombres
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2;
+
+END IF;
 
 END ;;
 DELIMITER ;
@@ -7104,13 +7898,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `insert_buscador_despliegue_config`(idDep INT, nombreTabla VARCHAR(50), nombreCampo VARCHAR(50))
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `insert_buscador_despliegue_config`(idDep INT, nombreTabla VARCHAR(50), nombreCampo VARCHAR(50), ordenCampo TINYINT(4), mostrarCampo TINYINT(1))
 BEGIN
 	
-	INSERT INTO buscador_despliegue_config(id_dependencia, tabla, campo)
-	VALUES(idDep, nombreTabla, nombreCampo);
+	INSERT INTO buscador_despliegue_config(id_dependencia, tabla, campo, orden, mostrar)
+	VALUES(idDep, nombreTabla, nombreCampo, ordenCampo, mostrarCampo);
 	
 END ;;
 DELIMITER ;
@@ -7126,9 +7920,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `insert_buscador_filtros_config`(IN idDep INT(10), IN nombreTabla VARCHAR(50), IN nombreCampo VARCHAR(50), IN operador VARCHAR(50))
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `insert_buscador_filtros_config`(IN idDep INT(10), IN nombreTabla VARCHAR(50), IN nombreCampo VARCHAR(50), IN operador VARCHAR(50), IN ordenFiltro TINYINT(4))
 BEGIN
 	
 	
@@ -7143,8 +7937,8 @@ BEGIN
 	
 		
 	INSERT INTO buscador_filtros_config
-	(id_dependencia, tabla, campo, operador)
-	VALUES(idDep, nombreTabla, nombreCampo, @operador);
+	(id_dependencia, tabla, campo, operador, orden)
+	VALUES(idDep, nombreTabla, nombreCampo, @operador, ordenFiltro);
 	
 END ;;
 DELIMITER ;
@@ -9001,4 +9795,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-11 15:20:40
+-- Dump completed on 2016-05-17 19:51:27
