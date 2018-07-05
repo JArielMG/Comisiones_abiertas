@@ -99,7 +99,10 @@
                                                     <f:setPropertyActionListener value="#{h}" 
                                                                                  target="#{filtroBusquedaController.despliegueToDelete}" />
                                                 </p:commandButton>
+                                                <h:outputText value="#{h.orden}" styleClass="small" style="font-weight: normal;"/> <br/>
+                                                <h:outputText value="#{h.mostrar != false ? 'Desplegado' : 'Oculto'}" styleClass="small" style="font-weight: normal;"/> <br/>
                                                 <h:outputText value="#{h.despliegue}" />
+                                                
                                             </f:facet>
                                             <h:outputText value="#{viaje.datos[index].length() gt 60 ?  viaje.datos[index].substring(0, 57).concat('...') : viaje.datos[index]}"/>
                                         </p:columns>
@@ -169,6 +172,17 @@
                                     </div>
                                 </p:outputPanel>
                             </p:outputPanel>
+                        <div class="form-group">
+                            <label for="txOrdenFiltro" class="control-label col-sm-4">
+                                <span class="red">* </span> Orden:
+                            </label>
+                            <div class="col-sm-8">
+                                <h:inputText id="txOrdenFiltro" styleClass="form-control" maxlength="100"
+                                             required="true" value="#{filtroBusquedaController.insertFiltro.orden}"
+                                             converterMessage="El campo Orden debe ser numérico"
+                                             requiredMessage="El campo Orden es requerido"/>
+                            </div>
+                        </div>
                         </div>
 
                         <f:facet name="footer">
@@ -255,6 +269,24 @@
                                                        var="c" itemLabel="#{c.despliegue}" itemValue="#{c.campo}"/>
                                     </h:selectOneMenu>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Orden:</label>
+                            <div class="col-sm-8">
+                                <h:inputText id="txOrden" styleClass="form-control" maxlength="100"
+                                             required="true" value="#{filtroBusquedaController.despliegueInsert.orden}"
+                                             converterMessage="El campo Orden debe ser numérico"
+                                             requiredMessage="El campo Orden es requerido"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-4"></div>
+                            <div class="checkbox col-sm-8">
+                                <label>
+                                    <h:selectBooleanCheckbox value="#{filtroBusquedaController.despliegueInsert.mostrar}"/>
+                                    <span>Mostrar en el portal</span>
+                                </label>
                             </div>
                         </div>
                         <f:facet name="footer">

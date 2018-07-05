@@ -22,7 +22,9 @@
 </head>
 <body>
 	<jsp:include page="/include.jsp"/>
-	<h3>Interfaz de Carga</h3>
+	<div id="content">
+	<h2 class="text-center">Interfaz de Carga</h2>
+	<br/>
 	<form method="post" class="form-horizontal" action="uploadFileAction" enctype="multipart/form-data" id="miForm">
 		<c:if test="${mensaje != null}">
 			<c:choose>
@@ -44,7 +46,7 @@
      		<div class="col-sm-10">
        			<select class="form-control" name="dependencia">
      				<c:forEach items="${dependencias}" var="dependencia">
-     				  <c:if test="${dependencia.siglas!='INAI'}">
+     				  <c:if test="${!dependencia.predeterminada}">
             			<option value="${dependencia.id}">${dependencia.siglas} - ${dependencia.nombre}</option>
             		  </c:if>
             		</c:forEach>
@@ -76,6 +78,7 @@
 		    </div>
 		</div>
 	</form>
+	</div>
 	<jsp:include page="/footer.jsp"/>
 </body>
 </html>

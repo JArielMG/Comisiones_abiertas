@@ -22,15 +22,14 @@ _gaq.push(['_trackPageview']);
 })();
 </script>
 
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
 <link href="${pageContext.request.contextPath}/css/formValidation.min.css" rel="stylesheet">
 
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/formValidation.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/bootstrap.formVal.min.js"></script>
 
 </head>
 <body>
+
 	<jsp:include page="../include.jsp"/>
 	<link href="${pageContext.request.contextPath}/css/bootstrap-datepicker.min.css" rel="stylesheet">
 	<link href="${pageContext.request.contextPath}/css/bootstrap-datepicker3.min.css" rel="stylesheet">
@@ -47,7 +46,7 @@ _gaq.push(['_trackPageview']);
 	    right: -15px;
 	}
 	</style>
-	
+	<div id="content">
 	<h3>Persona</h3>
     <form method="post" class="form-horizontal" action="personAction">
 	   <c:choose>
@@ -143,6 +142,7 @@ _gaq.push(['_trackPageview']);
 	    </div>
 	  </div>
 	</form>
+	</div>
 <script>
 $(document).ready(function() {
     $('#datePicker')

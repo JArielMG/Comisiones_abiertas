@@ -17,9 +17,6 @@ var indexDates=0;
 var timesFields=[];
 var indexTimes=0;
 </script>
-<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
-
-<script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 </head>
 <body <c:if test="${(estatus=='F') or (estatus=='RG')}"> onload="calculaMontosViaticos();"</c:if>>
 	<jsp:include page="../include.jsp"/>

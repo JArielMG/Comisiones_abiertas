@@ -25,6 +25,7 @@ public class FiltroBusquedaDomain implements java.io.Serializable {
     private Integer idValor;
     private Date fecha;
     private Integer idLista; // id de catálogo para campos dinámicos
+    private Byte orden;
 
     /**
      * @return the id
@@ -220,5 +221,19 @@ public class FiltroBusquedaDomain implements java.io.Serializable {
      */
     public void setIdLista(Integer idLista) {
         this.idLista = idLista;
+    }
+    
+    /**
+     * @param orden the orden to set
+     */
+    public void setOrden(Byte orden) {
+        this.orden = orden;
+    }
+    
+    /**
+     * @return the orden
+     */
+    public Byte getOrden() {
+        return orden;
     }
 }

@@ -48,7 +48,7 @@ public class GraficasController {
     
     @PostConstruct
     public void init() {
-        idDependencia = 1;
+        idDependencia = 4;
         setDisabledGuardar((Boolean) true);
         try {
             setDependencias(dependenciaService.findAll());

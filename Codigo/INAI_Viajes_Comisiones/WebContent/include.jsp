@@ -10,21 +10,27 @@
 <title>Bienvenido a Viajes Claros</title>
 <!-- Bootstrap -->
     <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/main.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/navbar.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/fontello.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/importer.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet">
+    <!--<link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet"> -->
     <link href="${pageContext.request.contextPath}/css/stickyFooter.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/style-d3.css" rel="stylesheet">
+    
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
+    <script src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <!-- <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script> -->
 </head>
 <% SesionVO sesion = (SesionVO)request.getSession().getAttribute("sesion"); %>
 <body>
-	<div id="header" data-ng-controller="headerCTL">
-		<div class="container container-fixed">
-			<div class="menu">
-				<a href="http://inicio.ifai.org.mx/" class="logo ifai-logo" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
-				<a href="/" class="logo viajes-logo"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
-		        <div class="clear"></div>
+	<div id="header">
+		<div class="navbar navbar-default gradient-blue">
+			<div class="container-fluid content">
+				<div class="navbar-header">
+					<a href="http://inicio.ifai.org.mx/" class="navbar-brand" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
+					<a href="/" class="navbar-brand"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
+			    </div>
 		    </div>
 		</div>
 	</div>
@@ -32,7 +38,7 @@
 	<div class="container">
 
       <!-- Static navbar -->
-      <nav class="navbar navbar-default">
+      <nav class="navbar-menu navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -45,7 +51,7 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="index.jsp">Inicio</a></li>
+              <li class="active"><a href="${pageContext.request.contextPath}/index.jsp">Inicio</a></li>
               <% if (sesion.getPerfil().getNombre().equals("Administrador") || sesion.getPerfil().getNombre().equals("Configurador")) {%>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Cat&aacute;logos <span class="caret"></span></a>
@@ -73,19 +79,6 @@
                   <li><a href="${pageContext.request.contextPath}/procesosAction?action=listar">Flujos de Trabajo</a></li>
                   <li><a href="${pageContext.request.contextPath}/grupoAprobacionAction?action=listar">Grupos de Aprobaci&oacute;n</a></li>
                   <li><a href="${pageContext.request.contextPath}/jerarquiaAction?action=listar">Jerarqu&iacute;as</a></li>
-                  <!-- <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Universo de Informaci&oacute;n</li>
-                  <li><a href="#">Campos Base</a></li>
-                  <li><a href="#">Campos Dinámicos</a></li>
-                  <li><a href="#">Listas de Valores</a></li>
-                  <li><a href="#">Valores Din&aacute;micos</a></li>
-                  <li role="separator" class="divider"></li>
-                  <li class="dropdown-header">Uso de Informaci&oacute;n</li>
-                  <li><a href="#">Flujos de Trabajo</a></li>
-                  <li><a href="#">Filtros Buscador</a></li>
-                  <li><a href="#">Despliegue Buscador</a></li>
-                  <li><a href="#">Viajes Claros</a></li>
-                  <li><a href="#">Interfaz de Carga</a></li> -->
                 </ul>
               </li>
               <% } %>
@@ -125,7 +118,5 @@
       </nav>
 
     </div> <!-- /container -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 </body>
 </html>

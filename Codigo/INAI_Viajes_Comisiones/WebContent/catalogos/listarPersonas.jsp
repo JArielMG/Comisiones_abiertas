@@ -15,6 +15,7 @@
 </head>
 <body>
 	<jsp:include page="../include.jsp"/>
+	<div id="content">
 	<h3>Personas</h3>
     <c:if test="${mensaje != null}">
 		<div class="alert alert-danger" role="alert">
@@ -55,6 +56,7 @@
     </table>
     <a href="personAction?action=agregar"><img src="img/Add.png" title="Agregar" height="40" width="40" class="boton"></a>
     <a href="<c:url value="/index.jsp"/>"><img src="img/Home.png" title="Inicio" height="40" width="40" class="boton"></a>
+    </div>
     </div>
     <jsp:include page="/footer.jsp"/>
 </body>

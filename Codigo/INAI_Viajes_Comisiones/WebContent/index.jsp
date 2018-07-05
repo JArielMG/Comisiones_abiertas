@@ -13,5 +13,8 @@
 </head>
 <body>
 	<jsp:include page="include.jsp"/>
+	<div id="content">
+	</div>
+<jsp:include page="/footer.jsp"/>
 </body>
 </html>

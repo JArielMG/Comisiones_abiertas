@@ -12,6 +12,8 @@ public class DespliegueBusquedaDomain implements java.io.Serializable {
     private String tabla;
     private String campo;
     private String despliegue;
+    private Byte orden;
+    private Boolean mostrar;
 
     /**
      * @return the idDependencia
@@ -67,5 +69,33 @@ public class DespliegueBusquedaDomain implements java.io.Serializable {
      */
     public void setDespliegue(String despliegue) {
         this.despliegue = despliegue;
+    }
+    
+    /**
+     * @param orden the orden to set
+     */
+    public void setOrden(Byte orden) {
+        this.orden = orden;
+    }
+    
+    /**
+     * @return the orden
+     */
+    public Byte getOrden() {
+        return orden;
+    }
+    
+    /**
+     * @param mostrar the mostrar to set
+     */
+    public void setMostrar(Boolean mostrar) {
+        this.mostrar = mostrar;
+    }
+    
+    /**
+     * @return the mostrar
+     */
+    public Boolean getMostrar() {
+        return mostrar;
     }
 }

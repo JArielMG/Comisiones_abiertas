@@ -10,7 +10,7 @@ public class DetalleInterfazVO implements Serializable {
 	private String tabla;
 	private String campo;
 	private String valorT;
-	private Integer valorN;
+	private Number valorN;
 	private Date valorF;
 
 	
@@ -41,10 +41,10 @@ public class DetalleInterfazVO implements Serializable {
 		this.valorT = valorT;
 	}
 	
-	public Integer getValorN() {
+	public Number getValorN() {
 		return valorN;
 	}
-	public void setValorN(Integer valorN) {
+	public void setValorN(Number valorN) {
 		this.valorN = valorN;
 	}
 	

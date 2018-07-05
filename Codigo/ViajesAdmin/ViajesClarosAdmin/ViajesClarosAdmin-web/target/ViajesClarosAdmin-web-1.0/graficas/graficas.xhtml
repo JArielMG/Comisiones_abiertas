@@ -38,7 +38,7 @@
                     <h:form id="formGraf" prependId="false">
                         <c:forEach items="#{graficasController.graficasDependencia}" var="grafica">
                             <p:outputPanel styleClass="col-sm-4 col-xs-6"
-                                           rendered="#{!(grafica.codigoGrafica=='viajes_por_unidad' and graficasController.idDependencia != 1)}">
+                                           >
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <div class="checkbox">

@@ -458,10 +458,10 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 					} //res = 1;
 				
 				}else if(etiqueta.equals("Dependencia")){
-					if(filtro.equals("INAI")){
+					/*if(filtro.equals("INAI")){
 						resQuery = 0;
 						error = "El dato de la Dependencia no es correcto para la carga de viajes para otras dependencias.";
-					}else{
+					}else{*/
 						//System.out.println("*********** Service: " + upFileSrv);
 						//System.out.println("*********** Filtro: " + filtro);
 						idDepReg = upFileSrv.obtenerIdDependencia(filtro);
@@ -470,7 +470,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 							resQuery = 0;
 							error = "El dato de la Dependencia no es igual a la Dependecia que seleccionó.";
 						}					
-					}
+					//}
 				}else{			
 					if(valida){
 						//query = "select count(*) from viajes_claros." + tabla + " where " + campo + " = " + filtro;		
@@ -569,10 +569,10 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 										error = "El dato de la columna " + etiqueta + " no corresponde a una Operación válida (I,E,C).";
 								   } //res = 1;
 							   }else if(etiqueta.equals("Dependencia")){
-								   if(valor.equals("INAI")){
+								   /*if(valor.equals("INAI")){
 									   resQuery = 0;
 									   error = "El dato de la Dependencia no es correcto para la carga de viajes para otras dependencias.";
-								   }else{
+								   }else{*/
 									   //System.out.println("*********** Service: " + upFileSrv);
 									   //System.out.println("*********** Valor: " + valor);
 										idDepReg = upFileSrv.obtenerIdDependencia(valor);
@@ -580,7 +580,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 											resQuery = 0;
 											error = "El dato de la Dependencia no es igual a la Dependecia que seleccionó.";
 										}					
-									}
+									//}
 							   }else{		
 								   if(valida){							
 										resQuery = upFileSrv.validaDato(tabla, campo, valor);
@@ -835,13 +835,27 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 								diVO.setIdViaje(idViaje);
 								diVO.setTabla(tabla);
 								diVO.setCampo(campo);
-								
 								valor = reemplazaCaracteres(reader.get(etiqueta));
+								System.out.println("campo: "+campo+", valor:"+valor); 
 								if(tipo_dato == 2)
 									diVO.setValorT(valor);
-								else if(tipo_dato == 1)									
-									diVO.setValorN(Integer.parseInt(valor));									
-								else if(tipo_dato == 3){
+								else if(tipo_dato == 1){
+									Number valorDato = 0;
+									try{
+										valorDato = Integer.parseInt(valor);
+										diVO.setValorN(valorDato);
+									}
+									catch(NumberFormatException ie){
+										try{
+											valorDato = Double.parseDouble(valor);
+											diVO.setValorN(valorDato);
+										}
+										catch(NumberFormatException de){
+											//not a integer or double
+											System.out.println("No es un número: "+ie.getMessage()+"\n"+de.getMessage());
+										}
+									}									
+								}else if(tipo_dato == 3){
 									Date fecha = formatter.parse(valor);
 									diVO.setValorF(fecha);
 								}
@@ -890,7 +904,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 					tipo_dato = camposLayout.get(i).getTipoDato();
 					elemento = (Element) nodo;
 					nombreElementoLista = elemento.getChildNodes();
-					//System.out.println("Tabla: " + tabla + " campo: " + campo);
+					System.out.println("Tabla: " + tabla + " campo: " + campo);
 					
 					for (int j = 0; j < nombreElementoLista.getLength(); j++) {
 						Node hijosViaje = nombreElementoLista.item(j);  
@@ -908,9 +922,23 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 									diVO.setCampo(campo);					
 									if(tipo_dato == 2)
 										diVO.setValorT(valor);
-									else if(tipo_dato == 1)									
-										diVO.setValorN(Integer.parseInt(valor));
-									else if(tipo_dato == 3){
+									else if(tipo_dato == 1){
+										Number valorDato = 0;
+										try{
+											valorDato = Integer.parseInt(valor);
+											diVO.setValorN(valorDato);
+										}
+										catch(NumberFormatException ie){
+											try{
+												valorDato = Double.parseDouble(valor);
+												diVO.setValorN(valorDato);
+											}
+											catch(NumberFormatException de){
+												//not a integer or double
+												System.out.println("No es un número: "+ie.getMessage()+"\n"+de.getMessage());
+											}
+										}									
+									}else if(tipo_dato == 3){
 										Date fecha = formatter.parse(valor);
 										System.out.println("***fecha:" + fecha);
 										diVO.setValorF(fecha);
@@ -1035,9 +1063,23 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 								valor = reemplazaCaracteres(reader.get(etiqueta));
 								if(tipo_dato == 2)
 									diVO.setValorT(valor);
-								else if(tipo_dato == 1)									
-									diVO.setValorN(Integer.parseInt(valor));
-								else if(tipo_dato == 3){
+								else if(tipo_dato == 1){
+									Number valorDato = 0;
+									try{
+										valorDato = Integer.parseInt(valor);
+										diVO.setValorN(valorDato);
+									}
+									catch(NumberFormatException ie){
+										try{
+											valorDato = Double.parseDouble(valor);
+											diVO.setValorN(valorDato);
+										}
+										catch(NumberFormatException de){
+											//not a integer or double
+											System.out.println("No es un número: "+ie.getMessage()+"\n"+de.getMessage());
+										}
+									}									
+								}else if(tipo_dato == 3){
 									Date fechaValor = formatter.parse(valor);
 									diVO.setValorF(fechaValor);
 								}
@@ -1114,9 +1156,23 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 									diVO.setCampo(campo);					
 									if(tipo_dato == 2)
 										diVO.setValorT(valor);
-									else if(tipo_dato == 1)									
-										diVO.setValorN(Integer.parseInt(valor));
-									else if(tipo_dato == 3){
+									else if(tipo_dato == 1){
+										Number valorDato = 0;
+										try{
+											valorDato = Integer.parseInt(valor);
+											diVO.setValorN(valorDato);
+										}
+										catch(NumberFormatException ie){
+											try{
+												valorDato = Double.parseDouble(valor);
+												diVO.setValorN(valorDato);
+											}
+											catch(NumberFormatException de){
+												//not a integer or double
+												System.out.println("No es un número: "+ie.getMessage()+"\n"+de.getMessage());
+											}
+										}									
+									}else if(tipo_dato == 3){
 										Date fechaValor = formatter.parse(valor);
 										diVO.setValorF(fechaValor);
 									}

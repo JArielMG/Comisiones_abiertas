@@ -30,8 +30,9 @@ public class ViajeService {
     public List<ViajeDomain> findAllByDependencia(Integer idDependencia) {
         Session session = em.unwrap(Session.class);
 
-        List<ViajeDomain> viajes = session.createSQLQuery("CALL get_viajes_por_dependencia(:idDep)")
+        List<ViajeDomain> viajes = session.createSQLQuery("CALL get_viajes_por_dependencia(:idDep, :despliegueCompleto)")
                 .setParameter("idDep", idDependencia)
+                .setParameter("despliegueCompleto", Byte.valueOf("1"))
                 .setResultTransformer(new BasicTransformerAdapter() {
                     private static final long serialVersionUID = 1L;
 
@@ -77,6 +78,8 @@ public class ViajeService {
                         domain.setTabla((String) tuple[1]);
                         domain.setCampo((String) tuple[2]);
                         domain.setDespliegue((String) tuple[3]);
+                        domain.setOrden((Byte) tuple[4]);
+                        domain.setMostrar((Boolean) tuple[5]);
                         return domain;
                     }
                 })

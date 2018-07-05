@@ -49,6 +49,7 @@ public class FiltroBusquedaService {
                         filtro.setIdCatalogo(0);
                         filtro.setComparador((String) tuple[6]);
                         filtro.setIdLista((Integer) tuple[7]);
+                        filtro.setOrden((Byte) tuple[8]);
 
                         return filtro;
                     }
@@ -146,11 +147,12 @@ public class FiltroBusquedaService {
     public void saveFiltroBusqueda(FiltroBusquedaDomain filtro) throws Exception {
         try {
             Session session = em.unwrap(Session.class);
-            session.createSQLQuery("CALL insert_buscador_filtros_config(:idDep, :tabla, :campo, :operador)")
+            session.createSQLQuery("CALL insert_buscador_filtros_config(:idDep, :tabla, :campo, :operador, :orden)")
                     .setParameter("idDep", filtro.getIdDependencia())
                     .setParameter("tabla", filtro.getTabla())
                     .setParameter("campo", filtro.getCampo())
                     .setParameter("operador", filtro.getComparador())
+                    .setParameter("orden", filtro.getOrden())
                     .executeUpdate();
             
             session.flush();
@@ -210,10 +212,12 @@ public class FiltroBusquedaService {
     public void saveDespliegueBusqueda(DespliegueBusquedaDomain domain) throws Exception {
         try {
             Session session = em.unwrap(Session.class);
-            session.createSQLQuery("CALL insert_buscador_despliegue_config(:idDep, :tabla, :campo)")
+            session.createSQLQuery("CALL insert_buscador_despliegue_config(:idDep, :tabla, :campo, :orden, :mostrar)")
                     .setParameter("idDep", domain.getIdDependencia())
                     .setParameter("tabla", domain.getTabla())
                     .setParameter("campo", domain.getCampo())
+                    .setParameter("orden", domain.getOrden())
+                    .setParameter("mostrar", domain.getMostrar())
                     .executeUpdate();
             
             session.flush();

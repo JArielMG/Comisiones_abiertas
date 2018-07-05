@@ -745,9 +745,6 @@ public class FormularioAction extends HttpServlet {
 				encabezados.add(4, "Flujo 4");
 				List <FlujosComisionesVO> valoresTabla=formSrv.obtenerFlujosComision(funcionario.getIdPersona());
 				
-				
-				System.out.println("valoresTabla size="+valoresTabla.size());
-				System.out.println("valoresTabla size="+valoresTabla.get(0).getIdComision());
 				request.setAttribute("encabezados", encabezados);
 				request.setAttribute("valoresTabla", valoresTabla);	
 				request.setAttribute("idTipoPersona", funcionario.getIdTipoPersona());		

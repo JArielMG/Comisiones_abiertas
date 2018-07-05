@@ -185,7 +185,7 @@ public class UploadFileServices {
 			query.setString("campo", diVO.getCampo());
 			query.setString("valorT", diVO.getValorT());
 			//query.setInteger("valorN", diVO.getValorN());
-			query.setParameter("valorN", diVO.getValorN(), StandardBasicTypes.INTEGER);
+			query.setParameter("valorN", diVO.getValorN());
 			query.setTimestamp("valorF", diVO.getValorF());	
 			
 	    	res = (Integer)query.uniqueResult();
@@ -247,7 +247,7 @@ public class UploadFileServices {
 		query.setString("camp", diVO.getCampo());
 		query.setString("valorT", diVO.getValorT());
 		//query.setInteger("valorN", diVO.getValorN());
-		query.setParameter("valorN", diVO.getValorN(), StandardBasicTypes.INTEGER);
+		query.setParameter("valorN", diVO.getValorN());
 		query.setTimestamp("valorF", diVO.getValorF());
 			
 	    res = (Integer)query.uniqueResult();
@@ -268,7 +268,7 @@ public class UploadFileServices {
 			query.setString("valorT", diVO.getValorT());
 			//query.setInteger("valorN", diVO.getValorN());
 			query.setDate("valorF", diVO.getValorF());
-			query.setParameter("valorN", diVO.getValorN(), StandardBasicTypes.INTEGER);
+			query.setParameter("valorN", diVO.getValorN());
 			
 	    	res = (Integer)query.uniqueResult();
 	    	return res;

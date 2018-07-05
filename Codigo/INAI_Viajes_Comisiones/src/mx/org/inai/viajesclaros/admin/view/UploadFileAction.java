@@ -1,4 +1,4 @@
-	package mx.org.inai.viajesclaros.admin.view;
+package mx.org.inai.viajesclaros.admin.view;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -68,6 +68,9 @@ public class UploadFileAction extends HttpServlet {
 			ArrayList<DependenciaVO> dependencias = depenServ.obtenerDependencias();
 			request.setAttribute("dependencias", dependencias);
             destino = "cargaArchivo.jsp";
+            
+            RequestDispatcher rd = request.getRequestDispatcher(destino);
+            rd.forward(request, response);
 		}else{
 			if(!tipo.equals("0")){				
 				long res = 0;
@@ -123,6 +126,10 @@ public class UploadFileAction extends HttpServlet {
 			            	request.setAttribute("mensaje", "Archivo cargado exitosamente");
 			            	destino = "cargaArchivo.jsp";
 			            }
+			        	
+
+			            RequestDispatcher rd = request.getRequestDispatcher(destino);
+			            rd.forward(request, response);
 			        }else if (action.equals("Descargar Layout")) {
 			        	OutputStream os = response.getOutputStream();
 			        	if(tipo.equals("CSV")){	        	
@@ -130,7 +137,7 @@ public class UploadFileAction extends HttpServlet {
 				    		response.setContentType("application/vnd.ms-excel"); 
 				    					    		
 				        	CsvWriter layout = fu.generaLayoutCSV(os, idDep);			        	 
-				        	layout.flush();
+				        	//layout.flush();
 				        	layout.close();
 			        	}else{
 			        		response.addHeader("Content-Disposition","attachment;filename=Layout.xml"); 			    					    		
@@ -138,19 +145,23 @@ public class UploadFileAction extends HttpServlet {
 				    		fu.generaLayoutXML("layout.xml", os, idDep);
 			        	}
 			        	
-			        	destino = "cargaArchivo.jsp";
 			        }
 				}else{
 					request.setAttribute("mensaje", "La dependencia seleccionada no tiene un layout registrado en la aplicación");
 	            	destino = "cargaArchivo.jsp";
+	            	
+
+	                RequestDispatcher rd = request.getRequestDispatcher(destino);
+	                rd.forward(request, response);
 				}
 			}else{
 				request.setAttribute("mensaje", "Seleccione el tipo de archivo");
             	destino = "cargaArchivo.jsp";
+
+                RequestDispatcher rd = request.getRequestDispatcher(destino);
+                rd.forward(request, response);
 			}
 		}
-        RequestDispatcher rd = request.getRequestDispatcher(destino);
-        rd.forward(request, response);
 	}
 	
 	
