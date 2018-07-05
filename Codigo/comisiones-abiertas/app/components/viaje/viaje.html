@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <div id="viaje" class="fluid-container">
     <div id="main" class="row" ng-class="{'active': isActiveCat(0)}">
         <div class="col-md-2">
@@ -7,9 +6,11 @@
 
         <div class="col-md-9 breadcrumb-custom">
             <p class="breadcrumb-custom">
-                <a href="#/" class="gray">Inicio</a> | <a class="gray" href="#/funcionario/{{funcionario.id}}?n={{funcionario.nombres}}&a1={{funcionario.apellido1}}&a2={{funcionario.apellido2}}">{{funcionario.nombres + " " + funcionario.apellido1 + " " + funcionario.apellido2}}</a> | <a href="#/viaje/{{viajeResumen.id}}">{{viajeResumen.nombreEvento| limitTo: 50}}...</a>
+                <a href="#/" class="gray">Inicio</a> | <a href="#/funcionario/{{datosFunc.id}}?n={{datosFunc.nombres}}&a1={{datosFunc.apellido1}}&a2={{datosFunc.apellido2}}">{{datosFunc.nombres + " " + datosFunc.apellido1 + " " + datosFunc.apellido2}}</a> | <a href="#/viaje/{{viajeResumen.id}}">{{viajeResumen.nombreEvento| limitTo: 50}}...</a>
             </p>
         </div>
+		
+		
     </div>
 
     <div class="row">
@@ -18,13 +19,14 @@
             <div class="list-group menu-viaje col-md-2 hidden-sm">
                 <a class="list-group-item" href="#" scroll-to="main" ng-click="setActiveCat(0)">&nbsp; Inicio</a>
                 <a class="list-group-item" href="#" scroll-to="panel-com" ng-click="setActiveCat(1)"><i class="fa fa-flag fa-fw"></i>&nbsp; Comisión</a>
-                <a class="list-group-item" href="#" scroll-to="panel-fun" ng-click="setActiveCat(2)"><i class="fa fa-user fa-fw"></i>&nbsp; Servidor Público</a>
+                <a class="list-group-item" href="#" scroll-to="panel-fun" ng-click="setActiveCat(2)"><i class="fa fa-user fa-fw"></i>&nbsp; Servidor público</a>
                 <!--<a class="list-group-item" href="#" scroll-to="panel-dat" ng-click="setActiveCat(4)"><i class="fa fa-link fa-fw"></i>&nbsp; Evento</a>-->
                 <a class="list-group-item" href="#" scroll-to="panel-inf" ng-click="setActiveCat(6)"><i class="fa fa-file-text-o fa-fw"></i>&nbsp; Informe de comisión</a>
                 <a class="list-group-item" href="#" scroll-to="panel-tip" ng-click="setActiveCat(3)"><i class="fa fa-suitcase fa-fw"></i>&nbsp; Detalle de la comisión</a>
                 <a class="list-group-item" href="#" scroll-to="panel-via" ng-click="setActiveCat(5)"><i class="fa fa-dollar fa-fw"></i>&nbsp; Viáticos</a>
                 <!--<a class="list-group-item" href="#" scroll-to="panel-vue" ng-click="setActiveCat(7)"><i class="fa fa-plane fa-fw"></i>&nbsp; Información de vuelo</a>-->
                 <a class="list-group-item" href="#" scroll-to="panel-obs" ng-click="setActiveCat(8)"><i class="fa fa-search fa-fw"></i>&nbsp; Observaciones</a>
+				<a class="list-group-item" href="#" scroll-to="panel-masinfo" ng-click="setActiveCat(9)"><i class="fa fa-search1 fa-fw"></i>&nbsp; Numeralia</a>
             </div>
         </div>
 
@@ -140,80 +142,209 @@
                 <div class="col-sm-6">
 
                     <div id="panel-fun" class="panel panel-default" ng-class="{'active': isActiveCat(2)}">
-			<div class="panel-space" ng-class="{'active': isActiveCat(2)}"></div>
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-lg gray">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-user fa-stack-1x"></i>
-                            </span> Servidor Público
-                        </div>
-                        <div class="panel-body">
-                            <div ng-repeat="d in datosFuncionario" class="col-sm-6">
-                                <p>
-                                    <strong>{{d.codigo}}</strong><br/>
-                                    {{d.descripcion}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+						<div class="panel-space" ng-class="{'active': isActiveCat(2)}"></div>
+						<div class="panel-heading">
+							<span class="fa-stack fa-lg gray">
+								<i class="fa fa-circle-thin fa-stack-2x"></i>
+								<i class="fa fa-user fa-stack-1x"></i>
+							</span> Servidor Público
+						</div>
+						<div class="panel-body">
+							<div ng-repeat="d in datosFuncionario" class="col-sm-6">
+								<p>
+									<strong>{{d.codigo}}</strong><br/>
+									{{d.descripcion}}
+								</p>
+							</div>
+						</div>
+					</div>
 
-                    <!--<div id="panel-dat" class="panel panel-default" ng-class="{'active': isActiveCat(4)}">
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-lg gray">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-link fa-stack-1x"></i>
-                            </span> Evento
-                        </div>
-                        <div class="panel-body">
-                            <div ng-repeat="d in datosEvento" class="col-sm-12">
-                                <p>
-                                    <strong>{{d.codigo}}</strong><br/>
-                                    {{d.descripcion}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>-->
+								<!--<div id="panel-dat" class="panel panel-default" ng-class="{'active': isActiveCat(4)}">
+									<div class="panel-heading">
+										<span class="fa-stack fa-lg gray">
+											<i class="fa fa-circle-thin fa-stack-2x"></i>
+											<i class="fa fa-link fa-stack-1x"></i>
+										</span> Evento
+									</div>
+									<div class="panel-body">
+										<div ng-repeat="d in datosEvento" class="col-sm-12">
+											<p>
+												<strong>{{d.codigo}}</strong><br/>
+												{{d.descripcion}}
+											</p>
+										</div>
+									</div>
+								</div>-->
 
-                    <div id="panel-tip" class="panel panel-default" ng-class="{'active': isActiveCat(3)}">
-			<div class="panel-space" ng-class="{'active': isActiveCat(3)}"></div>
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-lg gray">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-suitcase fa-stack-1x"></i>
-                            </span> Detalle de la comisión
-                        </div>
-                        <div class="panel-body">
-                            <div ng-repeat="d in datosTipoViaje" class="col-sm-6">
-                                <p>
-                                    <strong>{{d.codigo}}</strong><br/>
-                                    {{d.descripcion}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+								<div id="panel-tip" class="panel panel-default" ng-class="{'active': isActiveCat(3)}">
+									<div class="panel-space" ng-class="{'active': isActiveCat(3)}"></div>
+									<div class="panel-heading">
+										<span class="fa-stack fa-lg gray">
+											<i class="fa fa-circle-thin fa-stack-2x"></i>
+											<i class="fa fa-suitcase fa-stack-1x"></i>
+										</span> Detalle de la comisión
+									</div>
+									<div class="panel-body">
+										<div ng-repeat="d in datosTipoViaje" class="col-sm-6">
+											<p>
+												<strong>{{d.codigo}}</strong><br/>
+												{{d.descripcion}}
+											</p>
+										</div>
+									</div>
+								</div>
 
-                    <div id="panel-obs" class="panel panel-default" ng-class="{'active': isActiveCat(8)}">
-			<div class="panel-space" ng-class="{'active': isActiveCat(8)}"></div>
-                        <div class="panel-heading">
-                            <span class="fa-stack fa-lg gray">
-                                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                                <i class="fa fa-search fa-stack-1x"></i>
-                            </span> Observaciones
-                        </div>
-                        <div class="panel-body">
-                            <div ng-repeat="d in datosObservaciones" class="col-sm-6">
-                                <p>
-                                    <strong>{{d.codigo}}</strong><br/>
-                                    {{d.descripcion}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+								<div id="panel-obs" class="panel panel-default" ng-class="{'active': isActiveCat(8)}">
+									<div class="panel-space" ng-class="{'active': isActiveCat(8)}"></div>
+										<div class="panel-heading">
+											<span class="fa-stack fa-lg gray">
+												<i class="fa fa-circle-thin fa-stack-2x"></i>
+												<i class="fa fa-search fa-stack-1x"></i>
+											</span> Observaciones
+										</div>
+										<div class="panel-body">
+											<div ng-repeat="d in datosObservaciones" class="col-sm-6">
+												<p>
+													<strong>{{d.codigo}}</strong><br/>
+													{{d.descripcion}}
+												</p>
+											</div>
+										</div>
+								</div>
 
-                </div>
+				</div>
 
-            </div>
-        </div>
-
-    </div>
+			</div>
+		
+		<div id="panel-masinfo" class="panel-default" ng-class="{'active': isActiveCat(9)}">
+			<div class="cell-container panel-body">
+			<div class="panel-heading" style="text-align: center;">
+				<table><tr><td style="height: 70px;">&nbsp;</td></tr></table>
+				<h3>Más información de {{slcDependencia.siglas}}</h3>
+			</div>
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="col panel panel-default">
+					<div class="panel-heading text-center"><h5>Comisiones recientes de {{slcDependencia.siglas}}</h5></div>
+					
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:9px !important; color:#9302CF;" onclick="muestraTitularesCR();" id="lnkTit" class="custom-button-home animate-all" style="width:25%;">Titulares</label>|<label style="cursor:pointer; font-size:9px !important;" onclick="ocultaTitularesCR();" id="lnkTod" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+					
+					<div class="list-group" id="lstTodos" style="display:none;">
+						<div class="list-group-item clearfix" ng-repeat="f in tresViajes">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-map-marker icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10" id="fecSmall">
+								<label class="big-blue">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</label><br/>
+								{{f.ciudadDestino}}, {{f.paisDestino}} <br/>
+								<a href="#/viaje/{{f.id}}">{{f.nombreEvento| uppercase | limitTo: 50}}...</a><br/>
+								<small class="gray">Del {{f.fechaInicio}} al {{f.fechaFin}}</small> <br/>
+							</div>
+						</div>
+					</div>
+					
+					<div class="list-group" id="lstTitulares">
+						<div class="list-group-item clearfix" ng-repeat="f in tresViajesTitulares">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-map-marker icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10" id="fecSmall">
+								<label class="big-blue">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</label><br/>
+								{{f.ciudadDestino}}, {{f.paisDestino}} <br/>
+								<a href="#/viaje/{{f.id}}">{{f.nombreEvento| uppercase | limitTo: 50}}...</a><br/>
+								<small class="gray">Del {{f.fechaInicio}} al {{f.fechaFin}}</small> <br/>
+							</div>
+						</div>
+					</div>
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=1" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+				</div>
+			</div>
+		
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="col panel panel-default ">
+					<div class="panel-heading text-center"><h5 class="text-center">Por presupuesto ejercido</h5></div>
+										
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:9px !important; color:#9302CF;" onclick="muestraTitularesPE();" id="lnkTitTvt" class="custom-button-home animate-all" style="width:25%;">Titulares</label>|<label style="cursor:pointer; font-size:9px !important;" onclick="ocultaTitularesPE();" id="lnkTodTvt" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+										
+					<div class="list-group" id="lstTodosServ" style="display:none;">
+						<div class="list-group-item clearfix" ng-repeat="f in tresServidores">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10">
+								<a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+								<small class="gray">{{f.cargo| uppercase}}</small> <br/>
+								<span class="monto">{{f.totalGasto| currency: "$"}}</span>
+							</div>
+						</div>
+					</div>
+					
+					<div class="list-group" id="lstTitularesServ">
+						<div class="list-group-item clearfix" ng-repeat="f in tresServidoresTitulares">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10">
+								<a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+								<small class="gray">{{f.cargo| uppercase}}</small> <br/>
+								<span class="monto">{{f.totalGasto| currency: "$"}}</span>
+							</div>
+						</div>
+					</div>
+					
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=2" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+				</div>
+			</div>
+		
+			<div class="col-xs-12 col-sm-4 col-md-4">
+				<div class="col panel panel-default ">
+					<div class="panel-heading text-center"><h5 class="text-center">Por comisiones realizadas</h5></div>
+					
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:9px !important; color:#9302CF;" onclick="muestraTitularesCRea();" id="lnkTitSvc" class="custom-button-home animate-all" style="width:25%;">Titulares</label>|<label style="cursor:pointer; font-size:9px !important;" onclick="ocultaTitularesCRea();" id="lnkTodSvc" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+					
+					<div class="list-group" id="lstTodosComis" style="display:none;">
+						<div class="list-group-item clearfix" ng-repeat="f in tresServidoresViajes">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10">
+								<p><a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+									<small class="gray">{{f.cargo| uppercase}}</small><br/>
+									<label class="comisionesTxt">{{f.totalViajes}} comisiones realizadas</label></p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="list-group" id="lstTitularesComis">
+						<div class="list-group-item clearfix" ng-repeat="f in tresServidoresViajesTitulares">
+							<div class="col-sm-2">
+								<h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+							</div>
+							<div class="col-sm-10">
+								<p><a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+									<small class="gray">{{f.cargo| uppercase}}</small><br/>
+									<label class="comisionesTxt">{{f.totalViajes}} comisiones realizadas</label></p>
+							</div>
+						</div>
+					</div>
+					
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=3" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+				</div>
+			</div>
+		
+		</div>	
+	</div>
+</div>
+</div>
 </div>

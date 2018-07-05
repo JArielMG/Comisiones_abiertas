@@ -343,8 +343,8 @@ span.monto {
     position: relative;
     min-height: 85px;
     margin-top: -3em;
-    padding-top: 20px;
-    margin-top: 20px;
+    padding-top: 40px;
+    /*margin-top: 20px;*/
 }
 
 #footer .container {
@@ -757,6 +757,12 @@ span.monto {
     color: white;
     padding: 10px;
     background-color: #9600D6;
+}
+
+#perfilRed .funcionario-nombre {
+    padding: 10px;
+    border-radius: 5px;
+    border: solid 2px lightgray;
 }
 
 #compara-funcionarios .funcionario-nombre {

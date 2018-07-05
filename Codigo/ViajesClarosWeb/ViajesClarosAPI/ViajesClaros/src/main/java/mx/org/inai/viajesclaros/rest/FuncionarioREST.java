@@ -65,6 +65,14 @@ public class FuncionarioREST {
     }
     
     @POST
+    @Path("getComplementariosPerfilPorFuncionario/{anio}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public FuncionarioModel getComplementariosPerfilPorFuncionario(FuncionarioModel funcionario, @PathParam("anio") Integer anio) throws Exception {
+        return funcionarioService.getComplementariosPerfilPorFuncionario(funcionario,anio);
+    }
+        
+    @POST
     @Path("getCargoFuncionario")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
@@ -92,6 +100,14 @@ public class FuncionarioREST {
     @Consumes(MediaType.APPLICATION_JSON)
     public PorcentajeDiasComisionModel getPorcentajeDiasComision(FuncionarioModel funcionario, @PathParam("anio") Integer anio) {
         return funcionarioService.getPorcentajeDiasComision(funcionario,anio);
+    }
+    
+    @POST
+    @Path("getDiasTrabajadosComisNacionales/{anio}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public PorcentajeDiasComisionModel getDiasTrabajadosComisNacionales(FuncionarioModel funcionario, @PathParam("anio") Integer anio) throws Exception {
+        return funcionarioService.getDiasTrabajadosComisNacionales(funcionario,anio);
     }
     
     @POST

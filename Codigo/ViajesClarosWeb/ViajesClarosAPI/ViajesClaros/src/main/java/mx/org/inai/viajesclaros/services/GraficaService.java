@@ -108,6 +108,66 @@ public class GraficaService {
     }
 
     /**
+     * Obtiene los 3 funcionarios con mayor gasto en viajes
+     *
+     * @param idDependencia
+     * @param anio
+     * @return
+     */
+    public List<FuncionarioModel> getFuncionariosMayorGastoTitulares(Integer idDependencia, Integer anio) {
+        try {
+            Session session = em.unwrap(Session.class);
+            List<FuncionarioModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL grafica_funcionarios_mayor_gasto_por_dep_anio_titulares(:idDep,:anio)")
+                    .setParameter("idDep", idDependencia)
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            FuncionarioModel f = new FuncionarioModel();
+                            f.setId(Integer.valueOf(tuple[0].toString()));
+                            f.setNombres((String) tuple[1]);
+                            f.setApellido1((String) tuple[2]);
+                            f.setApellido2((String) tuple[3]);
+                            f.setTotalGasto((Double) tuple[4]);
+                            f.setCargo((String) tuple[5]);
+                            return f;
+                        }
+                    })
+                    .list();
+            }else{
+                list = session.createSQLQuery("CALL grafica_funcionarios_mayor_gasto_por_dep_titulares(:idDep)")
+                    .setParameter("idDep", idDependencia)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            FuncionarioModel f = new FuncionarioModel();
+                            f.setId(Integer.valueOf(tuple[0].toString()));
+                            f.setNombres((String) tuple[1]);
+                            f.setApellido1((String) tuple[2]);
+                            f.setApellido2((String) tuple[3]);
+                            f.setTotalGasto((Double) tuple[4]);
+                            f.setCargo((String) tuple[5]);
+                            return f;
+                        }
+                    })
+                    .list();
+            }
+            session.flush();
+            session.clear();
+            return list;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LOS FUNCIONARIOS CON MAYOR GASTO", e);
+            return new ArrayList<>();
+        }
+    }
+    
+    /**
      * Obtiene los 3 funcionarios con mayor número de viajes
      *
      * @param idDependencia
@@ -141,6 +201,60 @@ public class GraficaService {
             }else{
             
                 list = session.createSQLQuery("CALL grafica_funcionarios_mas_viajes_por_dep(:idDep)")
+                    .setParameter("idDep", idDependencia)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            FuncionarioModel f = new FuncionarioModel();
+                            f.setId(Integer.valueOf(tuple[0].toString()));
+                            f.setNombres((String) tuple[1]);
+                            f.setApellido1((String) tuple[2]);
+                            f.setApellido2((String) tuple[3]);
+                            f.setTotalViajes(((BigInteger) tuple[4]).intValue());
+                            f.setCargo((String) tuple[5]);
+                            return f;
+                        }
+                    })
+                    .list();
+            }
+            session.flush();
+            session.clear();
+            return list;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LOS FUNCIONARIOS CON MÁS VIAJES", e);
+            return new ArrayList<>();
+        }
+    }
+    
+    public List<FuncionarioModel> getFuncionariosMasViajesTitulares(Integer idDependencia, Integer anio) {
+        try {
+            Session session = em.unwrap(Session.class);
+            List<FuncionarioModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL grafica_funcionarios_mas_viajes_por_dep_anio_titulares(:idDep,:anio)")
+                    .setParameter("idDep", idDependencia)
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            FuncionarioModel f = new FuncionarioModel();
+                            f.setId(Integer.valueOf(tuple[0].toString()));
+                            f.setNombres((String) tuple[1]);
+                            f.setApellido1((String) tuple[2]);
+                            f.setApellido2((String) tuple[3]);
+                            f.setTotalViajes(((BigInteger) tuple[4]).intValue());
+                            f.setCargo((String) tuple[5]);
+                            return f;
+                        }
+                    })
+                    .list();
+            }else{
+            
+                list = session.createSQLQuery("CALL grafica_funcionarios_mas_viajes_por_dep_titulares(:idDep)")
                     .setParameter("idDep", idDependencia)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
@@ -483,6 +597,16 @@ public class GraficaService {
                     anio+")");
         else
             return getGraficaGeneric("grafica_viaticos_por_funcionario(" + func.getId() + ", '" 
+                + func.getNombres() + "', '" + func.getApellido1() + "', '" + func.getApellido2() + "')");
+    }
+    
+    public GraficaModel getGraficaViaticosPorFuncionarioNacInter(FuncionarioModel func, Integer anio) {
+        if (anio>0)
+            return getGraficaGeneric("grafica_viaticos_por_funcionario_anio_nacionales_inter(" + func.getId() + ", '" 
+                + func.getNombres() + "', '" + func.getApellido1() + "', '" + func.getApellido2() + "', "+
+                    anio+")");
+        else
+            return getGraficaGeneric("grafica_viaticos_por_funcionario_nacionales_inter(" + func.getId() + ", '" 
                 + func.getNombres() + "', '" + func.getApellido1() + "', '" + func.getApellido2() + "')");
     }
     

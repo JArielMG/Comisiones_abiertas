@@ -11,7 +11,7 @@ myApp.controller('ModalSuscribeController', ['$scope', '$modalInstance', 'ShowFu
     $scope.suscribe = function() {
         ShowFuncionarioService.suscribe(func, $scope.userEmail).then(function(d) {
             $modalInstance.close($scope.data);
-            alert('Recibirá un correo electrónico cuando se registre un nuevo viaje de este funcionario.');
+            alert('Recibirá un correo electrónico cuando se registre una nueva comisión del servidor público seleccionado.');
         });
     };
     

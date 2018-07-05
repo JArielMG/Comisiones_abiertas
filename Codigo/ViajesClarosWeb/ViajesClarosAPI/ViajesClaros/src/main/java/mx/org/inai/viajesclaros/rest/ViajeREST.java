@@ -79,7 +79,7 @@ public class ViajeREST {
     public List<MapMarkerModel> getUbicacionesPorFuncionario(FuncionarioModel funcionario, @PathParam("anio") Integer anio) {
         return viajeService.getUbicacionesPorFuncionario(funcionario,anio);
     }
-    
+
     @POST
     @Path("getViajesPorCiudadPais/{anio}")
     @Consumes(MediaType.APPLICATION_JSON)

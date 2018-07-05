@@ -17,30 +17,111 @@
                         </div>
 
 			<br/>
-
-			<h3 class="blue"><strong><span>{{f.totalViajes}}</span></strong></h3>
-                        <h5><strong>Número total de comisiones</strong></h5>
+					<div class="funcionario-nombre">
+						<table>
+							<tr>
+								<td colspan="2">
+									<h3 class="blue"><strong><span>{{f.totalViajes ? f.totalViajes : 0}}</span></strong></h3>
+									<h5><strong>Número total de comisiones</strong></h5>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<h4 class="blue"><strong><span>{{f.comisNac ? f.comisNac :0 }}</span></strong></h4>
+									<h6><strong>Número de comisiones nacionales</strong></h6>
+								</td>
+								<td>
+									<h4 class="blue"><strong><span>{{ (f.totalViajes - f.comisNac) ? (f.totalViajes - f.comisNac) : 0}}</span></strong></h4>
+									<h6><strong>Número de comisiones internacionales</strong></h6>
+								</td>
+							</tr>
+						</table>
+					</div>
+                        <br/>
+					<div class="funcionario-nombre">
+						<table>
+							<tr>
+								<td colspan="2">
+									<h3 class="blue"><strong><span>{{ (f.totalGasto ? f.totalGasto : 0) | currency:"$":0}}</span></strong></h3>
+									<h5><strong>Gasto en comisiones en el periodo seleccionado</strong></h5>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<h4 class="blue"><strong><span>{{ (f.ctoTotalComisNac ? f.ctoTotalComisNac : 0) | currency:"$":0}}</span></strong></h4>
+									<h6><strong>Gasto en comisiones nacionales</strong></h6>
+								</td>
+								<td>
+									<h4 class="blue"><strong><span>{{ ( (f.totalGasto - f.ctoTotalComisNac) ? (f.totalGasto - f.ctoTotalComisNac) : 0 ) | currency:"$":0}}</span></strong></h4>
+									<h6><strong>Gasto en comisiones internacionales</strong></h6>
+								</td>
+							</tr>
+						</table>
+					</div>
+                        <br/>
+                        <!--<a href="#/viaje/{{f.idViajeMasCostoso}}"><h4 class="blue"><strong><span>{{f.viajeMasCostoso | currency:"$":0}}</span></strong></h4></a>-->
+					<div class="funcionario-nombre">
+						<table>
+							<tr>
+								<td colspan="2">
+									<h3 class="blue"><strong><span>{{ ( (f.totalGasto / f.totalViajes) ? (f.totalGasto / f.totalViajes) : 0 ) | currency:"$":0}}</span></strong></h3>
+									<h5><strong>Gasto promedio por comisión</strong></h5>
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<h4 class="blue"><strong><span>{{ ( (f.ctoTotalComisNac / f.comisNac) ? (f.ctoTotalComisNac / f.comisNac) : 0 ) | currency:"$":0}}</span></strong></h4>
+									<h6><strong>Gasto promedio por comisión nacional</strong></h6>
+								</td>
+								<td>
+									<h4 class="blue"><strong><span>{{ ( (f.totalGasto - f.ctoTotalComisNac) / (f.totalViajes - f.comisNac) ) ? ( (f.totalGasto - f.ctoTotalComisNac) / (f.totalViajes - f.comisNac) ) : 0 | currency:"$":0 }}</span></strong></h4>
+									<h6><strong>Gasto promedio por comisión internacional</strong></h6>
+								</td>
+							</tr>
+						</table>
+					</div>
+								
 
                         <br/>
-                        <h3 class="blue"><strong><span>{{f.totalGasto | currency:"$":0}}</span></strong></h3>
-                        <h5><strong>Gasto en comisiones en el periodo seleccionado</strong></h5>
-
-                        <br/>
-                        <a href="#/viaje/{{f.idViajeMasCostoso}}"><h4 class="blue"><strong><span>{{f.viajeMasCostoso | currency:"$":0}}</span></strong></h4></a>
-                        <h5><strong>Comisión más costosa</strong></h5>
-
-                        <br/>
-                        <div>
-                            <!--    <p><i class="fa fa-calendar fa-lg"></i> 
-                                Fecha de ingreso: {{f.fechaIngreso ? f.fechaIngreso : "[No registrada]"}} <br/>
-                            <b>Días de comisión vs. días laborales</b></p>	
-                            <canvas ng-show="f.fechaIngreso" id="doughnut" class="chart chart-doughnut" chart-legend="true" chart-options="f.chartPorc.options"
-                                    chart-data="f.chartPorc.data" chart-labels="f.chartPorc.labels">
-                            </canvas>-->
-                            <b>{{f.totalDiasViaje}} días de comisión</b>
-                            <!--<div class="no-fecha-ingreso" ng-hide="{{f.fechaIngreso}}">
-                                <h4>NO TIENE REGISTRADA UNA FECHA DE INGRESO</h4>
-                            </div>-->
+                    <div class="funcionario-nombre">
+						<table>
+							<tr>
+								<td colspan="2">
+									<!--    <p><i class="fa fa-calendar fa-lg"></i> 
+										Fecha de ingreso: {{f.fechaIngreso ? f.fechaIngreso : "[No registrada]"}} <br/>
+									<b>Días de comisión vs. días laborales</b></p>	
+									<canvas ng-show="f.fechaIngreso" id="doughnut" class="chart chart-doughnut" chart-legend="true" chart-options="f.chartPorc.options"
+											chart-data="f.chartPorc.data" chart-labels="f.chartPorc.labels">
+									</canvas>-->
+									<h3 class="blue"><strong><span>{{f.totalDiasViaje}}</span></strong></h3>
+									<h5><strong>Días de trabajo en comisión</strong></h5>
+									<!--<div class="no-fecha-ingreso" ng-hide="{{f.fechaIngreso}}">
+										<h4>NO TIENE REGISTRADA UNA FECHA DE INGRESO</h4>
+									</div>-->
+								</td>
+							</tr>
+							<tr>
+								<td>&nbsp;</td>
+							</tr>
+							<tr>
+								<td>
+									<h4 class="blue"><strong><span>{{f.diasTrabajoNac}}</span></strong></h4>
+									<h6><strong>Días de trabajo en comisiones nacionales</strong></h6>
+								</td>
+								<td>
+									<h4 class="blue"><strong><span>{{f.totalDiasViaje - f.diasTrabajoNac}}</span></strong></h4>
+									<h6><strong>Días de trabajo en comisiones internacionales</strong></h6>
+								</td>
+							</tr>
                         </div>
                     </div>
                 </div>

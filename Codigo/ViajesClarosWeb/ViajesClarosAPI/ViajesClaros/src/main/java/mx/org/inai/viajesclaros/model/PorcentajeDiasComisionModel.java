@@ -30,6 +30,7 @@ public class PorcentajeDiasComisionModel implements java.io.Serializable {
     private Integer totalDiasInstitucion;
     private Float porcentajeViaje;
     private Float porcentajeInstitucion;
+    private Integer diasTrabajoNac;
 
     /**
      * @return the totalDiasViaje
@@ -86,4 +87,20 @@ public class PorcentajeDiasComisionModel implements java.io.Serializable {
     public void setPorcentajeInstitucion(Float porcentajeInstitucion) {
         this.porcentajeInstitucion = porcentajeInstitucion;
     }
+    
+    /**
+     * @return the diasTrabajoNac
+     */
+    public Integer getDiasTrabajoNac() {
+        return diasTrabajoNac;
+    }
+    
+    /**
+     * @param diasTrabajoNac the diasTrabajoNac to set
+     */
+    public void setDiasTrabajoNac(Integer diasTrabajoNac) {
+        this.diasTrabajoNac = diasTrabajoNac;
+    }
+    
+    
 }

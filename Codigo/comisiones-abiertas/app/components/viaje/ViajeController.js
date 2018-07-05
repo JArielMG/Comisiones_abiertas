@@ -17,6 +17,9 @@ myApp.controller('ViajeController', ['$scope', '$rootScope', '$routeParams', 'Vi
        
        
     var idViaje = $routeParams.idViaje;
+	var idFuncionario = $routeParams.idFuncionario;	
+	var funcionario = {id: idFuncionario};
+	
     $scope.activeCat = 0;
     
     ViajeService.getResumenViaje(idViaje).then(function(d) {
@@ -25,6 +28,7 @@ myApp.controller('ViajeController', ['$scope', '$rootScope', '$routeParams', 'Vi
     
     ViajeService.getFuncionarioByIdViaje(idViaje).then(function(d) {
         $scope.funcionario = d;
+		$scope.datosFunc = d;
         
         /* Se lanza para sustiruir los valores meta en el <head> (usados para compartir en facebook) */
         $rootScope.metaService.set(d.nombres + ' ' + d.apellido1 + ' ' + d.apellido2, 
@@ -59,6 +63,35 @@ myApp.controller('ViajeController', ['$scope', '$rootScope', '$routeParams', 'Vi
     });
     
     
+	ViajeService.getFuncionarioById(funcionario).then(function(d) {
+        $scope.funcionario = d;
+       
+		ViajeService.getUltimosViajes(d.idDependencia).then(function (d) {
+			$scope.tresViajes = d;
+		});
+		
+		ViajeService.getUltimosViajesTitulares(d.idDependencia).then(function (d) {
+			$scope.tresViajesTitulares = d;
+		});
+		
+		ViajeService.getFuncionariosMayorGasto(d.dependencia).then(function (d) {
+			$scope.tresServidores = d;
+		});
+		
+		ViajeService.getFuncionariosMayorGastoTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresTitulares = d;
+		});
+		
+		ViajeService.getFuncionariosMasViajes(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajes = d;
+		});
+				
+		ViajeService.getFuncionariosMasViajesTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajesTitulares = d;
+		});
+		
+    });
+		
     /* Cuando se navega hacia una sección, poner "activa" esa sección */
     $scope.setActiveCat = function(index) {
         $scope.activeCat = index;

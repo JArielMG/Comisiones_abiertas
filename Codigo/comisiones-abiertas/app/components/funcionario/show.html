@@ -7,17 +7,146 @@
 
     <div class="row">
         <div class="col-md-6 funcionario-info">
-            <div class="inner-content gradient-aqua text-center">
+            <div class="inner-content gradient-aqua text-center" id="perfilRed">
                 <i class="fa fa-user icon-circle funcionario-icon"></i>
                 <h2>{{funcionario.nombres + " " + funcionario.apellido1 + " " + funcionario.apellido2}}</h2>
                 <p><strong>CARGO: </strong> {{cargoFuncionario}}</p>
                 <p><strong>INSTITUCIÓN: </strong> {{funcionarioResumen.dependencia}}</p>
-                <p><strong>NÚMERO TOTAL DE COMISIONES: </strong> {{funcionarioResumen.totalViajes}}</p>
+				
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{funcionarioResumen.totalViajes ? funcionarioResumen.totalViajes : 0}}</span></strong></h2>
+								<p><strong>NÚMERO TOTAL DE COMISIONES</strong></p> 
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{complementarioPerfil.comisNac ? complementarioPerfil.comisNac : 0}}</span></strong></h2>
+								<p><strong>NÚMERO DE COMISIONES NACIONALES</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{( (funcionarioResumen.totalViajes - complementarioPerfil.comisNac) ? (funcionarioResumen.totalViajes - complementarioPerfil.comisNac) : 0 )}}</span></strong></h2>
+								<p><strong>NÚMERO DE COMISIONES INTERNACIONALES</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
                 <!--<p><strong>FECHA DE INGRESO: </strong> {{funcionarioResumen.fechaIngreso ? funcionarioResumen.fechaIngreso : '[No registrada]'}}</p>-->
+				<br />
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{funcionarioResumen.totalGasto ? funcionarioResumen.totalGasto : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTO EN COMISIONES EN EL PERIODO SELECCIONADO</strong></p>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{complementarioPerfil.ctoTotalComisNac ? complementarioPerfil.ctoTotalComisNac : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTO EN COMISIONES NACIONALES</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{ ( (funcionarioResumen.totalGasto - complementarioPerfil.ctoTotalComisNac) ? (funcionarioResumen.totalGasto - complementarioPerfil.ctoTotalComisNac) : 0 ) | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTO EN COMISIONES INTERNACIONALES</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br />
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{ grafViaticosNacionales + grafViaticosInter ? grafViaticosNacionales + grafViaticosInter : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>TOTAL DE GASTO EN VIÁTICOS</strong></p>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{grafViaticosNacionales ? grafViaticosNacionales : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTOS EN VIÁTICOS NACIONALES</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{ grafViaticosInter ? grafViaticosInter : 0  | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTOS EN VIÁTICOS INTERNACIONALES</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<br />
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{ grafGtosPasajesNac + grafGtosPasajesInter ? grafGtosPasajesNac + grafGtosPasajesInter : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>TOTAL DE GASTO EN PASAJES</strong></p>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{grafGtosPasajesNac ? grafGtosPasajesNac : 0 | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTOS EN PASAJES NACIONALES</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{ grafGtosPasajesInter ? grafGtosPasajesInter : 0  | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTOS EN PASAJES INTERNACIONALES</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				 <br />
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{ ( (funcionarioResumen.totalGasto / funcionarioResumen.totalViajes) ? (funcionarioResumen.totalGasto / funcionarioResumen.totalViajes) : 0 ) | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTO PROMEDIO POR COMISIÓN</strong></p>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{ ( (complementarioPerfil.ctoTotalComisNac / complementarioPerfil.comisNac) ? (complementarioPerfil.ctoTotalComisNac / complementarioPerfil.comisNac) : 0 ) | currency:"$":0}}</span></strong></h2>
+								<p><strong>GASTO PROMEDIO POR COMISIÓN NACIONAL</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{ ( (funcionarioResumen.totalGasto - complementarioPerfil.ctoTotalComisNac) / (funcionarioResumen.totalViajes - complementarioPerfil.comisNac) ? (funcionarioResumen.totalGasto - complementarioPerfil.ctoTotalComisNac) / (funcionarioResumen.totalViajes - complementarioPerfil.comisNac) :0 )| currency:"$":0 }}</span></strong></h2>
+								<p><strong>GASTO PROMEDIO POR COMISIÓN INTERNACIONAL</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
 
-                <h2><strong><span>{{funcionarioResumen.totalGasto | currency:"$":0}}</span></strong></h2>
-                <p><strong>GASTO EN COMISIONES EN EL PERIODO SELECCIONADO</strong></p>
-
+				<br/>
+				<div class="funcionario-nombre">
+					<table>
+						<tr>
+							<td colspan="2">
+								<h2><strong><span>{{grafPorcentajes.totalDiasViaje}}</span></strong></h2>
+								<p><strong>TOTAL DE DÍAS DE TRABAJO EN COMISIÓN</strong></p>
+							</td>
+						</tr>
+						<tr><td>&nbsp;</td></tr>
+						<tr>
+							<td>
+								<h2><strong><span>{{diasTrabajoNacionales.diasTrabajoNac}}</span></strong></h2>
+								<p><strong>DÍAS DE TRABAJO EN COMISIONES NACIONALES</strong></p>
+							</td>
+							<td>
+								<h2><strong><span>{{(grafPorcentajes.totalDiasViaje - diasTrabajoNacionales.diasTrabajoNac)}}</span></strong></h2>
+								<p><strong>DÍAS DE TRABAJO EN COMISIONES INTERNACIONALES</strong></p>
+							</td>
+						</tr>
+					</table>
+				</div>
+				
                 <br/>
                 <div class="row">
                     <div class="col-md-10 col-sm-8 col-xs-12 col-md-offset-1 col-sm-offset-2">
@@ -58,7 +187,7 @@
     <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6">
             <div class="panel panel-default panel-graf">
-                <div class="panel-heading">Monto de viáticos usados a la fecha. <br><i>Los gastos sin comprobantes, son aquellos permitidos por la normativa aplicable.</i></div>
+                <div class="panel-heading">Monto de viáticos usados a la fecha. <br><i>* Gastos de comprobación diversa, se trata de gastos justificados bajo modalidad distinta por tratarse de erogaciones para las que no se obtuvo factura o recibo, de acuerdo al numeral VIII Requisitos de los comprobantes fiscales de los Lineamientos internos que regulan la asignación de comisiones, viáticos y pasajes nacionales e internacionales del INAI. (En caso de otros sujetos obligados, se reportarán los gastos sin comprobantes de acuerdo a su normativa).</i></div>
                 <div class="panel-body">
                     <canvas id="bar" class="chart chart-bar" chart-legend="true" chart-series="grafViaticos.series"
                             chart-data="grafViaticos.values" chart-labels="grafViaticos.labels">
@@ -155,7 +284,7 @@
 								</select>
 							</div>
 							
-							</div>
+		</div>
 							
 						</form>
             <table st-table="viajes" st-safe-src="viajesSafe" class="table table-striped">
@@ -186,12 +315,139 @@
                             <pagination total-items="filterList.length" items-per-page="pageSize" ng-model="currentPage" max-size="5" class="pagination-sm" boundary-links="true" previous-text="<" next-text=">" first-text="<<" last-text=">>"></pagination>
                         </td>
                     </tr>
-                </tfoot>
+                </tfoot>				
             </table>
+			
+			
+		<!-- <div class="row">
+			<div class="cell-container panel-body">
+                <h3 class="text-center"> Más información de {{slcDependencia.siglas}}</h3>		
+			</div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="col panel panel-default">
+                    <div class="panel-heading text-center"><h5>Comisiones recientes de {{slcDependencia.siglas}}</h5></div>
+					
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:10px !important; color:#9302CF;" onclick="muestraTitularesCR();" id="lnkTit" class="custom-button-home animate-all" style="width:25%;">Titulares</label> | <label style="cursor:pointer; font-size:10px !important;" onclick="ocultaTitularesCR();" id="lnkTod" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+					
+                    <div class="list-group" id="lstTodos" style="display:none;">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresViajes">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-map-marker icon-circle size-4 gray"></i></h3>
+                            </div>
+							<div class="col-sm-10" id="fecSmall">
+                                <label class="big-blue">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</label><br/>
+								{{f.ciudadDestino}}, {{f.paisDestino}} <br/>
+                                <a href="#/viaje/{{f.id}}">{{f.nombreEvento| uppercase | limitTo: 50}}...</a><br/>
+                                <small class="gray">Del {{f.fechaInicio}} al {{f.fechaFin}}</small> <br/>
+                            </div>
+						</div>
+                    </div>
+					
+					<div class="list-group" id="lstTitulares">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresViajesTitulares">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-map-marker icon-circle size-4 gray"></i></h3>
+                            </div>
+							<div class="col-sm-10" id="fecSmall">
+                                <label class="big-blue">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</label><br/>
+								{{f.ciudadDestino}}, {{f.paisDestino}} <br/>
+                                <a href="#/viaje/{{f.id}}">{{f.nombreEvento| uppercase | limitTo: 50}}...</a><br/>
+                                <small class="gray">Del {{f.fechaInicio}} al {{f.fechaFin}}</small> <br/>
+                            </div>
+						</div>
+                    </div>
+					
+					
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=1" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="col panel panel-default ">
+                    <div class="panel-heading text-center"><h5 class="text-center">Por presupuesto ejercido</h5></div>
+										
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:10px !important; color:#9302CF;" onclick="muestraTitularesPE();" id="lnkTitTvt" class="custom-button-home animate-all" style="width:25%;">Titulares</label> | <label style="cursor:pointer; font-size:10px !important;" onclick="ocultaTitularesPE();" id="lnkTodTvt" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+										
+                    <div class="list-group" id="lstTodosServ" style="display:none;">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresServidores">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+                            </div>
+                            <div class="col-sm-10">
+                                <a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+                                <small class="gray">{{f.cargo| uppercase}}</small> <br/>
+                                <span class="monto">{{f.totalGasto| currency: "$"}}</span>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div class="list-group" id="lstTitularesServ">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresServidoresTitulares">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+                            </div>
+                            <div class="col-sm-10">
+                                <a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+                                <small class="gray">{{f.cargo| uppercase}}</small> <br/>
+                                <span class="monto">{{f.totalGasto| currency: "$"}}</span>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=2" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-4">
+                <div class="col panel panel-default ">
+                    <div class="panel-heading text-center"><h5 class="text-center">Por comisiones realizadas</h5></div>
+					
+					<div style="text-align:center; border: 1px #08c4c4;" class="panel-heading text-center" style="font-size: 12px !important;">
+						<label style="cursor:pointer; font-size:10px !important; color:#9302CF;" onclick="muestraTitularesCRea();" id="lnkTitSvc" class="custom-button-home animate-all" style="width:25%;">Titulares</label> | <label style="cursor:pointer; font-size:10px !important;" onclick="ocultaTitularesCRea();" id="lnkTodSvc" class="custom-button-home animate-all">Todos los servidores públicos</label>
+					</div>
+					
+                    <div class="list-group" id="lstTodosComis" style="display:none;">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresServidoresViajes">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+                            </div>
+                            <div class="col-sm-10">
+                                <p><a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+                                    <small class="gray">{{f.cargo| uppercase}}</small><br/>
+                                    <label class="comisionesTxt">{{f.totalViajes}} comisiones realizadas</label></p>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div class="list-group" id="lstTitularesComis">
+                        <div class="list-group-item clearfix" ng-repeat="f in tresServidoresViajesTitulares">
+                            <div class="col-sm-2">
+                                <h3><i class="fa fa-user icon-circle size-4 gray"></i></h3>
+                            </div>
+                            <div class="col-sm-10">
+                                <p><a class="big-blue" href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a><br/>
+                                    <small class="gray">{{f.cargo| uppercase}}</small><br/>
+                                    <label class="comisionesTxt">{{f.totalViajes}} comisiones realizadas</label></p>
+                            </div>
+                        </div>
+                    </div>
+					
+					<div style="text-align:center;" class="col-sm-12 breadcrumb-custom">
+						<a href="#/funcionario?ord=3" class="custom-button animate-all">Ver otros servidores públicos</a>
+					</div>
+                </div>
+            </div>
+        </div> -->
+		
+		
         </div>
-    </div>
-
-
+    </div>		
 
     <script type="text/ng-template" id="pagination-template.html">
         <span class="pull-right">{{currentPage}} / {{numPages}}</span>

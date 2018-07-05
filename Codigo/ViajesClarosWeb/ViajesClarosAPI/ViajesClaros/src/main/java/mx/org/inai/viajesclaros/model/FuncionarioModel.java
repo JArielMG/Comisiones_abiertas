@@ -49,7 +49,9 @@ public class FuncionarioModel implements java.io.Serializable {
     private Double viajeMasCostoso;
     private Integer idViajeMasCostoso;
     private String ultimaComision;
-
+    private String comisNac;
+    private String ctoTotalComisNac;
+                                    
     /**
      * @return the id
      */
@@ -357,4 +359,34 @@ public class FuncionarioModel implements java.io.Serializable {
     public void setIdViajeMasCostoso(Integer idViajeMasCostoso) {
         this.idViajeMasCostoso = idViajeMasCostoso;
     }
+    
+   /**
+     * @param comisNac the comisNac to set
+     */
+    public void setComisNac(String comisNac) {
+        this.comisNac = comisNac;
+    }
+    
+    /**
+     * @return the comisNac
+     */
+    public String getComisNac() {
+        return comisNac;
+    }
+    
+    /**
+     * @param comisNac the comisNac to set
+     */
+    public void setCtoTotalComisNac(String ctoTotalComisNac) {
+        this.ctoTotalComisNac = ctoTotalComisNac;
+    }
+    
+    /**
+     * @return the ctoTotalComisNac
+     */
+    public String getCtoTotalComisNac() {
+        return ctoTotalComisNac;
+    }
+        
+            
 }

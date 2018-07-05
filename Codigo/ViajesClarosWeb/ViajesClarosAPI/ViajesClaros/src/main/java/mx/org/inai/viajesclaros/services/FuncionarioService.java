@@ -372,6 +372,130 @@ public class FuncionarioService {
     }
     
     /**
+     * Obtiene los complementos del funcionario (nombre, dependencia, gasto
+     * total, total viajes)
+     *
+     * @param func
+     * @param anio
+     * @return
+     */
+    public FuncionarioModel getComplementariosPerfilPorFuncionario(FuncionarioModel func, Integer anio) {
+        Session session = em.unwrap(Session.class);
+
+        List<FuncionarioModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_complementa_perfil_por_persona_anio(:idFuncionario, :nom, :ap1, :ap2, :anio)")
+                .setParameter("idFuncionario", func.getId())
+                .setParameter(("nom"), func.getNombres())
+                .setParameter("ap1", func.getApellido1())
+                .setParameter("ap2", func.getApellido2())
+                .setParameter("anio", anio)
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        FuncionarioModel funcionario = new FuncionarioModel();
+                        funcionario.setComisNac(tuple[0].toString());
+                        funcionario.setCtoTotalComisNac(tuple[1].toString());
+                        return funcionario;
+                    }
+                })
+                .list();
+            }else{
+                list = session.createSQLQuery("CALL get_complementa_perfil_por_persona(:idFuncionario, :nom, :ap1, :ap2)")
+                .setParameter("idFuncionario", func.getId())
+                .setParameter(("nom"), func.getNombres())
+                .setParameter("ap1", func.getApellido1())
+                .setParameter("ap2", func.getApellido2())
+                .setResultTransformer(new BasicTransformerAdapter() {
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public Object transformTuple(Object[] tuple, String[] aliases) {
+                        FuncionarioModel funcionario = new FuncionarioModel();
+                        funcionario.setComisNac(tuple[0].toString());
+                        funcionario.setCtoTotalComisNac(tuple[1].toString());
+                        return funcionario;
+                    }
+                })
+                .list();
+            }
+
+        session.flush();
+        session.clear();
+        if (list.size() > 0) {
+            return list.get(0);
+        } else {
+            return new FuncionarioModel();
+        }
+    }
+    
+    
+    /**
+     * Obtiene días trabajados nacionales del funcionario (nombre, dependencia, gasto
+     * total, total viajes)
+     *
+     * @param func
+     * @param anio
+     * @return
+     */
+    public PorcentajeDiasComisionModel getDiasTrabajadosComisNacionales(FuncionarioModel funcionario, Integer anio) {
+        try {
+            Session session = em.unwrap(Session.class);
+
+            List<PorcentajeDiasComisionModel> list;
+            if (anio>0){
+                list = session.createSQLQuery("CALL get_dias_trabajo_comisiones_nacionales_por_funcionario_anio(:idFuncionario, :nom, :ap1, :ap2, :anio)")
+                    .setParameter("idFuncionario", funcionario.getId())
+                    .setParameter("nom", funcionario.getNombres())
+                    .setParameter(("ap1"), funcionario.getApellido1())
+                    .setParameter("ap2", funcionario.getApellido2())
+                    .setParameter("anio", anio)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            PorcentajeDiasComisionModel model = new PorcentajeDiasComisionModel();
+                            model.setDiasTrabajoNac(((BigDecimal) tuple[0]).intValue());
+                            return model;
+                        }
+                    })
+                    .list();
+            }else{
+            list = session.createSQLQuery("CALL get_dias_trabajo_comisiones_nacionales_por_funcionario(:idFuncionario, :nom, :ap1, :ap2)")
+                    .setParameter("idFuncionario", funcionario.getId())
+                    .setParameter("nom", funcionario.getNombres())
+                    .setParameter(("ap1"), funcionario.getApellido1())
+                    .setParameter("ap2", funcionario.getApellido2())
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            PorcentajeDiasComisionModel model = new PorcentajeDiasComisionModel();
+                            model.setDiasTrabajoNac(((BigDecimal) tuple[0]).intValue());
+                            return model;
+                        }
+                    })
+                    .list();
+            }
+            session.flush();
+            session.clear();
+            if (list.size() > 0) {
+                return list.get(0);
+            } else {
+                return new PorcentajeDiasComisionModel();
+            }
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR EL PORCENTAJDE DE DÍAS DE COMISIONES NACIONALES", e);
+            return new PorcentajeDiasComisionModel();
+        }
+    }
+    
+    
+    /**
      * Obtiene el cargo actual del funcionario
      *
      * @param func

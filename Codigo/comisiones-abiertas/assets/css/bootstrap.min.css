@@ -5695,10 +5695,20 @@ a.thumbnail.active, a.thumbnail:focus, a.thumbnail:hover {
     margin-bottom: 20px;
 }
 
+
+.stylocolor{
+	background-color: #08c4c4 !important;
+}
+
+a.stylocolor:hover{
+	background-color: #777 !important;
+}
+
 .list-group-item {
     position: relative;
     display: block;
-    padding: 10px 15px;
+    /*padding: 10px 15px 30px;*/
+	padding: 10px 15px;
     margin-bottom: -1px;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -5870,7 +5880,7 @@ a.list-group-item-danger, button.list-group-item-danger {
 }
 
 .panel {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     background-color: #fff;
     border: 1px solid transparent;
     border-radius: 4px;
@@ -5879,7 +5889,7 @@ a.list-group-item-danger, button.list-group-item-danger {
 }
 
 .panel-body {
-    padding: 15px;
+    padding: 15px 15px 50px;
 }
 
 .panel-heading {

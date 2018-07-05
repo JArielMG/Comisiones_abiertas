@@ -52,10 +52,24 @@ public class GraficaREST {
     }
     
     @GET
+    @Path("getFuncionariosMayorGastoTitulares/{id},{anio}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    public List<FuncionarioModel> getFuncionariosMayorGastoTitulares(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getFuncionariosMayorGastoTitulares(id,anio);
+    }
+    
+    @GET
     @Path("getFuncionariosMasViajes/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
     public List<FuncionarioModel> getFuncionariosMasViajes(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
         return graficaService.getFuncionariosMasViajes(id,anio);
+    }
+    
+    @GET
+    @Path("getFuncionariosMasViajesTitulares/{id},{anio}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    public List<FuncionarioModel> getFuncionariosMasViajesTitulares(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {
+        return graficaService.getFuncionariosMasViajesTitulares(id,anio);
     }
     
     @GET
@@ -155,6 +169,14 @@ public class GraficaREST {
     @Consumes(MediaType.APPLICATION_JSON) 
     public GraficaModel getGraficaViaticosPorFuncionario(FuncionarioModel funcionario,@PathParam("anio") Integer anio) {
         return graficaService.getGraficaViaticosPorFuncionario(funcionario,anio);
+    }
+    
+    @POST
+    @Path("getGraficaViaticosPorFuncionarioNacInter/{anio}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    @Consumes(MediaType.APPLICATION_JSON) 
+    public GraficaModel getGraficaViaticosPorFuncionarioNacInter(FuncionarioModel funcionario,@PathParam("anio") Integer anio) {
+        return graficaService.getGraficaViaticosPorFuncionarioNacInter(funcionario,anio);
     }
     
     @GET

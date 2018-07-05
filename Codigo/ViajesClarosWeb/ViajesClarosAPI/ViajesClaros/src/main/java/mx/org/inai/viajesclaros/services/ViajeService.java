@@ -315,6 +315,7 @@ public class ViajeService {
         }
     }
     
+	
     /**
      * Obtiene los viajes realizados de la ciudad-pais indicados
      * @param viaje

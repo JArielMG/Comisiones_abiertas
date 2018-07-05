@@ -36,10 +36,10 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
     GlobalService.getFuncionarios().then(function(d) {
         $rootScope.funcionarios = d;
     });
-    
+	
     /* Agregar el funcionario seleccionado en el comparador */
     $scope.selectFuncionarioCompara = function($item, $model, $label) {
-        // item es un objeto funcionario (con las propiedades id, nombres, apellido1 y apellido2)
+        // item es un objeto funcionario (con las propiedades id, nombres, apellido1 y apellido2)		
         GlobalService.getPorcentajeDiasComisionFuncionario($item).then(function(d) {
             /* CONSULTAR EL PORCENTAJE DE DÍAS DE COMISIÓN Y DÍAS EN LA INSTITUCIÓN */
             var porcentajes = d;
@@ -47,15 +47,26 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
             $item.chartPorc.data = [$filter('number')(porcentajes.porcentajeViaje, 2), $filter('number')(porcentajes.porcentajeInstitucion, 2)];
             $item.chartPorc.labels = [$filter('number')(porcentajes.porcentajeViaje, 2) + ' % de días de comisión del total de días laborales', 'Tiempo en la institución'];
             $item.totalDiasViaje = Math.abs(porcentajes.totalDiasViaje);
-            $item.totalDiasInstitucion = porcentajes.totalDiasInstitucion;
             
             /* quitarlo de la lista de funcionarios y pasarlo a la lista de seleccionados*/
             removeFuncionarioByNombre($item);
-            $rootScope.funcionariosCompara.push($item);
+            //$rootScope.funcionariosCompara.push($item);
             $scope.funcSelected = "";
         });
+		
+		GlobalService.getComplementariosPerfil($item).then(function(d) {
+		   //$rootScope.complementarioPerfil = d;	
+		   $item.ctoTotalComisNac = d.ctoTotalComisNac;
+		   $item.comisNac = d.comisNac;
+		});
+		
+		GlobalService.getDiasTrabajados($item).then(function(d) {
+		   //$rootScope.diasTrabajoNacionales = d;
+		   $item.diasTrabajoNac = d.diasTrabajoNac;
+		});
+		$rootScope.funcionariosCompara.push($item);
     };
-    
+    	
     $scope.removeFuncionarioCompara = function(index) {
         /* Regresar el funcionario a la lista original */
         $scope.funcionarios.push($rootScope.funcionariosCompara[index]);

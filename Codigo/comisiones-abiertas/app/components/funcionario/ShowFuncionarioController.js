@@ -97,10 +97,43 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
         ShowFuncionarioService.getEncabezados(d.idDependencia).then(function(d) { 
             $scope.headers = d;
         });
+		
+		/*ShowFuncionarioService.getUltimosViajes(d.idDependencia).then(function (d) {
+			$scope.tresViajes = d;
+		});
+		
+		ShowFuncionarioService.getUltimosViajesTitulares(d.idDependencia).then(function (d) {
+			$scope.tresViajesTitulares = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMayorGasto(d.dependencia).then(function (d) {
+			$scope.tresServidores = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMayorGastoTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresTitulares = d;
+		});
+
+		ShowFuncionarioService.getFuncionariosMasViajes(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajes = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMasViajesTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajesTitulares = d;
+		});*/
+		
     });
     
     ShowFuncionarioService.getFuncionarioResumen(funcionario).then(function(d) {
        $scope.funcionarioResumen = d; 
+    });
+	
+	ShowFuncionarioService.getComplementariosPerfil(funcionario).then(function(d) {
+       $scope.complementarioPerfil = d; 
+    });
+	
+	ShowFuncionarioService.getDiasTrabajados(funcionario).then(function(d) {
+       $scope.diasTrabajoNacionales = d; 
     });
 
     ShowFuncionarioService.getCargoFuncionario(funcionario).then(function(d) {
@@ -127,7 +160,19 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
             $scope.grafViaticos.values[0].push(d.values[i].value);
         }
     });
-    
+	
+	ShowFuncionarioService.getGraficaViaticosPorFuncionarioNacInter(funcionario).then(function(d) {
+        $scope.grafViaticos = {labels: [], values: [[]], series: ["", ""]};
+        for (var i=0; i<d.values.length; i++) {
+            //$scope.grafViaticos.labels.push(d.values[i].label);
+            //$scope.grafViaticos.values[0].push(d.values[i].value);
+			$scope.grafViaticosNacionales = d.values[0].value;
+			$scope.grafViaticosInter = d.values[1].value;
+			$scope.grafGtosPasajesNac = d.values[2].value;
+			$scope.grafGtosPasajesInter = d.values[3].value;
+        }
+    });
+    	
     $scope.fbShare = function() {
         window.open(
         'https://www.facebook.com/sharer/sharer.php?u='+'http://viajesclaros.inai.mx/funcionario/'+idFuncionario, 

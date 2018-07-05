@@ -45,4 +45,30 @@ myApp.service('GlobalService', ['$rootScope', '$http', 'config', '$log', functio
         return promise;
     };
     
+	/**
+         * obtiene los datos complementarios para el perfil del funcionario
+         * @param {type} idFuncionario
+         * @returns {undefined}
+         */
+		this.getComplementariosPerfil = function (funcionarioObj) {
+            var url = config.restUrl + "funcionario/getComplementariosPerfilPorFuncionario/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionarioObj).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+		
+		/**
+         * obtiene los días trabajados en comisiones nacionales para funcionario
+         * @param {type} idFuncionario
+         * @returns {undefined}
+         */
+		this.getDiasTrabajados = function (funcionarioObj) {
+            var url = config.restUrl + "funcionario/getDiasTrabajadosComisNacionales/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionarioObj).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+		
 }]);
