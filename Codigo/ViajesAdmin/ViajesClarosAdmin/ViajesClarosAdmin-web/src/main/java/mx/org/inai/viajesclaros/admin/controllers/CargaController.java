@@ -63,7 +63,7 @@ public class CargaController {
 
     @PostConstruct
     public void init() {
-        setIdDependencia((Integer) 4);
+        setIdDependencia((Integer) 1);
         columnEdit = new CargaColumnDomain();
         columnInsert = new CargaColumnDomain();
         columnToDelete = new CargaColumnDomain();

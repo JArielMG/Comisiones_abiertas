@@ -14,6 +14,8 @@ public class ComisionDetalleVO implements Serializable {
     private String valorTexto;
     private Double valorNumerico;
     private Date valorFecha;
+    private String etiqueta;
+    private String subtipo;
     
 	public Integer getIdDetalle() {
 		return idDetalle;
@@ -57,5 +59,16 @@ public class ComisionDetalleVO implements Serializable {
 	public void setValorFecha(Date valorFecha) {
 		this.valorFecha = valorFecha;
 	}
-    
+	public String getEtiqueta() {
+		return etiqueta;
+	}
+	public void setEtiqueta(String etiqueta) {
+		this.etiqueta = etiqueta;
+	}
+	public String getSubtipo() {
+		return subtipo;
+	}
+	public void setSubtipo(String subtipo) {
+		this.subtipo = subtipo;
+	}
 }

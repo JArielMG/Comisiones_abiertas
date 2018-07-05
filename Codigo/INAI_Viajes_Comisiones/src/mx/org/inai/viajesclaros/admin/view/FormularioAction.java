@@ -1,6 +1,19 @@
 package mx.org.inai.viajesclaros.admin.view;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 //import java.sql.Connection;
 import java.sql.SQLException;
 //import java.sql.Date;
@@ -10,14 +23,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 import org.hibernate.Session;
 //import org.hibernate.engine.jdbc.spi.JdbcConnectionAccess;
@@ -30,6 +46,7 @@ import mx.org.inai.viajesclaros.admin.model.BonitaErrorVO;
 import mx.org.inai.viajesclaros.admin.model.CamposFormulario;
 import mx.org.inai.viajesclaros.admin.model.CiudadVO;
 import mx.org.inai.viajesclaros.admin.model.Comisiones;
+import mx.org.inai.viajesclaros.admin.model.ComisionesUsuario;
 import mx.org.inai.viajesclaros.admin.model.DatosFuncionariosVO;
 import mx.org.inai.viajesclaros.admin.model.EstadoVO;
 import mx.org.inai.viajesclaros.admin.model.FlujosComisionesVO;
@@ -52,6 +69,7 @@ import mx.org.inai.viajesclaros.admin.service.EstadoServices;
 import mx.org.inai.viajesclaros.admin.service.FormulariosServices;
 import mx.org.inai.viajesclaros.admin.service.PaisServices;
 import mx.org.inai.viajesclaros.admin.service.ProcesoServices;
+import mx.org.inai.viajesclaros.admin.service.UserServices;
 import mx.org.inai.viajesclaros.admin.util.EstatusComisiones;
 //import mx.org.inai.viajesclaros.admin.util.TipoControl;
 import mx.org.inai.viajesclaros.admin.util.TipoDato;
@@ -64,6 +82,7 @@ import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
 
 @WebServlet(name = "FormularioAction" , urlPatterns = { "/formularioAction" })
+@MultipartConfig
 public class FormularioAction extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
@@ -109,8 +128,32 @@ public class FormularioAction extends HttpServlet {
 			action = "captura";
 		}
 		
-		//Se ejecuta al cargar el formulario de solicitud de comisión
-		if (action.equals("oficioComision")||action.equals("oficioViaticos")||action.equals("oficioGastos")||action.equals("oficioPublicacion")) {
+		if (action.equals("listarComisiones")) {
+			SesionVO sesion = (SesionVO)request.getSession().getAttribute("sesion");
+			String username = sesion.getUsuario();//currentUser.getPrincipal().toString();
+			
+			//Se obtienen los datos del funcionario
+			ArrayList<DatosFuncionariosVO> datosFuncionario = formSrv.obtenerDatosFuncionario(username);
+			
+			//Se valida que exista el funcionario
+			if (datosFuncionario!=null&&!datosFuncionario.isEmpty()){
+				DatosFuncionariosVO funcionario = datosFuncionario.get(0);
+				
+				List <String> encabezados=new ArrayList<String>();
+				encabezados.add(0, "Id comisión");
+				encabezados.add(1, "Estatus");
+				encabezados.add(2, "Fecha salida");
+				encabezados.add(3, "Fecha regreso");
+				encabezados.add(4, "País destino");
+				encabezados.add(5, "Ciudad destino");
+				
+				List<ComisionesUsuario> comisionesUsuario = formSrv.obtenerComisionesUsuario(funcionario.getIdPersona());
+				
+				request.setAttribute("encabezados", encabezados);
+				request.setAttribute("valoresTabla", comisionesUsuario);	
+				//Se valida que exista una comisión en curso
+			}
+		}else if (action.equals("verDetalleComision")) {
 			//org.apache.shiro.subject.Subject currentUser = SecurityUtils.getSubject();
 			SesionVO sesion = (SesionVO)request.getSession().getAttribute("sesion");
 			String username = sesion.getUsuario();//currentUser.getPrincipal().toString();
@@ -122,28 +165,28 @@ public class FormularioAction extends HttpServlet {
 			if (datosFuncionario!=null&&!datosFuncionario.isEmpty()){
 				DatosFuncionariosVO funcionario = datosFuncionario.get(0);
 				
-				//Se buscan todas las comisiones en curso que tenga el funcionario
-				ArrayList<Comisiones> comisionesEnCursoFuncionario = formSrv.obtenerComisionesEnCursoFuncionario(funcionario.getIdPersona());
-				System.out.println("comisionesEnCursoFuncionario.size(): "+comisionesEnCursoFuncionario.size());
-				//Se valida que exista una comisión en curso
-				if (comisionesEnCursoFuncionario!=null&&!comisionesEnCursoFuncionario.isEmpty()){
+				//Se busca la comision seleccionada
+
+				String idComision = request.getParameter("id_comision");
+				
+				ArrayList<Comisiones> comisionFuncionario = formSrv.obtenerComisionFuncionario(Integer.valueOf(idComision));
+				
+				//Se valida que exista la comisión
+				if (comisionFuncionario!=null&&!comisionFuncionario.isEmpty()){
 					
-					Comisiones comisionEnCurso = comisionesEnCursoFuncionario.get(0);
+					Comisiones comisionEnCurso = comisionFuncionario.get(0);
 					String estatusTexto = regresaEstatusComisionEmpleado(comisionEnCurso.getEstatus());
-					
-					request.setAttribute("nombreFormulario", "Solicitud de Comisión");
-					request.setAttribute("error", false);
 					
 					List<SeccionesFormulario> seccionesFormulario = new ArrayList<SeccionesFormulario>();
 					
 					
-					if (action.equals("oficioComision")){
+					if (comisionEnCurso.getEstatus().equals("C")||comisionEnCurso.getEstatus().equals("EA")||comisionEnCurso.getEstatus().equals("R")){
 						seccionesFormulario = formSrv.getCamposFormulario(1, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
-					}else if (action.equals("oficioViaticos")){
+					}else if (comisionEnCurso.getEstatus().equals("A")||comisionEnCurso.getEstatus().equals("EV")||comisionEnCurso.getEstatus().equals("RV")){
 						seccionesFormulario = formSrv.getCamposFormulario(2, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
-					}else if (action.equals("oficioGastos")){
+					}else if (comisionEnCurso.getEstatus().equals("F")||comisionEnCurso.getEstatus().equals("EG")||comisionEnCurso.getEstatus().equals("RG")){
 						seccionesFormulario = formSrv.getCamposFormulario(3, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
-					}else if (action.equals("oficioPublicacion")){ // Cambio MAGC
+					}else if (comisionEnCurso.getEstatus().equals("CM")||comisionEnCurso.getEstatus().equals("EP")||comisionEnCurso.getEstatus().equals("RP")){
 						seccionesFormulario = formSrv.getCamposFormulario(4, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
 					}
 					
@@ -158,8 +201,13 @@ public class FormularioAction extends HttpServlet {
 								try {
 									if (campoFormulario.getSubtipo().equals("HORA"))
 										campoFormulario.setValorCampo(formatterTime.format(formatterDateTime.parse(formSrv.obtenerDetalleComision(comisionEnCurso.getIdComision(), campoFormulario.getTabla(), campoFormulario.getCampo(), (short) 3))));
-									else
-										campoFormulario.setValorCampo(formatterDate.format(formatterDate.parse(formSrv.obtenerDetalleComision(comisionEnCurso.getIdComision(), campoFormulario.getTabla(), campoFormulario.getCampo(), (short) 3))));
+									else{
+										String fechaString = formSrv.obtenerDetalleComision(comisionEnCurso.getIdComision(), campoFormulario.getTabla(), campoFormulario.getCampo(), (short) 3);
+										if (fechaString!=null&&!fechaString.equals(""))
+											campoFormulario.setValorCampo(formatterDate.format(formatterDate.parse(fechaString)));
+										else
+											campoFormulario.setValorCampo("");
+									}
 								} catch (ParseException e) {
 									// TODO Auto-generated catch block
 									e.printStackTrace();
@@ -169,19 +217,19 @@ public class FormularioAction extends HttpServlet {
 						}
 					}
 					
-					if (action.equals("oficioComision")){
+					if (comisionEnCurso.getEstatus().equals("C")||comisionEnCurso.getEstatus().equals("EA")||comisionEnCurso.getEstatus().equals("R")){
 						// Se setean los atributos para el formulario cuando el estatus es "C"
 						if (comisionEnCurso.getEstatus().equals("C")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisión");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "C");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("R")){
-							request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisión");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -191,41 +239,41 @@ public class FormularioAction extends HttpServlet {
 							request.setAttribute("estatus", "R");
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
-						}else if(comisionEnCurso.getEstatus().equals("A")){
-							request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+						/*}else if(comisionEnCurso.getEstatus().equals("A")){
+							request.setAttribute("nombreFormulario", "Solicitud de comisión");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el Formulario de Solicitud de Viáticos.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de solicitud de viáticos y pasajes.");
 					
-						
+						*/
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EA")){
-							request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisión");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos.");
+							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos y pasajes.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
-						else{
-							request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+						/*else{
+							request.setAttribute("nombreFormulario", "Solicitud de comisión");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud autorizada en el menú \"Reportes Comisiones\".");
-						}
+							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+						}*/
 					}
 					
-					if (action.equals("oficioViaticos")){
+					else if (comisionEnCurso.getEstatus().equals("A")||comisionEnCurso.getEstatus().equals("EV")||comisionEnCurso.getEstatus().equals("RV")){
 						// Se setean los atributos para el formulario cuando el estatus es "C"
 						if (comisionEnCurso.getEstatus().equals("A")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "A");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("RV")){
-							request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -235,41 +283,41 @@ public class FormularioAction extends HttpServlet {
 							request.setAttribute("estatus", "RV");
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
-						}else if(comisionEnCurso.getEstatus().equals("F")){
-							request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+						/*}else if(comisionEnCurso.getEstatus().equals("F")){
+							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el Formulario de Comprobación de Gastos.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el informe de comisión y el desglose de gastos al regreso de su comisión conforme a los Lineamientos internos que regulan la asignación de comisiones, viáticos y pasajes nacionales e internacionales para el Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales.");
 					
-						
+						*/
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EV")){
-							request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos.");
+							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos y pasajes.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
-						else{
-							request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+						/*else{
+							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud autorizada en el menú \"Reportes Comisiones\".");
-						}
+							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+						}*/
 					}
 					
-					if (action.equals("oficioGastos")){
+					else if (comisionEnCurso.getEstatus().equals("F")||comisionEnCurso.getEstatus().equals("EG")||comisionEnCurso.getEstatus().equals("RG")){
 						// Se setean los atributos para el formulario cuando el estatus es "C"
 						if (comisionEnCurso.getEstatus().equals("F")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "F");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("RG")){
-							request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -279,26 +327,26 @@ public class FormularioAction extends HttpServlet {
 							request.setAttribute("estatus", "RG");
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
-						}else if(comisionEnCurso.getEstatus().equals("CM")){
-							request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+						/*}else if(comisionEnCurso.getEstatus().equals("CM")){
+							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el Formulario de Publicación de la Comisión.");
-					
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de publicación de la comisión.");
+						*/
 						
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EG")){
-							request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la comprobación de gastos.");
+							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con el desglose de gastos.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
-						else{
-							request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+						/*else{
+							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud autorizada en el menú \"Reportes Comisiones\".");
-						}
+							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+						}*/
 						
 						List<RegistrosGastosComisionVO> gastosFuncionario = formSrv.obtenerRegistrosGastosIdComision(comisionEnCurso.getIdComision());
 						
@@ -309,30 +357,30 @@ public class FormularioAction extends HttpServlet {
 						}
 					}
 					
-					if (action.equals("oficioPublicacion")){
+					else if (comisionEnCurso.getEstatus().equals("CM")||comisionEnCurso.getEstatus().equals("EP")||comisionEnCurso.getEstatus().equals("RP")||comisionEnCurso.getEstatus().equals("P")){
 						// Se setean los atributos para el formulario cuando el estatus es "CM"
 						if (comisionEnCurso.getEstatus().equals("CM")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Oficio de Publicación");
+							request.setAttribute("nombreFormulario", "Informe de comisión");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "CM");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("RP")){
-							request.setAttribute("nombreFormulario", "Oficio de Publicación");
+							request.setAttribute("nombreFormulario", "Informe de comisión");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
-							request.setAttribute("mensajeRechazada", estatusTexto+". Favor de corregir su oficio a fin de que sea aprobado.");
+							request.setAttribute("mensajeRechazada", estatusTexto+". Favor de corregir su informe a fin de que sea aprobado.");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "RP");
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
 						}else if(comisionEnCurso.getEstatus().equals("P")){
-							request.setAttribute("nombreFormulario", "Oficio de Publicación");
+							request.setAttribute("nombreFormulario", "Informe de comisión");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
 							request.setAttribute("mensajeAutorizada", estatusTexto+". Ha finalizado el proceso de publicación de la comisión.");
@@ -340,23 +388,23 @@ public class FormularioAction extends HttpServlet {
 						
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EP")){
-							request.setAttribute("nombreFormulario", "Oficio de Publicación");
+							request.setAttribute("nombreFormulario", "Informe de comisión");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos.");
+							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con el proceso de publicación.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
-						else{
-							request.setAttribute("nombreFormulario", "Oficio de Publicación");
+						/*else{
+							request.setAttribute("nombreFormulario", "Informe de comisión");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma  o puede imprimir su solicitud autorizada en el menú \"Reportes Comisiones\".");
-						}
+							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma  o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+						}*/
 					}
 					
 					
 				}
 				//Caso que aplica para cuando el funcionario no tiene comisiones en curso
-				else if (comisionesEnCursoFuncionario!=null&&comisionesEnCursoFuncionario.isEmpty()&&action.equals("oficioComision")){
+				else if (comisionFuncionario!=null&&comisionFuncionario.isEmpty()&&idComision.equals("0")){
 					
 					// Se obtiene el formulario vacío
 					List<SeccionesFormulario> seccionesFormulario = formSrv.getCamposFormulario(1, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
@@ -364,16 +412,18 @@ public class FormularioAction extends HttpServlet {
 					// Se precargan los datos del funcionario en el formulario
 					for (SeccionesFormulario seccionFormulario:seccionesFormulario){
 						for (CamposFormulario campoFormulario:seccionFormulario.getCamposFormulario()){
-							if (campoFormulario.getCampo().equals("area_funcionario")){
-								campoFormulario.setValorCampo(funcionario.getNombreArea());
+							if (campoFormulario.getCampo().equals("nombre_area")){
+								campoFormulario.setValorCampo(formSrv.obtenerAreaAprobador(funcionario.getUsuario(), 1).get(0));
 				        	}else if(campoFormulario.getCampo().equals("apellido_paterno")){
 								campoFormulario.setValorCampo(funcionario.getApellidoPaterno());
 				        	}else if(campoFormulario.getCampo().equals("apellido_materno")){
 								campoFormulario.setValorCampo(funcionario.getApellidoMaterno());
 				        	}else if(campoFormulario.getCampo().equals("nombres")){
 								campoFormulario.setValorCampo(funcionario.getNombres());
-				        	}else if(campoFormulario.getCampo().equals("cargo_funcionario")){
+				        	}else if(campoFormulario.getCampo().equals("cargo")){
 								campoFormulario.setValorCampo(funcionario.getCargo());
+				        	}else if(campoFormulario.getCampo().equals("INAI_tipo_de_representacion")){
+								campoFormulario.setValorCampo(funcionario.getTipoRepresentacion());
 				        	}
 						}
 					}
@@ -382,26 +432,26 @@ public class FormularioAction extends HttpServlet {
 					request.setAttribute("error", false);
 					// Se setea idComision como 0 para indicar que 
 					request.setAttribute("idComision", 0);
-					request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+					request.setAttribute("nombreFormulario", "Solicitud de comisión");
 					request.setAttribute("seccionesFormulario", seccionesFormulario);
 					request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 					request.setAttribute("estatus", "C");
-				}else{
+				}/*else{
 					if (action.equals("oficioViaticos"))
-						request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+						request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 					else if (action.equals("oficioGastos"))
-						request.setAttribute("nombreFormulario", "Comprobación de Gastos");
+						request.setAttribute("nombreFormulario", "Desglose de gastos");
 					else if (action.equals("oficioPublicacion"))
-						request.setAttribute("nombreFormulario", "Oficio de Publicación");
+						request.setAttribute("nombreFormulario", "Informe de comisión");
 					request.setAttribute("error", true);
 					request.setAttribute("mensajeError", "Actualmente no cuenta con comisiones en curso. Si desea crear una comisión vaya al menú \"Solicitud de Comisión\"");
-				}
+				}*/
 				
 				request.setAttribute("tipoRepresentacionFun", funcionario.getTipoRepresentacion());
 				
 			// Se setean los atributos para generar un mensaje de error al no haber encontrado información del funcionario
 			}else{
-				request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisión");
 				request.setAttribute("error", true);
 				request.setAttribute("mensajeError", "No se encontro información del funcionario para realizar la Solicitud de Comisión");
 			}
@@ -449,9 +499,12 @@ public class FormularioAction extends HttpServlet {
 				if (tipoDato.equals(TipoDato.TEXTO))
 					formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, valorParam, Double.valueOf(0), null,Short.valueOf("2"));
 											
-				else if (tipoDato.equals(TipoDato.NUMERO))
-					formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(valorParam), null,Short.valueOf("1"));
-				else if (tipoDato.equals(TipoDato.FECHA))
+				else if (tipoDato.equals(TipoDato.NUMERO)){
+					if (valorParam!=null&&!valorParam.equals(""))
+						formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(valorParam), null,Short.valueOf("1"));
+					else
+						formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf("0"), null,Short.valueOf("1"));
+				}else if (tipoDato.equals(TipoDato.FECHA))
 					try {
 						if (campo.startsWith("hora")){
 							 java.util.Date fechaComodin = new java.util.Date();
@@ -461,7 +514,10 @@ public class FormularioAction extends HttpServlet {
 							 System.out.println("tempDate: "+tempDate+" formatterDateTime.parse(tempDate): "+formatterDateTime.parse(tempDate));
 							formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(0), formatterDateTime.parse(tempDate),Short.valueOf("3"));
 						}else{
-							formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(0), formatterDate.parse(valorParam),Short.valueOf("3"));
+							if (valorParam.equals(""))
+								formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(0), null,Short.valueOf("3"));
+							else
+								formSrv.insertarActualizarComisionDetalle(idComision, tabla, campo, null, Double.valueOf(0), formatterDate.parse(valorParam),Short.valueOf("3"));
 						}
 					} catch (NumberFormatException | ParseException e) {
 						// TODO Auto-generated catch block
@@ -469,13 +525,13 @@ public class FormularioAction extends HttpServlet {
 					}
 			}
 			if (estatus.equals("C")||estatus.equals("R"))
-				request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisión");
 			else if (estatus.equals("A")||estatus.equals("RV"))
-				request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+				request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 			else if (estatus.equals("F")||estatus.equals("RG"))
-				request.setAttribute("nombreFormulario", "Solicitud de Comprobación");
+				request.setAttribute("nombreFormulario", "Desglose de gastos");
 			else if (estatus.equals("CM")||estatus.equals("RP"))
-				request.setAttribute("nombreFormulario", "Solicitud de Publicación");
+				request.setAttribute("nombreFormulario", "Solicitud de publicación");
 			
 			request.setAttribute("idComision", idComision);
 			request.setAttribute("estatus", estatus);
@@ -493,16 +549,16 @@ public class FormularioAction extends HttpServlet {
 			
 			if (estatus.equals("C")||estatus.equals("R")) {
 				sFlujo = "1";
-				request.setAttribute("nombreFormulario", "Solicitud de Comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisión");
 			} else if (estatus.equals("A")||estatus.equals("RV")) {
 				sFlujo = "2";
-				request.setAttribute("nombreFormulario", "Solicitud de Viáticos");
+				request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
 			} else if (estatus.equals("F")||estatus.equals("RG")) {
 				sFlujo = "3";
-				request.setAttribute("nombreFormulario", "Solicitud de Comprobación");
+				request.setAttribute("nombreFormulario", "Desglose de gastos");
 			} else if (estatus.equals("CM")||estatus.equals("RP")) {
 				sFlujo = "4";
-				request.setAttribute("nombreFormulario", "Solicitud de Publicación");
+				request.setAttribute("nombreFormulario", "Solicitud de publicación");
 			}
 			
 			Integer idFlujo = Integer.parseInt(sFlujo);
@@ -563,18 +619,117 @@ public class FormularioAction extends HttpServlet {
 			String idRegistroGastosComision = request.getParameter("id_registro");
 			String idComisionString = request.getParameter("id_comision");
 			
+			Properties prop = new Properties();
+			try {
+				prop.load(UserServices.class.getClassLoader().getResourceAsStream("archivo.properties"));
+				
+			    Path rutaDestino = Paths.get(prop.getProperty("ruta")+idComisionString+"/"+idRegistroGastosComision.toString());
+			    Path rutaDestinoArchivo = Paths.get(rutaDestino.toString(),"factura.pdf");
+			    
+			    if (Files.exists(rutaDestinoArchivo))
+			    	Files.delete(rutaDestinoArchivo);
+			    
+			    Files.delete(rutaDestino);
+			    
+			    
+			} catch (IOException ex) {
+		        ex.printStackTrace();
+		    }
+			
 			formSrv.eliminarRegistroGastosComision(Integer.valueOf(idComisionString), Integer.valueOf(idRegistroGastosComision));
-		}
-		
-		else if (action.equals("guardarGastos")){
+		}else if (action.equals("verFacturaGasto")){
+
+			String idRegistroGastosComision = request.getParameter("id_registro");
+			String idComisionString = request.getParameter("id_comision");
+			
+			byte[] facturaFile = null;
+			
+			Properties prop = new Properties();
+			try {
+				prop.load(UserServices.class.getClassLoader().getResourceAsStream("archivo.properties"));
+				
+			    Path rutaDestino = Paths.get(prop.getProperty("ruta")+idComisionString+"/"+idRegistroGastosComision.toString());
+			    Path rutaDestinoArchivo = Paths.get(rutaDestino.toString(),"factura.pdf");
+			    
+			    if (Files.exists(rutaDestinoArchivo))
+			    	facturaFile = Files.readAllBytes(rutaDestinoArchivo);
+			    
+			    response.reset();
+				response.setContentType("application/pdf");				
+				response.setHeader("Content-Disposition","attachment;filename=factura.pdf");
+				response.setHeader("Cache-Control","must-revalidate, post-check=0, pre-check=0");
+				response.setHeader("Pragma", "public");
+				response.setDateHeader("Expires", 0);
+				response.setContentLength(facturaFile.length);
+				response.setBufferSize(facturaFile.length);
+				response.getOutputStream().write(facturaFile, 0, facturaFile.length);	
+			    
+			    
+			} catch (IOException ex) {
+		        ex.printStackTrace();
+		    }
+			
+		}else if (action.equals("guardarGastos")){
 			String idComisionString = request.getParameter("id_comision");
 			String idRegistroGastoComisionString = request.getParameter("id_registro_gasto_comision");
+			
 			Integer idRegistroGastoComision = 0;
 			if (!idRegistroGastoComisionString.equals("")&&!idRegistroGastoComisionString.equals("0"))
 				idRegistroGastoComision = Integer.valueOf(idRegistroGastoComisionString);
 			else
 				idRegistroGastoComision = formSrv.insertarRegistroGastoComision(Integer.valueOf(idComisionString));
+			
+			Part filePart = request.getPart("archivo_factura|TEXTO");
+			
+			if (filePart.getSize()>0L&&filePart.getContentType().equals("application/pdf")){
+				
+				Properties prop = new Properties();
 
+				try {
+					prop.load(UserServices.class.getClassLoader().getResourceAsStream("archivo.properties"));
+					InputStream archivoFactura = filePart.getInputStream();
+				    
+				    Path rutaDestino = Paths.get(prop.getProperty("ruta")+idComisionString+"/"+idRegistroGastoComision.toString());
+				    
+				    if (!Files.exists(rutaDestino))
+				        Files.createDirectories(rutaDestino);
+				    
+				    Path rutaDestinoArchivo = Paths.get(rutaDestino.toString(),"factura.pdf");
+				    
+			        FileOutputStream archivoDestino = new FileOutputStream("factura.pdf");
+				    
+			        if (!Files.exists(rutaDestinoArchivo)){
+					    Files.copy(archivoFactura, rutaDestinoArchivo);
+					    Files.copy(rutaDestinoArchivo, archivoDestino);
+			        }else{
+			        	Files.copy(archivoFactura, rutaDestinoArchivo, StandardCopyOption.REPLACE_EXISTING);
+			        }
+				    
+				    formSrv.insertarActualizarGastoComision(Integer.valueOf(idComisionString), Integer.valueOf(idRegistroGastoComision), "archivo_factura", "factura.pdf", Double.valueOf(0), null,Short.valueOf("2"));
+				} catch (IOException ex) {
+			        ex.printStackTrace();
+			    }
+
+			    
+			}else{
+				System.out.println("No hay archivo");
+
+				Properties prop = new Properties();
+				try {
+					prop.load(UserServices.class.getClassLoader().getResourceAsStream("archivo.properties"));
+					
+				    Path rutaDestino = Paths.get(prop.getProperty("ruta")+idComisionString+"\\"+idRegistroGastoComision.toString());
+				    Path rutaDestinoArchivo = Paths.get(rutaDestino.toString(),"factura.pdf");
+				    if (Files.exists(rutaDestinoArchivo))
+				    	Files.delete(rutaDestinoArchivo);
+				    
+				    formSrv.insertarActualizarGastoComision(Integer.valueOf(idComisionString), Integer.valueOf(idRegistroGastoComision), "archivo_factura", "", Double.valueOf(0), null,Short.valueOf("2"));
+				} catch (IOException ex) {
+			        ex.printStackTrace();
+			    }    
+				
+			}
+			
 			List<String> parameterNames = new ArrayList<String>(request.getParameterMap().keySet());
 			for (String parameterName:parameterNames){
 				String tabla="",campo="",tipoDato="";
@@ -834,10 +989,12 @@ public class FormularioAction extends HttpServlet {
         	destino = "formularios/formularioGastos.jsp";
         }else if (action.equals("listarReportesComisiones")||action.equals("generarReporte")){
         	destino = "formularios/listarReportesComisiones.jsp";
+        }else if (action.equals("listarComisiones")){
+        	destino = "formularios/listarComisiones.jsp";
         }
 		
         if (!action.equals("generarReporte")&&!action.equals("listarPaises")&&!action.equals("listarEstados")
-        		&&!action.equals("listarCiudades")){
+        		&&!action.equals("listarCiudades")&&!action.equals("verFacturaGasto")){
         	System.out.println("forward");
         	RequestDispatcher rd = request.getRequestDispatcher(destino);
             rd.forward(request, response);

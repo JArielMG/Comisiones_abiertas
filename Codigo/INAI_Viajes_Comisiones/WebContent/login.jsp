@@ -12,8 +12,8 @@
     <link href="${pageContext.request.contextPath}/css/navbar.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/fontello.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/importer.css" rel="stylesheet">
-    <!--<link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet"> -->
-    <link href="${pageContext.request.contextPath}/css/stickyFooter.css" rel="stylesheet">
+    <!--<link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet"> 
+    <link href="${pageContext.request.contextPath}/css/stickyFooter.css" rel="stylesheet">-->
     <link href="${pageContext.request.contextPath}/css/style-d3.css" rel="stylesheet">
     
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
@@ -25,8 +25,8 @@
 		<div class="navbar navbar-default gradient-blue">
 			<div class="container-fluid content">
 				<div class="navbar-header">
-					<a href="http://inicio.ifai.org.mx/" class="navbar-brand" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
-					<a href="/" class="navbar-brand"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
+					<a href="http://inicio.inai.org.mx/" class="navbar-brand" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
+					<a href="/INAI_Viajes_Comisiones" class="navbar-brand"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
 			    </div>
 		    </div>
 		</div>

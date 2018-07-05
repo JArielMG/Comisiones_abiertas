@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<div id="graficas" class="container gray default-width-content">
+
+    <div class="row">
+        <div class="col-md-9 breadcrumb-custom">
+            <p class="breadcrumb-custom">
+                <a href="#/" class="gray">Inicio</a> | <a href="#/graficas">Gráficas</a>
+            </p>
+        </div>
+    </div>
+
+    <!--<h3 class="text-center"><i class="fa fa-bar-chart icon-circle gray"></i></h3>-->
+    <div class="col-md-12">
+        <h4 class="text-center" style="margin-top: -10px;">{{slcDependencia.dependecia}}</h4>
+    </div>
+
+
+
+    <div ng-repeat="graf in graficasParam| filter: {enabled:true} track by graf.idGrafica ">
+
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 1">
+            <div class="panel panel-default gradient-aqua">
+                <div class="panel-body white text-center">
+		    <h4><strong><span>CIFRAS DESTACADAS AL PERIODO SELECCIONADO:</span></strong></h4>
+                    <h4><strong><span>{{totalGasto.descripcion | currency:"$":0}}</span></strong></h4>
+                    <h5><strong>TOTAL DE GASTO EN COMISIONES</strong></h5>
+                    <h4><strong><span>{{totalViaticos | currency:"$":0}}</span></strong></h4>
+                    <h5><strong>TOTAL DE GASTO EN VIÁTICOS</strong></h5>
+                    <h4><strong><span>{{totalPasajes | currency:"$":0}}</span></strong></h4>
+                    <h5><strong>TOTAL DE GASTO EN PASAJES</strong></h4>
+                    <h4><strong><span>{{totalViajes}}</span></strong></h4>
+                    <h5><strong>TOTAL DE COMISIONES</strong></h5>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 2">
+            <div class="panel panel-default">
+                <div class="panel-heading">Hoteles más visitados<br></div>
+                <div class="panel-body">
+                    <table class="table table-striped small">
+                        <tr ng-repeat="h in hotelesMas| limitTo: 3">
+                            <td>
+                                <div class="pull-left"><i class="icon-hotel"></i></div>
+                                <div class="pull-left col-xs-offset-1">
+                                    <span class="big-blue">{{h.nombreHotel}}</span>
+                                    <p class="location">{{h.ciudad + ", " + h.pais}}</p>
+                                </div>
+                            </td>
+                            <td>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Comisiones nacionales e internacionales<br>
+                </div>
+                <div class="panel-body">
+                    <canvas id="doughnut" class="chart chart-doughnut" chart-legend="true"
+                            chart-data="tiposViaje.values" chart-labels="tiposViaje.labels">
+                    </canvas> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Comisiones por tipo de transportación<br></div>
+                <div class="panel-body">
+                    <canvas id="doughnut" class="chart chart-doughnut" chart-legend="true"
+                            chart-data="tiposPasaje.values" chart-labels="tiposPasaje.labels">
+                    </canvas> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 5">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Comisiones por mes <br><i>Este gráfico compara los meses solo para un año seleccionado</i>
+                </div>
+                <div class="panel-body">
+                    <canvas id="bar" class="chart chart-bar" chart-legend="true" chart-series="viajesPorMes.series"
+                            chart-data="viajesPorMes.values" chart-labels="viajesPorMes.labels">
+                    </canvas>
+                </div>
+            </div>
+        </div> 
+
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 6">
+            <div class="panel panel-default">
+                <div class="panel-heading">Ciudades internacionales más visitadas<br></div>
+                <div class="panel-body">
+                    <table class="table table-striped small">
+                        <tr ng-repeat="c in cdInternacionales| limitTo: 3">
+                            <td>
+                                <div class="pull-left lightgray" style="font-size: 16px;">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                        <i class="fa fa-map-marker fa-stack-1x"></i>
+                                    </span>
+                                </div>
+                                <div class="pull-left col-xs-offset-1">
+                                    <span class="big-blue">{{c.label}}</span>
+                                    <p class="location">{{c.value}} {{c.value>1?'comisiones':'viaje'}}</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 7">
+            <div class="panel panel-default">
+                <div class="panel-heading">Las aerolíneas más usadas<br></div>
+                <div class="panel-body">
+                    <canvas id="bar" class="chart chart-bar" chart-legend="true" chart-series="aerolineas.series" height="250%"
+                           chart-data="aerolineas.values" chart-labels="aerolineas.labels">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 8">
+            <div class="panel panel-default">
+                <div class="panel-heading">Últimas comisiones por Unidad Administrativa<br></div>
+                <div class="panel-body">
+                    <div class="form-group">
+                        <select ng-model="unidadSelected" class="form-control" 
+                                ng-change="changeUnidadAdministrativa(unidadSelected)"
+                                ng-options="d.descripcion for d in unidades track by d.id">
+                        </select>
+                    </div>
+
+                    <table class="table table-striped small">
+                        <tr ng-repeat="x in viajesPorUnidad track by $index| limitTo: 3">
+                            <td class="col-sm-2" style="vertical-align: middle">
+                                <span class="fa-stack fa-lg" style="font-size: 22px;">
+                                    <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                    <i class="fa fa-plane fa-stack-1x"></i>
+                                </span>
+                            </td>
+                            <td>
+                                <p> <span class="location">{{x.ciudadDestino}}, <strong>{{x.paisDestino}}</strong> </span> <br/>
+                                    Fecha de publicación: <strong>{{x.fechaPublicacion}}</strong> <br/>
+                                    <a href="#/viaje/{{x.id}}" class="blue">{{x.nombreEvento | limitTo:100}}...</a>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+	<div class="col-xs-12 col-sm-6 col-md-6" ng-if="graf.idGrafica === 9">
+            <div class="panel panel-default">
+                <div class="panel-heading">Ciudades nacionales más visitadas<br></div>
+                <div class="panel-body">
+                    <table class="table table-striped small">
+                        <tr ng-repeat="c in cdNacionales| limitTo: 3">
+                            <td>
+                                <div class="pull-left lightgray" style="font-size: 16px;">
+                                    <span class="fa-stack fa-lg">
+                                        <i class="fa fa-circle-thin fa-stack-2x"></i>
+                                        <i class="fa fa-map-marker fa-stack-1x"></i>
+                                    </span>
+                                </div>
+                                <div class="pull-left col-xs-offset-1">
+                                    <span class="big-blue">{{c.label}}</span>
+                                    <p class="location">{{c.value}} {{c.value>1?'comisiones':'viaje'}}</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- FIN DE ngRepeat gráficas-->
+    </div>
+
+
+
+
+
+
+
+
+</div>

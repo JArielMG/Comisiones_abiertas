@@ -42,9 +42,16 @@
 			  	</c:choose>
 			  				<c:forEach items="${seccion.detalle}" var="registro">
 			  					<div class="form-group">
-			  						<label class="col-sm-2 control-label">${registro.tabla}/${registro.campo}</label>
-								    <div class="col-sm-10">
-								      <input class="form-control" type="text" placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}" readonly>
+			  						<label class="col-sm-3 control-label">${registro.etiqueta}</label>
+								    <div class="col-sm-8">
+								    	<c:choose> 
+								    		<c:when test="${registro.subtipo=='AREA'}">
+												<textarea class="form-control" readonly placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}"></textarea>
+										    </c:when>
+										    <c:otherwise>
+										    	<input class="form-control" type="text" placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}" readonly>
+										    </c:otherwise>
+										</c:choose>
 								    </div>
 							    </div>
 			  				</c:forEach>
@@ -54,8 +61,8 @@
 	  </div>
 	  <br>
 	  <div class="form-group">
-	    <label class="col-sm-2 control-label">Comentarios</label>
-	    <div class="col-sm-offset-2 col-sm-10">
+	    <label class="col-sm-3 control-label">Comentarios</label>
+	    <div class="col-sm-8">
 	      <input type="text" class="form-control" name="comentarios" placeholder="Texto" maxlength="80" size="80">
 	    </div>
 	  </div>

@@ -1,6 +1,6 @@
 
-/*@blue: #2f96e9;*/
-/*@turquoise : #30c2ce;*/
+/*@blue: #732282;*/
+/*@turquoise : #9600D6;*/
 
 @font-face {
     font-family: 'Open Sans';
@@ -40,14 +40,14 @@ a:hover, a:visited, a:link, a:active {
 }
 
 .gradient-blue {
-    background: #2f96e9;
-    background: -moz-linear-gradient(left,  #2f96e9 0%,  #30c2ce 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#2f96e9),  color-stop(100%,#30c2ce)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left,  #2f96e9 0%, #30c2ce 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left,  #2f96e9 0%, #30c2ce 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left,  #2f96e9 0%, #30c2ce 100%); /* IE10+ */
-    background: linear-gradient(to right,  #2f96e9 0%, #30c2ce 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2f96e9', endColorstr='#30c2ce',GradientType=1 ); /* IE6-9 */
+    background: #732282;
+    background: -moz-linear-gradient(left,  #732282 0%,  #9600D6 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#732282),  color-stop(100%,#9600D6)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #732282 0%, #9600D6 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #732282 0%, #9600D6 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #732282 0%, #9600D6 100%); /* IE10+ */
+    background: linear-gradient(to right,  #732282 0%, #9600D6 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#732282', endColorstr='#9600D6',GradientType=1 ); /* IE6-9 */
 }
 
 .animate-all {
@@ -101,7 +101,7 @@ a:hover, a:visited, a:link, a:active {
 }
 
 .custom-button {
-    background: #30c2ce;
+    background: #9600D6;
     color: #fff;
     display: block;
     padding: 6px 5px;
@@ -115,7 +115,7 @@ a:hover, a:visited, a:link, a:active {
 }
 
 .custom-button:hover {
-    background: #2f96e9;
+    background: #732282;
 }
 
 .custom-button.bordered {
@@ -126,7 +126,7 @@ a:hover, a:visited, a:link, a:active {
 
 .custom-button.bordered:hover {
     background: #fff;
-    color: #2f96e9;
+    color: #732282;
 }
 
 .icon-circle {
@@ -146,11 +146,11 @@ a:hover, a:visited, a:link, a:active {
 }
 
 .blue {
-    color: #2f96e9;
+    color: #732282;
 }
 
 span.monto {
-    color: #30c2ce;
+    color: #9600D6;
     font-size: 1.2em;
     font-weight: bold;
 }
@@ -163,12 +163,12 @@ a.link-blue {
     color: white;
     padding: 4px 10px;
     font-weight: bold;
-    background-color: #30c2ce;
+    background-color: #9600D6;
 }
 
 a.link-blue:hover {
     color: #2a6496;
-    background-color: #2f96e9;
+    background-color: #732282;
 }
 
 .col-centered {
@@ -255,7 +255,7 @@ a.link-blue:hover {
 }
 
 #content {
-    min-height: 100%;
+    min-height: 75%;
     margin-bottom: -25px;
     position: relative;
 }

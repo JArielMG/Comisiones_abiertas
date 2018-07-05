@@ -336,9 +336,11 @@ public class BonitaServices {
 								   " - " + tarea.getActorId() + " - " + tarea.getParentProcessInstanceId() + " - " + tarea.getReachedStateDate() +
 								   " - " + tarea.getLastUpdateDate());*/
 				
+				System.out.println("tarea getParentProcessInstanceId: "+tarea.getParentProcessInstanceId());
 				notificacion.setId(tarea.getId());
 				notificacion.setDisplay(tarea.getDisplayName());
 				notificacion.setInstanceId(obtenerInstancia(tarea.getParentProcessInstanceId()));
+				System.out.println("obtenerInstancia(tarea.getParentProcessInstanceId()): "+obtenerInstancia(tarea.getParentProcessInstanceId()).getComision().getEstatus());
 				notificacion.setActor(usServ.obtenerUsuario(obtenerInstancia(tarea.getParentProcessInstanceId()).getComision().getUsuario().getIdBonita()));
 				notificacion.setLastUpdateDate(tarea.getLastUpdateDate());
 				

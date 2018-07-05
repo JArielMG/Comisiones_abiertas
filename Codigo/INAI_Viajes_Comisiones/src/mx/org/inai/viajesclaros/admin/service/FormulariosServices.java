@@ -11,6 +11,7 @@ import org.hibernate.transform.BasicTransformerAdapter;
 import mx.org.inai.viajesclaros.admin.model.CamposFormulario;
 import mx.org.inai.viajesclaros.admin.model.CatalogoElement;
 import mx.org.inai.viajesclaros.admin.model.Comisiones;
+import mx.org.inai.viajesclaros.admin.model.ComisionesUsuario;
 import mx.org.inai.viajesclaros.admin.model.DatosFuncionariosVO;
 import mx.org.inai.viajesclaros.admin.model.FlujosComisionesVO;
 import mx.org.inai.viajesclaros.admin.model.GastosComision;
@@ -19,6 +20,7 @@ import mx.org.inai.viajesclaros.admin.model.RegistrosGastosComisionVO;
 import mx.org.inai.viajesclaros.admin.model.ReporteFlujoComisionVO;
 import mx.org.inai.viajesclaros.admin.model.SeccionesFormulario;
 import mx.org.inai.viajesclaros.admin.persistence.HibernateUtil;
+import mx.org.inai.viajesclaros.admin.util.EstatusComisiones;
 import mx.org.inai.viajesclaros.admin.util.TipoControl;
 
 public class FormulariosServices {
@@ -42,13 +44,13 @@ public class FormulariosServices {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public ArrayList<Comisiones> obtenerComisionesEnCursoFuncionario(Integer idPersona) {
+	public ArrayList<Comisiones> obtenerComisionFuncionario(Integer idComision) {
 		ArrayList<Comisiones> data = new ArrayList<Comisiones>();
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
-		SQLQuery query = session.createSQLQuery("CALL viajes_claros.get_comisiones_en_curso_por_id_persona(:idPersona)");
+		SQLQuery query = session.createSQLQuery("CALL viajes_claros.get_comision_por_id_comision(:idComision)");
 		query.addEntity(Comisiones.class);
-		query.setInteger("idPersona", idPersona);
+		query.setInteger("idComision", idComision);
 						
 		List<Comisiones> result = query.list();
 		for(int i=0; i<result.size(); i++){
@@ -59,6 +61,21 @@ public class FormulariosServices {
 		session.close();
 		
 		return data;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> obtenerAreaAprobador(String usuario,Integer idFlujo) {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		SQLQuery query = session.createSQLQuery("CALL viajes_claros.get_aprobador_usuario(:usuario,:idFlujo)");
+		query.setString("usuario", usuario);
+		query.setInteger("idFlujo", idFlujo);
+						
+		List<String> result = query.list();
+		
+		session.close();
+		
+		return result;
 	}
 	
 	public Integer insertarNuevaComision(String estatus, Integer idDependencia, Integer idPersona, Integer idUsuario) {
@@ -95,11 +112,10 @@ public class FormulariosServices {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();
 				
-		SQLQuery query = session.createSQLQuery("CALL viajes_claros.get_comision_detalle_id_comision(:idComision,:tabla,:campo,:tipoDato)");
+		SQLQuery query = session.createSQLQuery("CALL viajes_claros.get_existe_comision_detalle(:idComision,:tabla,:campo)");
 		query.setInteger("idComision", idComision);
 		query.setString("tabla", tabla);
 		query.setString("campo", campo);
-		query.setShort("tipoDato", tipoDato);
 		
 		Object res = query.uniqueResult();
 		
@@ -208,9 +224,21 @@ public class FormulariosServices {
 	                .list();
 	        for (CamposFormulario cf : camposFormulario) {
 	            if (cf.getTipoControl().equals(TipoControl.LISTA) && !cf.getTabla().equals("")) {
+	            	String campo = "";
+	            	if (cf.getTabla().equals("paises")&&(cf.getCampo().equals("pais_destino")||cf.getCampo().equals("pais_origen"))){
+	            		campo = "nombre_pais";
+	            	}else if (cf.getTabla().equals("estados")&&(cf.getCampo().equals("estado_destino")||cf.getCampo().equals("estado_origen"))){
+	            		campo = "nombre_estado";
+	            	}else if (cf.getTabla().equals("ciudades")&&(cf.getCampo().equals("ciudad_destino")||cf.getCampo().equals("ciudad_origen"))){
+	            		campo = "nombre_ciudad";
+	            	}else{
+	            		campo = cf.getCampo();
+	            	}
+	            		
+	            	System.out.println("Campo: "+campo);
 					List<CatalogoElement> cat = session.createSQLQuery("CALL get_catalogo_tabla_campo(:tabla, :campo)")
 	                        .setParameter("tabla", cf.getTabla())
-	                        .setParameter("campo", cf.getCampo())
+	                        .setParameter("campo", campo)
 	                        .setResultTransformer(new BasicTransformerAdapter() {
 	                            private static final long serialVersionUID = 1L;
 	
@@ -239,7 +267,7 @@ public class FormulariosServices {
 	            		catalog.add(catalogOption);
 
 		                cf.setCatalogo(catalog);
-	            	}else*/ if (cf.getCampo().equals("homologacion")&&tipoRepresentacion.equals("AN")){
+	            	}else if (cf.getCampo().equals("homologacion")&&tipoRepresentacion.equals("2")){
 	            		List<CatalogoElement> catalog = new ArrayList<CatalogoElement>();
 	            		CatalogoElement catalogOption = new CatalogoElement();
 	            		catalogOption.setCodigo("NO");
@@ -247,7 +275,7 @@ public class FormulariosServices {
 	            		catalog.add(catalogOption);
 
 		                cf.setCatalogo(catalog);
-	            	}else{
+	            	}else{*/
 	            		List<CatalogoElement> cat = session.createSQLQuery("CALL get_valores_dinamicos_por_id(:idLista)")
 		                        .setParameter("idLista", cf.getIdLista())
 		                        .setResultTransformer(new BasicTransformerAdapter() {
@@ -264,7 +292,7 @@ public class FormulariosServices {
 		                        .list();
 		                cf.setCatalogo(cat);
 	            		
-	            	}
+	            	//}
 					
 	            }
 	        }
@@ -564,6 +592,33 @@ public class FormulariosServices {
 		return flujosComision;
     }
     
+    public List<ComisionesUsuario> obtenerComisionesUsuario(Integer idPersona){
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+    	
+    	@SuppressWarnings("unchecked")
+    	List<ComisionesUsuario> comisionesUsuarios = session.createSQLQuery("CALL get_comisiones_por_id_usuario(:idPersona)")
+    	.setParameter("idPersona", idPersona)
+    	.setResultTransformer(new BasicTransformerAdapter() {
+            private static final long serialVersionUID = 1L;
+
+            @Override
+            public Object transformTuple(Object[] tuple, String[] aliases) {
+                Integer idComision = (Integer) tuple[0];
+                String estatus = regresaEstatusComisionEmpleado((String) tuple[1]);
+                String fechaSalida = (String) tuple[2];
+                String fechaRegreso = (String) tuple[3];
+                String paisDestino = (String) tuple[4];
+                String ciudadDestino = (String) tuple[5];
+                return new ComisionesUsuario(idComision,estatus,fechaSalida,fechaRegreso,paisDestino,ciudadDestino);
+            }
+        })
+    	.list();
+    	
+    	session.close();
+		return comisionesUsuarios;
+    }
+    
     public List<ReporteFlujoComisionVO> obtenerReporteFlujoComision(Integer idComision,Integer idFlujo){
 
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -593,5 +648,36 @@ public class FormulariosServices {
     	session.close();
 		return reporteComision;
     }
+    
+    public String regresaEstatusComisionEmpleado(String estatus){
+		if (estatus.equals("C"))
+			return EstatusComisiones.C;
+		else if (estatus.equals("EA"))
+			return EstatusComisiones.EA;
+		else if (estatus.equals("R"))
+			return EstatusComisiones.R;
+		else if (estatus.equals("A"))
+			return EstatusComisiones.A;
+		else if (estatus.equals("EV"))
+			return EstatusComisiones.EV;
+		else if (estatus.equals("RV"))
+			return EstatusComisiones.RV;
+		else if (estatus.equals("F"))
+			return EstatusComisiones.F;
+		else if (estatus.equals("EG"))
+			return EstatusComisiones.EG;
+		else if (estatus.equals("RG"))
+			return EstatusComisiones.RG;
+		else if (estatus.equals("CM"))
+			return EstatusComisiones.CM;
+		else if (estatus.equals("EP"))
+			return EstatusComisiones.EP;
+		else if (estatus.equals("RP"))
+			return EstatusComisiones.RP;
+		else if (estatus.equals("P"))
+			return EstatusComisiones.P;
+		else 
+			return "";
+	}
     
 }

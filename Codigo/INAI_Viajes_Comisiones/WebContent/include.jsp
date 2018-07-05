@@ -14,8 +14,8 @@
     <link href="${pageContext.request.contextPath}/css/navbar.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/fontello.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/importer.css" rel="stylesheet">
-    <!--<link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet"> -->
-    <link href="${pageContext.request.contextPath}/css/stickyFooter.css" rel="stylesheet">
+    <!--<link href="${pageContext.request.contextPath}/css/reset.css" rel="stylesheet"> 
+    <link href="${pageContext.request.contextPath}/css/stickyFooter.css" rel="stylesheet">-->
     <link href="${pageContext.request.contextPath}/css/style-d3.css" rel="stylesheet">
     
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>  -->
@@ -28,8 +28,8 @@
 		<div class="navbar navbar-default gradient-blue">
 			<div class="container-fluid content">
 				<div class="navbar-header">
-					<a href="http://inicio.ifai.org.mx/" class="navbar-brand" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
-					<a href="/" class="navbar-brand"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
+					<a href="http://inicio.inai.org.mx/" class="navbar-brand" target="_blank"><img src="${pageContext.request.contextPath}/img/logoifai2014.png" alt="logo"></a>
+					<a href="/INAI_Viajes_Comisiones" class="navbar-brand"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo"></a>
 			    </div>
 		    </div>
 		</div>
@@ -86,11 +86,12 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Solicitudes <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <% if (!sesion.getPerfil().getNombre().equals("Carga_Masiva")) {%>
-                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioComision">Solicitud de Comisi&oacute;n</a></li>
-                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioViaticos">Solicitud de Vi&aacute;ticos y Hospedaje</a></li>
-                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioGastos">Ingreso de Comprobantes de Gastos</a></li>
-                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioPublicacion">Solicitud de Publicaci&oacute;n</a></li>
-                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=listarReportesComisiones">Reportes Comisiones</a></li>
+                  <!-- <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioComision">Solicitud de comisi&oacute;n</a></li>
+                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioViaticos">Solicitud de vi&aacute;ticos y pasajes</a></li>
+                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioGastos">Informe de desglose de gastos</a></li>
+                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=oficioPublicacion">Informe de comisi&oacute;n</a></li> -->
+                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=listarComisiones">Listado de comisiones</a></li>
+                  <li><a href="${pageContext.request.contextPath}/formularioAction?action=listarReportesComisiones">Reportes de comisiones</a></li>
                   <!--<li><a href="${pageContext.request.contextPath}/ingresaInfoAction?action=ingreso">Solicitud Demo de WF</a></li>-->
                   <% } %>
                   <% if (sesion.getPerfil().getNombre().equals("Carga_Masiva") || sesion.getPerfil().getNombre().equals("Administrador")) {%>
@@ -111,7 +112,7 @@
               <% } %>
               <!-- <li><a href="#">Acerca de</a></li>
               <li><a href="#">Contacto</a></li> -->
-              <li><a href="${pageContext.request.contextPath}/logout">Cerrar Sesi&oacute;n</a></li>
+              <li><a href="${pageContext.request.contextPath}/logout">Cerrar sesi&oacute;n</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->

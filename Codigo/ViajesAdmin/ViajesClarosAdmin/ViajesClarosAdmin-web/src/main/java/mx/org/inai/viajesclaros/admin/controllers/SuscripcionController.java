@@ -63,7 +63,7 @@ public class SuscripcionController {
 
     @PostConstruct
     public void init() {
-        idDependencia = 4;
+        idDependencia = 1;
         setDisabledGuardar((Boolean) true);
         try {
             setDependencias(dependenciaService.findAll());

@@ -69,7 +69,7 @@ public class FiltroBusquedaController implements java.io.Serializable {
 
     @PostConstruct
     public void init() {
-        idDependencia = 4;
+        idDependencia = 1;
         insertFiltro = new FiltroBusquedaDomain();
         filtroToDelete = new FiltroBusquedaDomain();
         despliegueInsert = new DespliegueBusquedaDomain();

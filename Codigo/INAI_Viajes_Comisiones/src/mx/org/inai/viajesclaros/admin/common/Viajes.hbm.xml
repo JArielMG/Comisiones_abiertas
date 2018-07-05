@@ -464,6 +464,12 @@
         <property name="valorFecha" type="java.util.Date">
             <column name="valor_fecha" length="254" not-null="true" unique="true"/>
         </property>
+        <property name="etiqueta" type="string">
+            <column name="etiqueta" length="100" not-null="false" unique="false"/>
+        </property>
+        <property name="subtipo" type="string">
+            <column name="subtipo" length="150" not-null="false" unique="false"/>
+        </property>
     </class>
     <class name="mx.org.inai.viajesclaros.admin.model.FlujosInstanciasVO" table="flujos_instancias" catalog="viajes_claros">
         <composite-id>

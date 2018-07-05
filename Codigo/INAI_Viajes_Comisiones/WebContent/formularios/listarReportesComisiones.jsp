@@ -4,7 +4,7 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
-<title>Lista de Generación de Reportes de Comisiones</title>
+<title>Lista de generación de reportes de comisiones</title>
 <!-- Bootstrap -->
     <link rel="stylesheet" type="text/css" href="css/Comandos.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -14,7 +14,7 @@
 </head>
 <body>
 	<jsp:include page="../include.jsp"/>
-	<h3>Lista de Generación de Reportes de Comisiones</h3>
+	<h3>Lista de generación de reportes de comisiones</h3>
     <div class="bs-example" data-example-id="simple-table" width="50%" align="center">
     <table class="table" width="70%">
         <thead>

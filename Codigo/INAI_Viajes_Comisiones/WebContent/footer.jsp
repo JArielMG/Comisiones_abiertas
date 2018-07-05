@@ -11,7 +11,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-3">
-					<a href="/"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo" class="logo-footer"></a>
+					<a href="/INAI_Viajes_Comisiones/"><img src="${pageContext.request.contextPath}/img/viajeslogo.png" alt="logo" class="logo-footer"></a>
 				</div>
 				<div class="col-sm-7">
 					<p class="text-center">Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales. Insurgentes Sur No. 3211 Col. Insurgentes Cuicuilco, Delegación Coyoacán, C.P. 04530 <i class="fa fa-phone"></i>TELINAI 01 800 8354324 <strong><a href="http://www.inai.org.mx/">www.inai.org.mx</a></strong></p>  

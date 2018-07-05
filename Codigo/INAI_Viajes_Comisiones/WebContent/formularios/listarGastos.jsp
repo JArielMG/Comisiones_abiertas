@@ -34,21 +34,21 @@
             <c:forEach items="${valoresTabla}" var="valorTabla">
                 <c:if test="${valorTabla.idRegistroGastoComision!=idRegistro}">
                 	<c:if test="${idRegistro!=-1}">
-                			<td align="right"><a href="formularioAction?action=modificarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Edit.png" title="Mofificar" height="20" width="20" class="boton"></a>
-                        		<a href="formularioAction?action=borrarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Remove.png" title="Eliminar" height="20" width="20" class="boton"></a></td>
+                			<td align="right"><a href="formularioAction?action=modificarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Edit.png" title="Modificar" height="20" width="20" class="boton"></a>
+                        	<a href="formularioAction?action=borrarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Remove.png" title="Eliminar" height="20" width="20" class="boton"></a></td>
                         </tr>
                 	</c:if>
                 	<tr onmouseover="this.className='focus'" onmouseout="this.className='unfocus'">
                 </c:if>
-                	<td>${valorTabla.valor}</td>
+                	<td>${valorTabla.valor} <c:if test="${valorTabla.valor=='factura.pdf'}"><a href="formularioAction?action=verFacturaGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Search.png" title="Ver Factura" height="20" width="20" class="boton"></a> </c:if> </td>
                 	
                 <c:if test="${valorTabla.idRegistroGastoComision!=idRegistro}">
                 	<c:set var="idRegistro" scope="page" value="${valorTabla.idRegistroGastoComision}"/>
                 </c:if>
             </c:forEach>
             <c:if test="${not empty valoresTabla}">
-	            	<td align="right"><a href="formularioAction?action=modificarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Edit.png" title="Mofificar" height="20" width="20" class="boton"></a>
-	                	<a href="formularioAction?action=borrarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Remove.png" title="Eliminar" height="20" width="20" class="boton"></a></td>
+	            	<td align="right"><a href="formularioAction?action=modificarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Edit.png" title="Modificar" height="20" width="20" class="boton"></a>
+	                <a href="formularioAction?action=borrarGasto&id_comision=${idComision}&id_registro=${idRegistro}"><img src="img/Remove.png" title="Eliminar" height="20" width="20" class="boton"></a></td>
 	            </tr>
             </c:if>
         </tbody>

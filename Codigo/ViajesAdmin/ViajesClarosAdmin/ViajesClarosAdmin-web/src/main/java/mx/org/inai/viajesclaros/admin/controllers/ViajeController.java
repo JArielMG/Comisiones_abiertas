@@ -39,8 +39,8 @@ public class ViajeController {
     
     @PostConstruct
     public void init() {
-        setViajes(viajeService.findAllByDependencia(4));
-        setHeaders(viajeService.getEncabezadoViajes(4));
+        setViajes(viajeService.findAllByDependencia(1));
+        setHeaders(viajeService.getEncabezadoViajes(1));
     }
 
     /**
