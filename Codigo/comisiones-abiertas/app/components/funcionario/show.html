@@ -142,17 +142,31 @@
 										  </label>
 										</div>
 								</div>
+								
+								<div class="col-md-5">
+								<label for="">Tipo de comisión por responsable del gasto:</label>
 							</div>
+							<div class="col-md-4">
+								<select ng-model="tipoComision" name="com" class="form-control">
+									<option ng-option value="0">Todos los tipos</option>
+									<option ng-option value="1">Comisión sin gasto para el sujeto obligado</option>
+									<option ng-option value="2">Comisión con gasto mixto</option>
+									<option ng-option value="3">Comisión costeada por el sujeto obligado</option>
+								</select>
+							</div>
+							
+							</div>
+							
 						</form>
-            <table st-table="viajes" st-safe-src="viajesSafe" 
-                   class="table table-striped">
+            <table st-table="viajes" st-safe-src="viajesSafe" class="table table-striped">
                 <tbody>
-                    <tr ng-repeat="v in filterList | start: (currentPage - 1) * pageSize | limitTo: pageSize ">
+                    <tr ng-repeat="v in filterList | start: (currentPage - 1) * pageSize | limitTo: pageSize | orderBy: propertyName:reverse">
                         <td><i class="fa fa-map-marker fa-2x"></i></td>
                         <td>
                             <span class="big-blue">{{v.costoTotal| currency: "$"}}</span>
                             <p class="location">{{v.ciudadDestino + ", " + v.paisDestino}}</p>
                             <p>{{v.nombreEvento| limitTo: 80}}...</p>
+							<p id="{{v.idComision}}">{{v.tipoComision}}</p>
                         </td>
                         <td class="small">
                             <i class="fa fa-calendar fa-2x col-sm-2"></i>

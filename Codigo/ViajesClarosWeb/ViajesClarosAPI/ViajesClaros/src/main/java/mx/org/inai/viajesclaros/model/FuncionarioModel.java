@@ -48,6 +48,7 @@ public class FuncionarioModel implements java.io.Serializable {
     private Date fechaIngreso;
     private Double viajeMasCostoso;
     private Integer idViajeMasCostoso;
+    private String ultimaComision;
 
     /**
      * @return the id
@@ -334,6 +335,20 @@ public class FuncionarioModel implements java.io.Serializable {
      */
     public Integer getIdViajeMasCostoso() {
         return idViajeMasCostoso;
+    }
+
+    /**
+     * @param ultimaComision the ultimaComision to set
+     */
+    public void setUltimaComision(String ultimaComision) {
+        this.ultimaComision = ultimaComision;
+    }
+    
+    /**
+     * @return the ultimaComision
+     */
+    public String getUltimaComision() {
+        return ultimaComision;
     }
 
     /**

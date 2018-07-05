@@ -2,23 +2,46 @@
 /**
  * Controlador para la pantalla del Funcionarios
  */
-myApp.controller('FuncionarioController', ['$scope',  '$rootScope', 'FuncionarioService', function ($scope, $rootScope, FuncionarioService) {
-        
-    $scope.pagItemsByPage = 20;
+ 
+myApp.controller('FuncionarioController', ['$scope',  '$rootScope', 'FuncionarioService','$routeParams','orderByFilter', function ($scope, $rootScope, FuncionarioService, $routeParams, orderBy) {
+	  
+	$scope.pagItemsByPage = 20;
+	var opc = $routeParams.ord;
     
+	FuncionarioService.getFuncionariosByDependencia().then(function(d) {
+        $scope.funcionarios = d;
+        $scope.funcionariosSafe = d;
+        $scope.total = d.length;
+        $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
+		$scope.funcionariosSafe = orderBy($scope.funcionariosSafe, $scope.propertyName, $scope.reverse);
+    });
+		
     if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!='')
     		$rootScope.thisYear = $rootScope.anioConsulta;
     else
     		$rootScope.thisYear = new Date().getFullYear();
     
-    
-    FuncionarioService.getFuncionariosByDependencia().then(function(d) {
-        $scope.funcionarios = d;
-        $scope.funcionariosSafe = d;
-        $scope.total = d.length;
-        $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
-    });
-    
+	$scope.sortBy = function(propertyName) {
+		$scope.reverse = ($scope.propertyName === propertyName) ? !$scope.reverse : false;
+		$scope.propertyName = propertyName;
+		$scope.funcionariosSafe = orderBy($scope.funcionariosSafe, $scope.propertyName, $scope.reverse);
+	  };
+	 
+	if(opc == 1) //Ordenamiento descendente por fecha de última comisión
+		$scope.propertyName = 'ultimaComision';		
+		//$scope.sortBy('ultimaComision');
+	else if(opc == 2) //Ordenamiento descendente por fecha de última comisión
+		$scope.propertyName = 'totalGasto';
+		//$scope.sortBy('totalGasto');
+	else if(opc == 3) //Ordenamiento descendente por fecha de última comisión
+		$scope.propertyName = 'totalViajes';
+		//$scope.sortBy('totalViajes');
+	else //Ordenamiento descendente por default
+		$scope.propertyName = 'nombreCompleto';
+		//$scope.sortBy('nombreCompleto');
+
+	$scope.reverse = true;
+	$scope.funcionariosSafe = orderBy($scope.funcionariosSafe, $scope.propertyName, $scope.reverse);
 }]);
 
 myApp.filter('myFilter',function(){
@@ -110,7 +133,7 @@ myApp.filter('myFilter',function(){
         {'base':'y','letters':'\u0079\u24E8\uFF59\u1EF3\u00FD\u0177\u1EF9\u0233\u1E8F\u00FF\u1EF7\u1E99\u1EF5\u01B4\u024F\u1EFF'},
         {'base':'z','letters':'\u007A\u24E9\uFF5A\u017A\u1E91\u017C\u017E\u1E93\u1E95\u01B6\u0225\u0240\u2C6C\uA763'}
     ];
-
+		
     var diacriticsMap = {};
     for (var i=0; i < defaultDiacriticsRemovalMap.length; i++){
         var letters = defaultDiacriticsRemovalMap[i].letters;
@@ -124,8 +147,7 @@ myApp.filter('myFilter',function(){
            return diacriticsMap[a] || a; 
         });
     }
-
-
+			
     return function(array, expression){
     	if (expression.nombreCompleto == null){
        		return array;

@@ -127,6 +127,18 @@ a:hover {
     writing-mode: lr-tb;
 }
 
+.custom-button-home {
+    background: #08c4c4;
+    color: #fff;
+    padding: 6px 5px;
+    margin: 0 auto;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
 .custom-button {
     background: #08c4c4;
     color: #fff;
@@ -141,19 +153,19 @@ a:hover {
     text-decoration: none;
 }
 
-.custom-button:hover {
+.custom-button:hover  .custom-button-home:hover{
     text-decoration: none;
     cursor: pointer;
     background: #068e8e;
 }
 
-.custom-button.bordered {
+.custom-button.bordered  .custom-button-home.bordered {
     background: transparent;
     border: 3px solid #fff;
     color: #fff;
 }
 
-.custom-button.bordered:hover {
+.custom-button.bordered:hover  .custom-button-home.bordered:hover {
     background: #fff;
     color: #732282;
 }
@@ -425,7 +437,7 @@ span.monto {
     top: 100px;
 }
 
-.text-airplane .custom-button {
+.text-airplane .custom-button .custom-button-home{
     margin-top: 15px;
 }
 
@@ -880,3 +892,32 @@ span.monto {
     }
 }
 
+/* Para ordenamiento del contenido de la tabla de Servidores Públicos */
+#tblFuncionarios thead {
+  cursor: pointer;
+}
+
+/*.sortorder:after{
+	content: '\25b2\25bc';
+}*/
+
+.sortorder:after{
+	content: '\25b2';
+}
+.sortorder.reverse:after{
+	content: '\25bc';
+}
+
+/*Para modificar el estilo de lox textos de Comisiones realizadas*/
+/*Comisiones recientes*/
+#fecSmall small {
+	color: #068e8e;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+/*Comisiones realizadas*/
+.comisionesTxt{
+	color: #068e8e;
+    font-size: 1.2em;
+    font-weight: bold;
+}

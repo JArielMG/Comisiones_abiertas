@@ -76,6 +76,7 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
 		  var fechaFinArray = viajes.fechaFin.split('/');
 		  viajes.fechaInicio = new Date(parseInt(fechaInicioArray[2]),parseInt(fechaInicioArray[1])-1,parseInt(fechaInicioArray[0]));
   		  viajes.fechaFin = new Date(parseInt(fechaFinArray[2]),parseInt(fechaFinArray[1])-1,parseInt(fechaFinArray[0]));
+		  var tipoComision = viajes.tipoComision;//Aquí va la parte para mostrar el tipo de comisión
 		});
                 return response.data;
             });

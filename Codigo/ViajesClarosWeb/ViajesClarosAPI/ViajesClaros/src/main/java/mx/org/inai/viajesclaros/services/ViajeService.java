@@ -116,6 +116,8 @@ public class ViajeService {
                         viaje.setPaisDestino((String) tuple[4]);
                         viaje.setCiudadDestino((String) tuple[5]);
                         viaje.setNombreEvento((String) tuple[6]);
+                        viaje.setTipoComision((String) tuple[7]); //MC
+                        viaje.setIdComision((String) tuple[8]); //MC
                         return viaje;
                     }
                 })
@@ -139,6 +141,8 @@ public class ViajeService {
                         viaje.setPaisDestino((String) tuple[4]);
                         viaje.setCiudadDestino((String) tuple[5]);
                         viaje.setNombreEvento((String) tuple[6]);
+                        viaje.setTipoComision((String) tuple[7]); //MC
+                        viaje.setIdComision((String) tuple[8]); //MC
                         return viaje;
                     }
                 })

@@ -191,6 +191,11 @@ public class GraficaService {
                             viaje.setNombreEvento((String) tuple[4]);
                             viaje.setPaisDestino((String) tuple[5]);
                             viaje.setCiudadDestino((String) tuple[6]);
+                            viaje.setFechaInicio((String) tuple[7]);
+                            viaje.setFechaFin((String) tuple[8]);
+                            viaje.setNombres((String) tuple[9]);
+                            viaje.setApellido1((String) tuple[10]);
+                            viaje.setApellido2((String) tuple[11]);
                             return viaje;
                         }
                     })
@@ -200,6 +205,47 @@ public class GraficaService {
             return list;
         } catch (Exception e) {
             log.error("ERROR AL CONSULTAR LOS ÚLTIMOS VIAJES POR DEPENDENCIA", e);
+            return new ArrayList<>();
+        }
+    }
+    
+    /**
+     * Obtiene los ultimos viajes de servidores públicos Titulares de la dependencia indicada
+     *
+     * @param idDependencia
+     * @return
+     */
+    public List<ViajeResumenModel> getUltimosViajesPorDepTitulares(Integer idDependencia) {
+        try {
+            Session session = em.unwrap(Session.class);
+
+            List<ViajeResumenModel> list = session.createSQLQuery("CALL grafica_ultimos_viajes_por_dep_titulares(:idDep)")
+                    .setParameter("idDep", idDependencia)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ViajeResumenModel viaje = new ViajeResumenModel();
+                            viaje.setId((Integer) tuple[0]);
+                            viaje.setFechaPublicacion((String) tuple[2]);
+                            viaje.setNombreEvento((String) tuple[4]);
+                            viaje.setPaisDestino((String) tuple[5]);
+                            viaje.setCiudadDestino((String) tuple[6]);
+                            viaje.setFechaInicio((String) tuple[7]);
+                            viaje.setFechaFin((String) tuple[8]);
+                            viaje.setNombres((String) tuple[9]);
+                            viaje.setApellido1((String) tuple[10]);
+                            viaje.setApellido2((String) tuple[11]);
+                            return viaje;
+                        }
+                    })
+                    .list();
+            session.flush();
+            session.clear();
+            return list;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LOS ÚLTIMOS VIAJES POR DEPENDENCIA POR TITULARES", e);
             return new ArrayList<>();
         }
     }

@@ -254,6 +254,7 @@ public class FuncionarioService {
                         funcionario.setCargo((String) tuple[12]);
                         funcionario.setTotalViajes(((BigInteger) tuple[13]).intValue());
                         funcionario.setTotalGasto((Double) tuple[14]);
+                        funcionario.setUltimaComision((String) tuple[15]);
                         return funcionario;
                     }
                 })
@@ -283,6 +284,7 @@ public class FuncionarioService {
                         funcionario.setCargo((String) tuple[12]);
                         funcionario.setTotalViajes(((BigInteger) tuple[13]).intValue());
                         funcionario.setTotalGasto((Double) tuple[14]);
+                        funcionario.setUltimaComision((String) tuple[15]);
                         return funcionario;
                     }
                 })

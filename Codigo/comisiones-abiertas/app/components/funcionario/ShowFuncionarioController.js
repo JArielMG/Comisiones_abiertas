@@ -16,32 +16,49 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     
     $scope.toggleSidebar = false;
     $scope.selectedMarker = {};
-        $scope.orderField = 'fecha';
+    $scope.orderField = 'fecha';
+	$scope.tipoComision = 'tipoComision';
     $scope.isReversed = false;
     $scope.filterNacionales = true;
     $scope.filterInternacionales = true;
     $scope.filterList = [];
     $scope.pageSize = 5;
     
-    
-    $scope.$watchGroup(['filterNacionales','filterInternacionales', 'orderField', 'isReversed'], function (filterValues) {
-    		
-            var obj = "";
-            if(filterValues[0] && filterValues[1]){
+    $scope.$watchGroup(['filterNacionales','filterInternacionales', 'orderField', 'isReversed', 'tipoComision'], function (filterValues) {
+    	
+		var obj = "";
+        if(filterValues[0] && filterValues[1]){
 	    	$scope.filterList = $scope.viajesSafe;
-	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(filterValues[0] && !filterValues[1]){
 	        obj = { paisDestino: 'México' };
 	        $scope.filterList = filterFilter($scope.viajes, obj);
-	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(!filterValues[0] && filterValues[1]){
 	    	obj = { paisDestino: '!México' };
 	        $scope.filterList = filterFilter($scope.viajes, obj);
-	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(!filterValues[0] && !filterValues[1]){
 	        $scope.filterList = {};
 	    }
-	    
+		
+		if (filterValues[4] == 1){
+			obj = { tipoComision: 'Comisión sin gasto para el sujeto obligado' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 2){
+			obj = { tipoComision: 'Comisión con gasto mixto' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 3){
+			obj = { tipoComision: 'Comisión costeada por el sujeto obligado' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 0){
+			$scope.filterList = $scope.viajesSafe;
+	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}
+		
 	    $scope.currentPage = 1;
     });
     
@@ -147,7 +164,7 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     ShowFuncionarioService.getUbicaciones(funcionario).then(function(d) {
         $scope.markers = [];
         for (var i=0; i<d.length; i++) {
-            var msg = "<span class='map-marker-monto text-center'> $" + d[i].gastoTotal + 
+            var msg = "<span class='map-marker-monto text-center'> $" + formatNumber(d[i].gastoTotal) + 
                     " MXP</span><br/> Monto ejercido en el periodo seleccionado en <b>" + d[i].ciudad + "</b>";
             var m = {lat: parseFloat(d[i].lat), lng: parseFloat(d[i].lng), message: msg, focus: false, 
                         icon: leafIcon, ciudad: d[i].ciudad, pais: d[i].pais};
@@ -180,6 +197,11 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
             $scope.viajesOnMarker = d;
         });
     };
+	
+	function formatNumber (num) {
+    	num = Math.round(num * 100) / 100;
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
 
 }]).filter('start', function () {
                 return function (input, start) {

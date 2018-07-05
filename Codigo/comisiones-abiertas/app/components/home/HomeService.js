@@ -63,6 +63,14 @@ myApp.service('HomeService', ['$rootScope', '$http', '$log', 'config', function 
         });
         return promise;
     };
+	
+	this.getUltimosViajesTitulares = function(dependencia) {
+        var url = config.restUrl + "grafica/getUltimosViajesTitulares/" + getIdDependencia();
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
     
     this.getUbicaciones = function() {
         var url = config.restUrl + "viaje/getUbicacionesPorDependencia/" + getIdDependencia()+','+getAnioSeleccionado();

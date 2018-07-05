@@ -66,6 +66,13 @@ public class GraficaREST {
     }
     
     @GET
+    @Path("getUltimosViajesTitulares/{id}")
+    @Produces(MediaType.APPLICATION_JSON) 
+    public List<ViajeResumenModel> getUltimosViajesTitulares(@PathParam("id") Integer id) {
+        return graficaService.getUltimosViajesPorDepTitulares(id);
+    }
+    
+    @GET
     @Path("getUltimosViajesPorUnidad/{id},{anio}")
     @Produces(MediaType.APPLICATION_JSON) 
     public List<ViajeResumenModel> getUltimosViajesPorUnidad(@PathParam("id") Integer id, @PathParam("anio") Integer anio) {

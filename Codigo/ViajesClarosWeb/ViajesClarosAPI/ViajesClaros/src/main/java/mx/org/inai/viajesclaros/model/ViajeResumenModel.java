@@ -39,7 +39,27 @@ public class ViajeResumenModel {
     private String nombres;
     private String apellido1;
     private String apellido2;
+    private String tipoComision; //MCS
+    private String idComision;
+    
+    //MCS
+    public String getTipoComision() {
+        return tipoComision;
+    }
 
+    public void setTipoComision(String tipoComision) {
+        this.tipoComision = tipoComision;
+    }
+    //MCS
+
+    public String getIdComision() {
+        return idComision;
+    }
+
+    public void setIdComision(String idComision) {
+        this.idComision = idComision;
+    }
+    
     /**
      * @return the id
      */
@@ -221,4 +241,5 @@ public class ViajeResumenModel {
     public void setApellido2(String apellido2) {
         this.apellido2 = apellido2;
     }
+	
 }

@@ -23,6 +23,7 @@
             <th>CARGO</th>
             <th>CORREO ELECTRÓNICO</th>
             <th>COMISIONES</th>
+            <th>ÚLTIMA COMISIÓN</th>
             <th>PRESUPUESTO EJERCIDO</th>
             <th></th>
             </thead>
@@ -31,7 +32,8 @@
                     <td>{{f.nombreCompleto}}</td>
                     <td>{{f.cargo}}</td>
                     <td>{{f.email}}</td>
-                    <td>{{f.totalViajes}}</td>
+                    <td>{{f.totalViajes}}</td>                    
+		    <td>{{f.ultimaComision}}</td>
                     <td>{{f.totalGasto| currency: "$"}}</td>
                     <td><a href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}" class="custom-button animate-all">VER PERFIL</a></td>
                 </tr>
