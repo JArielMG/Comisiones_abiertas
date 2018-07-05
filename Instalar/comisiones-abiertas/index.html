@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="GlobalController">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <title>ComisionesAbiertas</title>
+        <meta property="og:title"content="ViajesClaros | {{metaService.getTitle()}}" />
+        <meta property="og:url" content="http://comisionesabiertas.inai.org.mx/{{metaService.getUrl()}}" />
+        <meta property="og:description" content="{{metaService.getDescription()}}" /> 
+        <meta property="og:image" content="assets/img/screen.jpg" />
+        <meta name="description" content="Conoce los gastos y resultados de las comisiones de trabajo de todos los servidores públicos del INAI.">
+        
+        <link rel="shortcut icon" href="assets/img/favicon.ico">
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="assets/css/font-awesome.min.css">
+        <link rel="stylesheet" href="assets/css/leaflet.css">
+        <link rel="stylesheet" href="assets/css/main.css">
+        <link rel="stylesheet" href="assets/css/angular-chart.min.css">
+        
+    </head>
+    <body>
+
+        <div ng-include="'app/shared/header/header2.html'"></div>
+
+        <div ng-include="'app/shared/sideCompara/sideCompara.html'"></div>
+
+        <div id="content">
+            <div ng-view autoscroll="true"></div>
+            <div id="clearfooter"></div>
+        </div>
+
+        <div ng-include="'app/shared/footer/footer.html'"></div>
+
+	<script>
+	        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	        ga('create', 'UA-10134468-51', 'auto');
+	        ga('send', 'pageview');
+	
+	</script>
+
+        <script src="assets/libs/angular.min.js"></script>
+        <script src="assets/libs/angular-locale_es-mx.js"></script>
+        <script src="assets/libs/angular-route.min.js"></script>
+        <script src="assets/libs/angular-resource.min.js"></script>
+        <script src="assets/libs/angular-animate.min.js"></script>
+        <script src="assets/libs/angular-sanitize.min.js"></script>
+        <script src="assets/libs/smart-table.min.js"></script>
+        <script src="assets/libs/ui-bootstrap-tpls-0.13.4.min.js"></script>
+        <script src="assets/libs/angular-count-to.min.js"></script>
+        <script src="assets/libs/leaflet.js"></script>
+        <script src="assets/libs/angular-leaflet-directive.min.js"></script>
+        <script src="assets/libs/ng-csv.min.js"></script>
+        <script src="assets/libs/Chart.min.js"></script>
+        <script src="assets/libs/angular-chart.min.js"></script>
+        <script src="assets/libs/angular-smooth-scroll.min.js"></script>
+        <script src="assets/js/json2xml.js"></script>
+        <script src="app/app.modules.js"></script>
+        <script src="app/app.config.js"></script>
+        <script src="app/app.routes.js"></script>
+        <script src="app/app.constant.js"></script>
+        <script src="app/shared/global/GlobalController.js"></script>
+        <script src="app/shared/global/GlobalService.js"></script>
+        <script src="app/shared/header/HeaderController.js"></script>
+        <script src="app/shared/header/HeaderService.js"></script>
+        <script src="app/shared/focus/focusDirective.js"></script>
+        <script src="app/shared/sideCompara/comparaDirective.js"></script>
+        <script src="app/shared/metaService/MetaService.js"></script>
+        <script src="app/components/home/HomeController.js"></script>
+        <script src="app/components/home/HomeService.js"></script>
+        <script src="app/components/buscador/BuscadorController.js"></script>
+        <script src="app/components/buscador/BuscadorService.js"></script>
+        <script src="app/components/graficas/GraficasController.js"></script>
+        <script src="app/components/graficas/GraficasService.js"></script>
+        <script src="app/components/funcionario/FuncionarioController.js"></script>
+        <script src="app/components/funcionario/FuncionarioService.js"></script>
+        <script src="app/components/funcionario/ShowFuncionarioController.js"></script>
+        <script src="app/components/funcionario/ShowFuncionarioService.js"></script>
+        <script src="app/components/funcionario/ModalSuscribeController.js"></script>
+        <script src="app/components/comparar/CompararController.js"></script>
+        <script src="app/components/viaje/ViajeController.js"></script>
+        <script src="app/components/viaje/ViajeService.js"></script>
+    </body>
+</html>

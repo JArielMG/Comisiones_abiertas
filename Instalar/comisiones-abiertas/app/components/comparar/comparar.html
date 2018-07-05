@@ -1,0 +1,50 @@
+
+<div id="compara-funcionarios" class="fluid-container">
+    <div class="header-compara">
+        <h4 class="text-center bolder">COMPARACIÓN ENTRE SERVIDORES PÚBLICOS</h4>
+	<p>ATENCIÓN: Las comparaciones que realiza esta herramienta sólo consideran variables cuantificables como el número de comisiones, los montos gastados, así como los días en comisión, entre otros datos numéricos. Sin embargo, se recomienda tomar en cuenta que cada servidor público, por la naturaleza de su institución, cargo y funciones, tendrá cifras y parámetros distintos. Adicionalmente, se recomienda considerar que las comisiones de trabajo de cada sujeto obligado pueden estar reguladas por normativas distintas.</p>
+    </div>
+
+    <div class="container">
+        <ul class="list-group row">
+            <li class="list-group-item col-xs-6 col-sm-4 col-md-4" ng-repeat="f in funcionariosCompara">
+                <div class="panel panel-default">
+                    <div class="panel-body text-center gray">
+                        <div class="funcionario-nombre">
+                            <a href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}" class="bold">{{f.nombres + " " + f.apellido1 + " " + f.apellido2}}</a> <br/>
+                            <small><strong>{{f.dependencia}}</strong></small> <br/>
+                            <small class="gray">{{f.cargo| uppercase}}</small>
+                        </div>
+
+			<br/>
+
+			<h3 class="blue"><strong><span>{{f.totalViajes}}</span></strong></h3>
+                        <h5><strong>Número total de comisiones</strong></h5>
+
+                        <br/>
+                        <h3 class="blue"><strong><span>{{f.totalGasto | currency:"$":0}}</span></strong></h3>
+                        <h5><strong>Gasto en comisiones en el periodo seleccionado</strong></h5>
+
+                        <br/>
+                        <a href="#/viaje/{{f.idViajeMasCostoso}}"><h4 class="blue"><strong><span>{{f.viajeMasCostoso | currency:"$":0}}</span></strong></h4></a>
+                        <h5><strong>Comisión más costosa</strong></h5>
+
+                        <br/>
+                        <div>
+                            <!--    <p><i class="fa fa-calendar fa-lg"></i> 
+                                Fecha de ingreso: {{f.fechaIngreso ? f.fechaIngreso : "[No registrada]"}} <br/>
+                            <b>Días de comisión vs. días laborales</b></p>	
+                            <canvas ng-show="f.fechaIngreso" id="doughnut" class="chart chart-doughnut" chart-legend="true" chart-options="f.chartPorc.options"
+                                    chart-data="f.chartPorc.data" chart-labels="f.chartPorc.labels">
+                            </canvas>-->
+                            <b>{{f.totalDiasViaje}} días de comisión</b>
+                            <!--<div class="no-fecha-ingreso" ng-hide="{{f.fechaIngreso}}">
+                                <h4>NO TIENE REGISTRADA UNA FECHA DE INGRESO</h4>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

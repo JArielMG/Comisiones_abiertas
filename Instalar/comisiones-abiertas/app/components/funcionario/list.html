@@ -1,0 +1,70 @@
+<div class="container">
+    <h3 class="text-center">Servidores públicos</h3>
+    <h4 class="text-center">{{slcDependencia.dependecia}}</h4>
+
+    <div st-table="funcionarios" st-set-filter="myFilter" st-safe-src="funcionariosSafe" >
+        <!-- BÚSQUEDA POR NOMBRE -->
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-md-6 col-md-offset-3">
+                <div class="form-horizontal">
+                    <div class="col-md-12">
+                        <input type="search" class="form-control pull-right"
+                               st-search="nombreCompleto" placeholder="Búsqueda por nombre"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{funcionarios.length}} servidores públicos de {{total}}
+        <table id="tblFuncionarios"
+               class="table table-striped small tbl-results animate-all">
+            <thead>
+            <th>NOMBRE</th>
+            <th>CARGO</th>
+            <th>CORREO ELECTRÓNICO</th>
+            <th>COMISIONES</th>
+            <th>PRESUPUESTO EJERCIDO</th>
+            <th></th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="f in funcionarios" class="list-group animate-all">
+                    <td>{{f.nombreCompleto}}</td>
+                    <td>{{f.cargo}}</td>
+                    <td>{{f.email}}</td>
+                    <td>{{f.totalViajes}}</td>
+                    <td>{{f.totalGasto| currency: "$"}}</td>
+                    <td><a href="#/funcionario/{{f.id}}?n={{f.nombres}}&a1={{f.apellido1}}&a2={{f.apellido2}}" class="custom-button animate-all">VER PERFIL</a></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <div st-pagination="" st-items-by-page="pagItemsByPage" st-displayed-pages="7" st-template="pagination-template.html"></div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script type="text/ng-template" id="pagination-template.html">
+        <span class="pull-right">{{currentPage}} / {{numPages}}</span>
+        <div class="pagination" ng-if="pages.length >= 2">
+        <ul class="pagination">
+        <li ng-if="currentPage > 1">
+        <a ng-click="selectPage(1)">&lt;&lt;</a>
+        </li>
+        <li ng-if="currentPage > 1">
+        <a ng-click="selectPage(currentPage-1)">&lt;</a>
+        </li>
+        <li ng-repeat="page in pages" ng-class="{active: page==currentPage}"><a ng-click="selectPage(page)">{{page}}</a>
+        </li>
+        <li ng-if="currentPage < numPages">
+        <a ng-click="selectPage(currentPage+1)">></a>
+        </li>
+        <li ng-if="currentPage < numPages">
+        <a ng-click="selectPage(numPages)">>></a>
+        </li>
+        </ul>
+        </div>
+    </script>
+</div>
