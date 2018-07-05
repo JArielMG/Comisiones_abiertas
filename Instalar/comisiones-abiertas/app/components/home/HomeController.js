@@ -6,7 +6,7 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
     $scope.toggleSidebar = false;
     $scope.dependencia = $rootScope.slcDependencia;
     $scope.selectedMarker = {};
-    
+    	
     if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!='')
     	$rootScope.thisYear = $rootScope.anioConsulta;
     else
@@ -23,7 +23,7 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
     HomeService.getFuncionariosMayorGasto($scope.dependencia).then(function (d) {
         $scope.tresServidores = d;
     });
-    
+
     HomeService.getFuncionariosMasViajes($scope.dependencia).then(function (d) {
         $scope.tresServidoresViajes = d;
     });
@@ -32,6 +32,9 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
         $scope.tresViajes = d;
     });
     
+	HomeService.getUltimosViajesTitulares($scope.dependencia).then(function (d) {
+        $scope.tresViajesTitulares = d;
+    });
     
     /* A CONTINUACIÓN, EL CÓDIGO PARA EL CONTROL DEL MAPA */
     $scope.mapCenter = {
@@ -83,7 +86,7 @@ myApp.controller('HomeController', ['$scope', '$rootScope', '$log', '$route', 'H
             $scope.viajesOnMarker = d;
         });
     };
-    
+	   
     function formatNumber (num) {
     	num = Math.round(num * 100) / 100;
         return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")

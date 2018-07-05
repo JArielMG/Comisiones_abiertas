@@ -16,32 +16,49 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     
     $scope.toggleSidebar = false;
     $scope.selectedMarker = {};
-        $scope.orderField = 'fecha';
+    $scope.orderField = 'fecha';
+	$scope.tipoComision = 'tipoComision';
     $scope.isReversed = false;
     $scope.filterNacionales = true;
     $scope.filterInternacionales = true;
     $scope.filterList = [];
     $scope.pageSize = 5;
     
-    
-    $scope.$watchGroup(['filterNacionales','filterInternacionales', 'orderField', 'isReversed'], function (filterValues) {
-    		
-            var obj = "";
-            if(filterValues[0] && filterValues[1]){
+    $scope.$watchGroup(['filterNacionales','filterInternacionales', 'orderField', 'isReversed', 'tipoComision'], function (filterValues) {
+    	
+		var obj = "";
+        if(filterValues[0] && filterValues[1]){
 	    	$scope.filterList = $scope.viajesSafe;
-	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(filterValues[0] && !filterValues[1]){
 	        obj = { paisDestino: 'México' };
 	        $scope.filterList = filterFilter($scope.viajes, obj);
-	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(!filterValues[0] && filterValues[1]){
 	    	obj = { paisDestino: '!México' };
 	        $scope.filterList = filterFilter($scope.viajes, obj);
-	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+	        $scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3], filterValues[4]);
 	    }else if(!filterValues[0] && !filterValues[1]){
 	        $scope.filterList = {};
 	    }
-	    
+		
+		if (filterValues[4] == 1){
+			obj = { tipoComision: 'Comisión sin gasto para el sujeto obligado' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 2){
+			obj = { tipoComision: 'Comisión con gasto mixto' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 3){
+			obj = { tipoComision: 'Comisión costeada por el sujeto obligado' };
+			$scope.filterList = filterFilter($scope.viajes, obj);
+			$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}else if (filterValues[4] == 0){
+			$scope.filterList = $scope.viajesSafe;
+	    	$scope.filterList = orderByFilter($scope.filterList, filterValues[2], filterValues[3]);
+		}
+		
 	    $scope.currentPage = 1;
     });
     
@@ -80,10 +97,43 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
         ShowFuncionarioService.getEncabezados(d.idDependencia).then(function(d) { 
             $scope.headers = d;
         });
+		
+		/*ShowFuncionarioService.getUltimosViajes(d.idDependencia).then(function (d) {
+			$scope.tresViajes = d;
+		});
+		
+		ShowFuncionarioService.getUltimosViajesTitulares(d.idDependencia).then(function (d) {
+			$scope.tresViajesTitulares = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMayorGasto(d.dependencia).then(function (d) {
+			$scope.tresServidores = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMayorGastoTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresTitulares = d;
+		});
+
+		ShowFuncionarioService.getFuncionariosMasViajes(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajes = d;
+		});
+		
+		ShowFuncionarioService.getFuncionariosMasViajesTitulares(d.dependencia).then(function (d) {
+			$scope.tresServidoresViajesTitulares = d;
+		});*/
+		
     });
     
     ShowFuncionarioService.getFuncionarioResumen(funcionario).then(function(d) {
        $scope.funcionarioResumen = d; 
+    });
+	
+	ShowFuncionarioService.getComplementariosPerfil(funcionario).then(function(d) {
+       $scope.complementarioPerfil = d; 
+    });
+	
+	ShowFuncionarioService.getDiasTrabajados(funcionario).then(function(d) {
+       $scope.diasTrabajoNacionales = d; 
     });
 
     ShowFuncionarioService.getCargoFuncionario(funcionario).then(function(d) {
@@ -110,7 +160,19 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
             $scope.grafViaticos.values[0].push(d.values[i].value);
         }
     });
-    
+	
+	ShowFuncionarioService.getGraficaViaticosPorFuncionarioNacInter(funcionario).then(function(d) {
+        $scope.grafViaticos = {labels: [], values: [[]], series: ["", ""]};
+        for (var i=0; i<d.values.length; i++) {
+            //$scope.grafViaticos.labels.push(d.values[i].label);
+            //$scope.grafViaticos.values[0].push(d.values[i].value);
+			$scope.grafViaticosNacionales = d.values[0].value;
+			$scope.grafViaticosInter = d.values[1].value;
+			$scope.grafGtosPasajesNac = d.values[2].value;
+			$scope.grafGtosPasajesInter = d.values[3].value;
+        }
+    });
+    	
     $scope.fbShare = function() {
         window.open(
         'https://www.facebook.com/sharer/sharer.php?u='+'http://viajesclaros.inai.mx/funcionario/'+idFuncionario, 
@@ -147,7 +209,7 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
     ShowFuncionarioService.getUbicaciones(funcionario).then(function(d) {
         $scope.markers = [];
         for (var i=0; i<d.length; i++) {
-            var msg = "<span class='map-marker-monto text-center'> $" + d[i].gastoTotal + 
+            var msg = "<span class='map-marker-monto text-center'> $" + formatNumber(d[i].gastoTotal) + 
                     " MXP</span><br/> Monto ejercido en el periodo seleccionado en <b>" + d[i].ciudad + "</b>";
             var m = {lat: parseFloat(d[i].lat), lng: parseFloat(d[i].lng), message: msg, focus: false, 
                         icon: leafIcon, ciudad: d[i].ciudad, pais: d[i].pais};
@@ -180,6 +242,11 @@ myApp.controller('ShowFuncionarioController', ['$scope', '$rootScope', '$routePa
             $scope.viajesOnMarker = d;
         });
     };
+	
+	function formatNumber (num) {
+    	num = Math.round(num * 100) / 100;
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    }
 
 }]).filter('start', function () {
                 return function (input, start) {

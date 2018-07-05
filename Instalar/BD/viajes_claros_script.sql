@@ -55,7 +55,7 @@ CREATE TABLE `archivo_lineas` (
   PRIMARY KEY (`id_error`),
   KEY `fk_archivo_lineas_archivos_procesados2_idx` (`id_archivo`),
   CONSTRAINT `fk_archivo_lineas_archivos_procesados2` FOREIGN KEY (`id_archivo`) REFERENCES `archivos_procesados` (`id_archivo`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=543828 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=662563 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +90,7 @@ CREATE TABLE `areas` (
   PRIMARY KEY (`id_area`),
   KEY `fk_areas_dependencias1_idx` (`id_dependencia`),
   CONSTRAINT `fk_areas_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1052 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1051 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -226,7 +226,7 @@ CREATE TABLE `ciudades` (
   KEY `fk_ciudades_estados1_idx` (`id_estado`),
   CONSTRAINT `fk_ciudades_estados1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_ciudades_paises1` FOREIGN KEY (`id_pais`) REFERENCES `paises` (`id_pais`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=141 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=145 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,7 +249,7 @@ CREATE TABLE `comisiones` (
   CONSTRAINT `fk_comisiones_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_comisiones_personas1` FOREIGN KEY (`id_persona`) REFERENCES `personas` (`id_persona`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_comisiones_usuarios1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -273,7 +273,7 @@ CREATE TABLE `comisiones_desglose_gastos` (
   KEY `fk_id_registro_gasto` (`id_registro_gasto_comision`),
   CONSTRAINT `fk_comisiones_desglose_gastos_comision` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_id_registro_gasto_comision` FOREIGN KEY (`id_registro_gasto_comision`) REFERENCES `registros_gastos_comision` (`id_registro_gasto_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1137 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -294,7 +294,7 @@ CREATE TABLE `comisiones_detalle` (
   PRIMARY KEY (`id_detalle`),
   KEY `fk_comisiones_detalle_comisiones1_idx` (`id_comision`),
   CONSTRAINT `fk_comisiones_detalle_comisiones1` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=4276 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,7 +337,7 @@ CREATE TABLE `dependencias` (
   `nombre_dependencia` varchar(400) DEFAULT NULL,
   `predeterminada` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id_dependencia`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -573,7 +573,7 @@ CREATE TABLE `listas_valores` (
   `nombre_lista` varchar(50) NOT NULL,
   `habilitada` tinyint(1) NOT NULL,
   PRIMARY KEY (`id_lista`)
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=155 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -662,7 +662,7 @@ CREATE TABLE `registros_gastos_comision` (
   PRIMARY KEY (`id_registro_gasto_comision`),
   KEY `fk_id_comision` (`id_comision`),
   CONSTRAINT `fk_id_comision` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -871,7 +871,7 @@ CREATE TABLE `viajes_claros_instancias` (
   KEY `fk_viajes_claros_instancias_comisiones1_idx` (`id_comision`),
   CONSTRAINT `fk_viajes_claros_instancias_comisiones1` FOREIGN KEY (`id_comision`) REFERENCES `comisiones` (`id_comision`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_viajes_claros_instancias_dependencias1` FOREIGN KEY (`id_dependencia`) REFERENCES `dependencias` (`id_dependencia`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=19196 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=22208 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3009,18 +3009,18 @@ SELECT d.id_comision,
 		IFNULL(DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y'), '')  as endShowed,
 		a.nombre_area, IFNULL(cd.valor_texto, '') as ciudad_destino,
 		IFNULL(pa.valor_texto, '') as pais_destino,
-		CASE WHEN com.estatus='P' THEN 'COMISIÃ“N PUBLICADA' 
-			ELSE CASE WHEN com.estatus='EA' THEN 'COMISIÃ“N EN ESPERA DE APROBACIÃ“N' 
-				ELSE CASE WHEN com.estatus='R' THEN 'COMISIÃ“N RECHAZADA' 
-					ELSE CASE WHEN com.estatus='A' THEN 'COMISIÃ“N AUTORIZADA' 
-						ELSE CASE WHEN com.estatus='EV' THEN 'COMISIÃ“N EN APROBACIÃ“N DE VIÃTICO' 
-							ELSE CASE WHEN com.estatus='RV' THEN 'COMISIÃ“N RECHAZADA EN VIÃTICOS' 
-								ELSE CASE WHEN com.estatus='F' THEN 'COMISIÃ“N FONDEADA' 
-									ELSE CASE WHEN com.estatus='EG' THEN 'COMISIÃ“N EN APROBACIÃ“N DE GASTOS' 
-										ELSE CASE WHEN com.estatus='RG' THEN 'COMISIÃ“N RECHAZADA EN GASTOS' 
-											ELSE CASE WHEN com.estatus='CM' THEN 'COMISIÃ“N COMPROBADA' 
-												ELSE CASE WHEN com.estatus='EP' THEN 'COMISIÃ“N EN ESPERA DE PUBLICACIÃ“N' 
-													ELSE CASE WHEN com.estatus='RP' THEN 'COMISIÃ“N RECHAZADA EN PUBLICACIÃ“N' 
+		CASE WHEN com.estatus='P' THEN 'COMISIÃâN PUBLICADA' 
+			ELSE CASE WHEN com.estatus='EA' THEN 'COMISIÃâN EN ESPERA DE APROBACIÃâN' 
+				ELSE CASE WHEN com.estatus='R' THEN 'COMISIÃâN RECHAZADA' 
+					ELSE CASE WHEN com.estatus='A' THEN 'COMISIÃâN AUTORIZADA' 
+						ELSE CASE WHEN com.estatus='EV' THEN 'COMISIÃâN EN APROBACIÃâN DE VIÃÂTICO' 
+							ELSE CASE WHEN com.estatus='RV' THEN 'COMISIÃâN RECHAZADA EN VIÃÂTICOS' 
+								ELSE CASE WHEN com.estatus='F' THEN 'COMISIÃâN FONDEADA' 
+									ELSE CASE WHEN com.estatus='EG' THEN 'COMISIÃâN EN APROBACIÃâN DE GASTOS' 
+										ELSE CASE WHEN com.estatus='RG' THEN 'COMISIÃâN RECHAZADA EN GASTOS' 
+											ELSE CASE WHEN com.estatus='CM' THEN 'COMISIÃâN COMPROBADA' 
+												ELSE CASE WHEN com.estatus='EP' THEN 'COMISIÃâN EN ESPERA DE PUBLICACIÃâN' 
+													ELSE CASE WHEN com.estatus='RP' THEN 'COMISIÃâN RECHAZADA EN PUBLICACIÃâN' 
 			ELSE '' END END END END END END END END END END END END as estatus,
 		CASE WHEN com.estatus='P' THEN '#7AC2D2' 
 			eLSE CASE WHEN com.estatus IN('R', 'RV', 'RG', 'RP') THEN '#FFA07D'
@@ -3053,7 +3053,7 @@ SELECT i.id_viaje, CONCAT(n.valor_texto, ' ', a1.valor_texto, ' ', IFNULL(a2.val
 	'' as nombre_area,
 	IFNULL(cd.valor_texto, '') as ciudad_destino,
 	IFNULL(pa.valor_texto, '') as pais_destino,
-	'COMISIÃ“N PUBLICADA'  as estatus,
+	'COMISIÃâN PUBLICADA'  as estatus,
 	'#7AC2D2' as coloe
 FROM viajes_claros_instancias i
 INNER JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
@@ -3323,7 +3323,7 @@ CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_campos_filtros_disponib
 BEGIN
 
 SELECT tabla, campo, despliegue, 
-CASE WHEN tipo_dato=1 THEN 'Cadena' ELSE (CASE WHEN tipo_dato=2 THEN 'Número' ELSE (CASE WHEN tipo_dato=3 THEN 'Fecha' ELSE 'UNDEFINED' END)  END) END as tipo_dato, 
+CASE WHEN tipo_dato=1 THEN 'Cadena' ELSE (CASE WHEN tipo_dato=2 THEN 'NÃºmero' ELSE (CASE WHEN tipo_dato=3 THEN 'Fecha' ELSE 'UNDEFINED' END)  END) END as tipo_dato, 
 CASE WHEN tipo_control=1 THEN 'Texto' ELSE (CASE WHEN tipo_control=2 THEN 'Lista' ELSE (CASE WHEN tipo_control=3 THEN 'Calendario' ELSE 'UNDEFINED' END) END) END as tipo_control
 FROM 
 (
@@ -3393,7 +3393,7 @@ CREATE DEFINER=`root`@`172.20.32.34` PROCEDURE `get_campos_por_tabla_config`(IN 
 BEGIN
 	
 	SELECT tabla, campo, despliegue, 
-CASE WHEN tipo_dato=1 THEN 'Cadena' ELSE (CASE WHEN tipo_dato=2 THEN 'NÃºmero' ELSE (CASE WHEN tipo_dato=3 THEN 'Fecha' ELSE 'UNDEFINED' END)  END) END as tipo_dato, 
+CASE WHEN tipo_dato=1 THEN 'Cadena' ELSE (CASE WHEN tipo_dato=2 THEN 'NÃÂºmero' ELSE (CASE WHEN tipo_dato=3 THEN 'Fecha' ELSE 'UNDEFINED' END)  END) END as tipo_dato, 
 CASE WHEN tipo_control=1 THEN 'Texto' ELSE (CASE WHEN tipo_control=2 THEN 'Lista' ELSE (CASE WHEN tipo_control=3 THEN 'Calendario' ELSE 'UNDEFINED' END) END) END as tipo_control
 FROM 
 (
@@ -3725,6 +3725,115 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_complementa_perfil_por_persona` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `get_complementa_perfil_por_persona`(idPersona INT(11), inNombres VARCHAR(200),
+
+	inApellido1 varchar(200), inApellido2 varchar(200))
+BEGIN
+
+IF idPersona > 0 THEN
+
+	SELECT COUNT(pa.valor_texto) as NumComisNac, 
+	SUM(g.valor_numerico) as gtoTotalNac
+	FROM viajes_claros_instancias i
+  INNER JOIN comisiones com ON com.id_comision=i.id_comision
+  INNER JOIN personas p ON p.id_persona=com.id_persona
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+	WHERE p.id_persona=idPersona
+    AND pa.valor_texto='M�xico';
+
+ELSE
+	
+  SELECT COUNT(pa.valor_texto) as NumComisNac, 
+	SUM(g.valor_numerico) as gtoTotalNac
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+	WHERE n.valor_texto=inNombres
+	AND a1.valor_texto=inApellido1
+	AND a2.valor_texto=inApellido2
+  AND pa.valor_texto='M�xico';
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_complementa_perfil_por_persona_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `get_complementa_perfil_por_persona_anio`(idPersona INT(11), inNombres VARCHAR(200),
+
+	inApellido1 varchar(200), inApellido2 varchar(200),IN anio INT(11))
+BEGIN
+
+IF idPersona > 0 THEN
+	SELECT COUNT(pa.valor_texto) as NumComisNac, 
+	SUM(g.valor_numerico) as gtoTotalNac
+	FROM viajes_claros_instancias i
+  INNER JOIN comisiones com ON com.id_comision=i.id_comision
+  INNER JOIN personas p ON p.id_persona=com.id_persona
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE p.id_persona=idPersona
+    AND YEAR(anio_viaje.valor_fecha)=anio
+    AND pa.valor_texto='M�xico';
+
+ELSE
+
+	SELECT COUNT(pa.valor_texto) as NumComisNac, 
+	SUM(g.valor_numerico) as gtoTotalNac
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+	INNER JOIN viajes_claros_detalle a1 ON a1.id_viaje=i.id_viaje AND a1.tabla='personas' AND a1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle a2 ON a2.id_viaje=i.id_viaje AND a2.tabla='personas' AND a2.campo='apellido_materno'
+	INNER JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+	LEFT JOIN viajes_claros_detalle g ON g.id_viaje=i.id_viaje AND g.tabla='' AND g.campo='costo_total'
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	WHERE n.valor_texto=inNombres
+    AND YEAR(anio_viaje.valor_fecha)=anio
+	AND a1.valor_texto=inApellido1
+	AND a2.valor_texto=inApellido2
+  AND pa.valor_texto='M�xico';
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_dependencias` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -3815,6 +3924,155 @@ BEGIN
     INNER JOIN posiciones ON personas.id_posicion = posiciones.id_posicion
 	WHERE usuarios.usuario=inUsuario;
 
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_dias_trabajo_comisiones_nacionales_por_funcionario` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `get_dias_trabajo_comisiones_nacionales_por_funcionario`(IN idPersona INT(11), IN inNombres VARCHAR(200), IN apellido1 VARCHAR(200), IN apellido2 VARCHAR(200))
+BEGIN
+
+IF idPersona > 0 THEN
+	SELECT IFNULL(B.total_dias_viaje, 0) as TotalDiasViajesNac
+	FROM (
+		SELECT IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT p.id_persona, ini.id_viaje, ini.valor_fecha as ini, fin.valor_fecha as fin, 
+				p.nombres, p.apellido_paterno, p.apellido_materno,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), p.fecha_ingreso)+1 as dias_desde_ingreso
+			FROM personas p
+			LEFT JOIN comisiones c ON c.id_persona=p.id_persona
+			LEFT JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+      LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+			WHERE p.id_persona=idPersona
+      AND pa.valor_texto='M�xico'
+		) A
+		GROUP BY A.id_persona
+	) B;
+	
+ELSE
+	SELECT IFNULL(B.total_dias_viaje, 0) as TotalDiasViajesNac
+	FROM (
+		SELECT 
+			IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT n.id_viaje, n.valor_texto as nombres, ap1.valor_texto as apellido1, 
+				ap2.valor_texto as apellido2, f.valor_fecha as fecha_ingreso, 
+				ini.valor_fecha as fecha_ini, fin.valor_fecha as fecha_fin,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), f.valor_fecha)+1 as dias_desde_ingreso
+			FROM viajes_claros_instancias i
+			INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+			INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+			LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+			LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='personas' AND f.campo='fecha_ingreso'
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+      LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+			WHERE n.valor_texto=inNombres
+			AND ap1.valor_texto=apellido1
+			AND ap2.valor_texto=apellido2
+      AND pa.valor_texto='M�xico'
+		) A
+	) B;
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_dias_trabajo_comisiones_nacionales_por_funcionario_anio` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `get_dias_trabajo_comisiones_nacionales_por_funcionario_anio`(idPersona INT(11), inNombres VARCHAR(200),
+
+	inApellido1 varchar(200), inApellido2 varchar(200),IN anio INT(11))
+BEGIN
+
+IF idPersona > 0 THEN
+
+	SELECT IFNULL(B.total_dias_viaje, 0) as TotalDiasViajesNac
+	FROM (
+		SELECT 
+			IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT n.id_viaje, n.valor_texto as nombres, ap1.valor_texto as apellido1, 
+				ap2.valor_texto as apellido2, f.valor_fecha as fecha_ingreso, 
+				ini.valor_fecha as fecha_ini, fin.valor_fecha as fecha_fin,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), f.valor_fecha)+1 as dias_desde_ingreso
+			FROM viajes_claros_instancias i
+			INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+			INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+			LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+			LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='personas' AND f.campo='fecha_ingreso'
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+      LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+			WHERE p.id_persona=idPersona
+			AND YEAR(anio_viaje.valor_fecha)=anio
+    AND pa.valor_texto='M�xico'
+		) A
+	) B;    
+
+ELSE
+
+	SELECT IFNULL(B.total_dias_viaje, 0) as TotalDiasViajesNac
+	FROM (
+		SELECT 
+			IFNULL(SUM(A.dias_viaje), 0) as total_dias_viaje, 
+			A.dias_desde_ingreso-(FLOOR(A.dias_desde_ingreso/ 7)*2) - IFNULL(A.dias_viaje, 0) as dias_institucion
+		FROM (
+			SELECT n.id_viaje, n.valor_texto as nombres, ap1.valor_texto as apellido1, 
+				ap2.valor_texto as apellido2, f.valor_fecha as fecha_ingreso, 
+				ini.valor_fecha as fecha_ini, fin.valor_fecha as fecha_fin,
+				DATEDIFF(fin.valor_fecha, ini.valor_fecha)+1 as dias_viaje, 
+				DATEDIFF(NOW(), f.valor_fecha)+1 as dias_desde_ingreso
+			FROM viajes_claros_instancias i
+			INNER JOIN viajes_claros_detalle n ON n.id_viaje=i.id_viaje AND n.tabla='personas' AND n.campo='nombres'
+			INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+			LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+			LEFT JOIN viajes_claros_detalle f ON f.id_viaje=i.id_viaje AND f.tabla='personas' AND f.campo='fecha_ingreso'
+			LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.campo='fecha_hora_salida'
+			LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.campo='fecha_hora_regreso'
+      LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+			WHERE n.valor_texto=inNombres
+            AND YEAR(ini.valor_fecha) = anio
+      			AND ap1.valor_texto=inApellido1
+          	AND ap2.valor_texto=inApellido2
+            AND pa.valor_texto='M�xico'
+		) A
+	) B;
+ 
+END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -4133,7 +4391,6 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `get_funcionarios_por_dependencia`(IN idDependencia INT(11))
 BEGIN
 
-
 IF idDependencia=1 THEN
 	SELECT p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, p.titulo,
 	p.email, p.id_categoria, cat.nombre_categoria, p.id_tipo_persona, t.descripcion,
@@ -4147,29 +4404,60 @@ IF idDependencia=1 THEN
 	INNER JOIN comisiones c ON c.id_persona=p.id_persona
 	INNER JOIN viajes_claros_instancias ins ON ins.id_comision=c.id_comision
 	LEFT JOIN viajes_claros_detalle v ON v.id_viaje=ins.id_viaje AND v.campo='costo_total'
-    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE t.codigo_tipo='FUN'
+   INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+  WHERE t.codigo_tipo='FUN'
 	AND u.id_dependencia=idDependencia
 	GROUP BY p.id_persona;
 
 ELSE
-	SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1, 
-		IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(tit.valor_texto, 0) as titulo,
-		IFNULL(em.valor_texto, '') as email, 0 as id_categoria, '' as nombre_categoria,
-		2 as id_tipo_persona, 'Funcionario' as descripcion, 0 as id_area, '' as nombre_area,
-		ca.valor_texto as cargo, COUNT(*) as num_viajes, SUM(c.valor_numerico) as gasto_total,
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1,
+        IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(tit.valor_texto, 0) as titulo,
+        contadorViajes.email, 0 as id_categoria, '' as nombre_categoria,
+        2 as id_tipo_persona, 'Funcionario' as descripcion, 0 as id_area, '' as nombre_area,
+        ca.valor_texto as cargo, contadorViajes.numeroViajes as num_viajes, SUM(contadorViajes.TotalGastoViajes) as gasto_total,
         DATE_FORMAT(max(anio_viaje.valor_fecha), '%Y/%m/%d') as fecha_ultima_comision
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle tit ON tit.id_viaje=i.id_viaje AND tit.tabla='personas' AND tit.campo='titulo'
-	LEFT JOIN viajes_claros_detalle em ON em.id_viaje=i.id_viaje AND em.tabla='personas' AND em.campo='email'
-	LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
-	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
-    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE i.id_dependencia=idDependencia
-	GROUP BY nombres, apellido1, apellido2;
+    FROM viajes_claros_instancias i
+    INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+    INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+    INNER JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+  INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+  LEFT join (
+    select max(i2.id_viaje) as viaje_max, nom2.valor_texto, ap12.valor_texto as apellido1,
+        ap22.valor_texto as apellido2
+    from viajes_claros_instancias i2
+      INNER JOIN viajes_claros_detalle nom2 ON nom2.id_viaje=i2.id_viaje
+      AND nom2.tabla='personas'
+      AND nom2.campo='nombres'
+    INNER JOIN viajes_claros_detalle ap12 ON ap12.id_viaje=i2.id_viaje AND ap12.tabla='personas' AND ap12.campo='apellido_paterno'
+      INNER JOIN viajes_claros_detalle ap22 ON ap22.id_viaje=i2.id_viaje AND ap22.tabla='personas' AND ap22.campo='apellido_materno'
+      GROUP BY nom2.valor_texto, ap12.valor_texto, ap22.valor_texto
+  ) maximo on maximo.viaje_max = i.id_viaje
+    and maximo.valor_texto = nom.valor_texto
+    and maximo.apellido1 =  ap1.valor_texto
+    and maximo.apellido2 =  ap2.valor_texto
+    LEFT join (
+    select count(i3.id_viaje) as numeroViajes, nom3.valor_texto, ap13.valor_texto as apellido1,
+        ap23.valor_texto as apellido2, SUM(c.valor_numerico) As TotalGastoViajes, IFNULL(em.valor_texto, '') as email
+    from viajes_claros_instancias i3
+      INNER JOIN viajes_claros_detalle nom3 ON nom3.id_viaje=i3.id_viaje
+      AND nom3.tabla='personas'
+      AND nom3.campo='nombres'
+    INNER JOIN viajes_claros_detalle ap13 ON ap13.id_viaje=i3.id_viaje AND ap13.tabla='personas' AND ap13.campo='apellido_paterno'
+      INNER JOIN viajes_claros_detalle ap23 ON ap23.id_viaje=i3.id_viaje AND ap23.tabla='personas' AND ap23.campo='apellido_materno'
+      INNER JOIN viajes_claros_detalle em ON em.id_viaje=i3.id_viaje AND em.tabla='personas' AND em.campo='email'
+      INNER JOIN viajes_claros_detalle c ON c.id_viaje=i3.id_viaje AND c.tabla='' AND c.campo='costo_total'
+      GROUP BY nom3.valor_texto, ap13.valor_texto, ap23.valor_texto
+  ) contadorViajes on contadorViajes.valor_texto = nom.valor_texto
+    and contadorViajes.apellido1 =  ap1.valor_texto
+    and contadorViajes.apellido2 =  ap2.valor_texto    
+    LEFT JOIN viajes_claros_detalle tit ON tit.id_viaje=i.id_viaje AND tit.tabla='personas' AND tit.campo='titulo'
+--     LEFT JOIN viajes_claros_detalle em ON em.id_viaje=i.id_viaje AND em.tabla='personas' AND em.campo='email'
+    LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
+--     LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+     WHERE i.id_dependencia =idDependencia
+  GROUP BY  maximo.viaje_max;
+
 END IF;
 
 END ;;
@@ -4189,49 +4477,92 @@ DELIMITER ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `get_funcionarios_por_dependencia_anio`(IN idDependencia INT(11), IN anio INT(11))
-BEGIN
-
-
-IF idDependencia=1 THEN
-	SELECT p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, p.titulo,
-	p.email, p.id_categoria, cat.nombre_categoria, p.id_tipo_persona, t.descripcion,
-	u.id_area, a.nombre_area, p.cargo, count(ins.id_viaje) num_viajes, COALESCE(SUM(v.valor_numerico), 0) as total_gasto,
-    DATE_FORMAT(max(anio_viaje.valor_fecha), '%Y/%m/%d') as fecha_ultima_comision
-	FROM personas p
-	INNER JOIN categoria cat ON cat.id_categoria=p.id_categoria
-	INNER JOIN tipo_persona t ON t.id_tipo=p.id_tipo_persona
-	INNER JOIN usuarios u ON u.id_persona=p.id_persona
-	INNER JOIN areas a ON a.id_area=u.id_area
-	INNER JOIN comisiones c ON c.id_persona=p.id_persona
-	INNER JOIN viajes_claros_instancias ins ON ins.id_comision=c.id_comision
-	LEFT JOIN viajes_claros_detalle v ON v.id_viaje=ins.id_viaje AND v.campo='costo_total'
-    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE t.codigo_tipo='FUN'
-    AND YEAR(anio_viaje.valor_fecha) = anio
-	AND u.id_dependencia=idDependencia
-	GROUP BY p.id_persona;
-
-ELSE
-	SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1, 
-		IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(tit.valor_texto, 0) as titulo,
-		IFNULL(em.valor_texto, '') as email, 0 as id_categoria, '' as nombre_categoria,
-		2 as id_tipo_persona, 'Funcionario' as descripcion, 0 as id_area, '' as nombre_area,
-		ca.valor_texto as cargo, COUNT(*) as num_viajes, SUM(c.valor_numerico) as gasto_total,
-        DATE_FORMAT(max(anio_viaje.valor_fecha), '%Y/%m/%d') as fecha_ultima_comision
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle tit ON tit.id_viaje=i.id_viaje AND tit.tabla='personas' AND tit.campo='titulo'
-	LEFT JOIN viajes_claros_detalle em ON em.id_viaje=i.id_viaje AND em.tabla='personas' AND em.campo='email'
-	LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
-	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
-    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE i.id_dependencia=idDependencia
-    AND YEAR(anio_viaje.valor_fecha) = anio
-	GROUP BY nombres, apellido1, apellido2;
-END IF;
-
+BEGIN
+
+
+
+
+
+IF idDependencia=1 THEN
+
+	SELECT p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, p.titulo,
+
+	p.email, p.id_categoria, cat.nombre_categoria, p.id_tipo_persona, t.descripcion,
+
+	u.id_area, a.nombre_area, p.cargo, count(ins.id_viaje) num_viajes, COALESCE(SUM(v.valor_numerico), 0) as total_gasto,
+
+    DATE_FORMAT(max(anio_viaje.valor_fecha), '%Y/%m/%d') as fecha_ultima_comision
+
+	FROM personas p
+
+	INNER JOIN categoria cat ON cat.id_categoria=p.id_categoria
+
+	INNER JOIN tipo_persona t ON t.id_tipo=p.id_tipo_persona
+
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+
+	INNER JOIN areas a ON a.id_area=u.id_area
+
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+
+	INNER JOIN viajes_claros_instancias ins ON ins.id_comision=c.id_comision
+
+	LEFT JOIN viajes_claros_detalle v ON v.id_viaje=ins.id_viaje AND v.campo='costo_total'
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE t.codigo_tipo='FUN'
+
+    AND YEAR(anio_viaje.valor_fecha) = anio
+
+	AND u.id_dependencia=idDependencia
+
+	GROUP BY p.id_persona;
+
+
+
+ELSE
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, ap1.valor_texto as apellido1, 
+
+		IFNULL(ap2.valor_texto, '') as apellido2, IFNULL(tit.valor_texto, 0) as titulo,
+
+		IFNULL(em.valor_texto, '') as email, 0 as id_categoria, '' as nombre_categoria,
+
+		2 as id_tipo_persona, 'Funcionario' as descripcion, 0 as id_area, '' as nombre_area,
+
+		ca.valor_texto as cargo, COUNT(*) as num_viajes, SUM(c.valor_numerico) as gasto_total,
+
+        DATE_FORMAT(max(anio_viaje.valor_fecha), '%Y/%m/%d') as fecha_ultima_comision
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle tit ON tit.id_viaje=i.id_viaje AND tit.tabla='personas' AND tit.campo='titulo'
+
+	LEFT JOIN viajes_claros_detalle em ON em.id_viaje=i.id_viaje AND em.tabla='personas' AND em.campo='email'
+
+	LEFT JOIN viajes_claros_detalle ca ON ca.id_viaje=i.id_viaje AND ca.tabla='personas' AND ca.campo='cargo'
+
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE i.id_dependencia=idDependencia
+
+    AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY nombres, apellido1, apellido2;
+
+END IF;
+
+
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6513,72 +6844,137 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` PROCEDURE `get_viajes_resumen_por_persona`(IN idPersona INT(11),
+CREATE DEFINER=`root`@`%` PROCEDURE `get_viajes_resumen_por_persona`(IN idPersona INT(11),
+
 	nom VARCHAR(200), ap1 VARCHAR(200), ap2 VARCHAR(200))
-BEGIN
-
-SET SESSION group_concat_max_len = 1000000;
-
-IF idPersona > 0 THEN
-
-	SET @qry_select = (SELECT 
-		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE NULL END) AS '", campo, "'") SEPARATOR ',')
-	FROM viajes_claros_config des);
-	
-	
-	set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
-	(
-		SELECT v.id_viaje, v.tabla, v.campo, 
-		CASE WHEN v.valor_texto IS NULL THEN 
-			CASE WHEN v.valor_numerico IS NULL THEN 
-				DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
-			ELSE v.valor_numerico END 
-		ELSE v.valor_texto END AS valor
-		FROM viajes_claros_detalle v 
-		INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
-		INNER JOIN comisiones c ON c.id_comision=ins.id_comision
-		INNER JOIN personas p ON p.id_persona = c.id_persona
-		WHERE  p.id_persona=', idPersona, 
-	') A
-	GROUP BY id_viaje');
-	
-	set @query_select = CONCAT('SELECT id_viaje, costo_total, fecha_hora_salida, fecha_hora_regreso, 
-	pais_destino, ciudad_destino, nombre_evento FROM (',
-	@query, ') B');
-	
-	
-	PREPARE QUERY FROM @query_select;
-	EXECUTE QUERY;
-
-
-ELSE
-
-		SELECT i.id_viaje, c.valor_numerico as costo_total, 
-		DATE_FORMAT(ini.valor_fecha, '%d/%m/%Y') as fecha_inicio, 
-		DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y') as fecha_fin,
-		pa.valor_texto as pais_destino,	cd.valor_texto as ciudad_destino, ev.valor_texto as nombre_evento,
-    vd.valor as tipoComision, case when vd.codigo is null then "" else ""+vd.codigo end  as idComision
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
-	LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
-	LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.tabla='' AND fin.campo='fecha_hora_regreso'
-	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
-	LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
-	LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
-  LEFT JOIN viajes_claros_detalle tcr ON tcr.id_viaje=i.id_viaje AND tcr.tabla='' AND tcr.campo='tipo_comision_responsable'
-  LEFT JOIN valores_dinamicos vd ON tcr.valor_texto = vd.codigo AND vd.id_lista = 108
-  LEFT JOIN campos_dinamicos cdi ON cdi.id_lista = vd.id_lista
-	WHERE nom.valor_texto=nom
-	AND ap1.valor_texto=ap1
-	AND IF(ap2.valor_texto IS NULL, '', ap2.valor_texto)=ap2
-;
-
-END IF;
-
-	
+BEGIN
+
+
+
+SET SESSION group_concat_max_len = 1000000;
+
+
+
+IF idPersona > 0 THEN
+
+
+
+	SET @qry_select = (SELECT 
+
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE NULL END) AS '", campo, "'") SEPARATOR ',')
+
+	FROM viajes_claros_config des);
+
+	
+
+	
+
+	set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
+
+	(
+
+		SELECT v.id_viaje, v.tabla, v.campo, 
+
+		CASE WHEN v.valor_texto IS NULL THEN 
+
+			CASE WHEN v.valor_numerico IS NULL THEN 
+
+				DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
+
+			ELSE v.valor_numerico END 
+
+		ELSE v.valor_texto END AS valor
+
+		FROM viajes_claros_detalle v 
+
+		INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
+
+		INNER JOIN comisiones c ON c.id_comision=ins.id_comision
+
+		INNER JOIN personas p ON p.id_persona = c.id_persona
+
+		WHERE  p.id_persona=', idPersona, 
+
+	') A
+
+	GROUP BY id_viaje');
+
+	
+
+	set @query_select = CONCAT('SELECT id_viaje, costo_total, fecha_hora_salida, fecha_hora_regreso, 
+
+	pais_destino, ciudad_destino, nombre_evento FROM (',
+
+	@query, ') B');
+
+	
+
+	
+
+	PREPARE QUERY FROM @query_select;
+
+	EXECUTE QUERY;
+
+
+
+
+
+ELSE
+
+
+
+		SELECT i.id_viaje, c.valor_numerico as costo_total, 
+
+		DATE_FORMAT(ini.valor_fecha, '%d/%m/%Y') as fecha_inicio, 
+
+		DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y') as fecha_fin,
+
+		pa.valor_texto as pais_destino,	cd.valor_texto as ciudad_destino, ev.valor_texto as nombre_evento,
+
+    vd.valor as tipoComision, case when vd.codigo is null then "" else ""+vd.codigo end  as idComision
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+
+	LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
+
+	LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.tabla='' AND fin.campo='fecha_hora_regreso'
+
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+
+	LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+
+	LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
+
+  LEFT JOIN viajes_claros_detalle tcr ON tcr.id_viaje=i.id_viaje AND tcr.tabla='' AND tcr.campo='tipo_comision_responsable'
+
+  LEFT JOIN valores_dinamicos vd ON tcr.valor_texto = vd.codigo AND vd.id_lista = 108
+
+  LEFT JOIN campos_dinamicos cdi ON cdi.id_lista = vd.id_lista
+
+	WHERE nom.valor_texto=nom
+
+	AND ap1.valor_texto=ap1
+
+	AND IF(ap2.valor_texto IS NULL, '', ap2.valor_texto)=ap2
+
+;
+
+
+
+END IF;
+
+
+
+	
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6595,72 +6991,137 @@ DELIMITER ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`%` PROCEDURE `get_viajes_resumen_por_persona_anio`(IN idPersona INT(11),
+CREATE DEFINER=`root`@`%` PROCEDURE `get_viajes_resumen_por_persona_anio`(IN idPersona INT(11),
+
 	nom VARCHAR(200), ap1 VARCHAR(200), ap2 VARCHAR(200),IN anio INT(11))
-BEGIN
-
-SET SESSION group_concat_max_len = 1000000;
-
-IF idPersona > 0 THEN
-
-	SET @qry_select = (SELECT 
-		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE NULL END) AS '", campo, "'") SEPARATOR ',')
-	FROM viajes_claros_config des);
-	
-	
-	set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
-	(
-		SELECT v.id_viaje, v.tabla, v.campo, 
-		CASE WHEN v.valor_texto IS NULL THEN 
-			CASE WHEN v.valor_numerico IS NULL THEN 
-				DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
-			ELSE v.valor_numerico END 
-		ELSE v.valor_texto END AS valor
-		FROM viajes_claros_detalle v 
-		INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
-		INNER JOIN comisiones c ON c.id_comision=ins.id_comision
-        INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo=''fecha_hora_salida''
-		INNER JOIN personas p ON p.id_persona = c.id_persona
-		WHERE  p.id_persona=', idPersona, ' AND YEAR(anio_viaje.valor_fecha)=', anio,
-	') A
-	GROUP BY id_viaje');
-	
-	set @query_select = CONCAT('SELECT id_viaje, costo_total, fecha_hora_salida, fecha_hora_regreso, 
-	pais_destino, ciudad_destino, nombre_evento FROM (',
-	@query, ') B');
-	
-	
-	PREPARE QUERY FROM @query_select;
-	EXECUTE QUERY;
-
-
-ELSE
-
-		SELECT i.id_viaje, c.valor_numerico as costo_total, 
-		DATE_FORMAT(ini.valor_fecha, '%d/%m/%Y') as fecha_inicio, 
-		DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y') as fecha_fin,
-		pa.valor_texto as pais_destino,	cd.valor_texto as ciudad_destino, ev.valor_texto as nombre_evento,
-    vd.valor as tipoComision, case when vd.codigo is null then "" else ""+vd.codigo end  as idComision
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
-	LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
-	LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.tabla='' AND fin.campo='fecha_hora_regreso'
-	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
-	LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
-	LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
-  LEFT JOIN viajes_claros_detalle tcr ON tcr.id_viaje=i.id_viaje AND tcr.tabla='' AND tcr.campo='tipo_comision_responsable'
-  LEFT JOIN valores_dinamicos vd ON tcr.valor_texto = vd.codigo AND vd.id_lista = 108
-  LEFT JOIN campos_dinamicos cdi ON cdi.id_lista = vd.id_lista
-	WHERE nom.valor_texto=nom
-    AND YEAR(ini.valor_fecha)=anio
-	AND ap1.valor_texto=ap1
-	AND IF(ap2.valor_texto IS NULL, '', ap2.valor_texto)=ap2
-;
-
-END IF;
+BEGIN
+
+
+
+SET SESSION group_concat_max_len = 1000000;
+
+
+
+IF idPersona > 0 THEN
+
+
+
+	SET @qry_select = (SELECT 
+
+		GROUP_CONCAT(DISTINCT CONCAT("MAX(CASE WHEN (tabla = '", tabla, "' AND campo = '", campo, "') THEN valor ELSE NULL END) AS '", campo, "'") SEPARATOR ',')
+
+	FROM viajes_claros_config des);
+
+	
+
+	
+
+	set @query = CONCAT('SELECT id_viaje, ', (CASE WHEN (@qry_select is null) THEN '''' ELSE @qry_select END), ' FROM
+
+	(
+
+		SELECT v.id_viaje, v.tabla, v.campo, 
+
+		CASE WHEN v.valor_texto IS NULL THEN 
+
+			CASE WHEN v.valor_numerico IS NULL THEN 
+
+				DATE_FORMAT(v.valor_fecha, ''%d/%m/%Y %H:%i'') 
+
+			ELSE v.valor_numerico END 
+
+		ELSE v.valor_texto END AS valor
+
+		FROM viajes_claros_detalle v 
+
+		INNER JOIN viajes_claros_instancias ins ON ins.id_viaje = v.id_viaje
+
+		INNER JOIN comisiones c ON c.id_comision=ins.id_comision
+
+        INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=ins.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo=''fecha_hora_salida''
+
+		INNER JOIN personas p ON p.id_persona = c.id_persona
+
+		WHERE  p.id_persona=', idPersona, ' AND YEAR(anio_viaje.valor_fecha)=', anio,
+
+	') A
+
+	GROUP BY id_viaje');
+
+	
+
+	set @query_select = CONCAT('SELECT id_viaje, costo_total, fecha_hora_salida, fecha_hora_regreso, 
+
+	pais_destino, ciudad_destino, nombre_evento FROM (',
+
+	@query, ') B');
+
+	
+
+	
+
+	PREPARE QUERY FROM @query_select;
+
+	EXECUTE QUERY;
+
+
+
+
+
+ELSE
+
+
+
+		SELECT i.id_viaje, c.valor_numerico as costo_total, 
+
+		DATE_FORMAT(ini.valor_fecha, '%d/%m/%Y') as fecha_inicio, 
+
+		DATE_FORMAT(fin.valor_fecha, '%d/%m/%Y') as fecha_fin,
+
+		pa.valor_texto as pais_destino,	cd.valor_texto as ciudad_destino, ev.valor_texto as nombre_evento,
+
+    vd.valor as tipoComision, case when vd.codigo is null then "" else ""+vd.codigo end  as idComision
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+
+	LEFT JOIN viajes_claros_detalle ini ON ini.id_viaje=i.id_viaje AND ini.tabla='' AND ini.campo='fecha_hora_salida'
+
+	LEFT JOIN viajes_claros_detalle fin ON fin.id_viaje=i.id_viaje AND fin.tabla='' AND fin.campo='fecha_hora_regreso'
+
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+
+	LEFT JOIN viajes_claros_detalle cd ON cd.id_viaje=i.id_viaje AND cd.tabla='ciudades' AND cd.campo='ciudad_destino'
+
+	LEFT JOIN viajes_claros_detalle ev ON ev.id_viaje=i.id_viaje AND ev.tabla='' AND ev.campo='nombre_evento'
+
+  LEFT JOIN viajes_claros_detalle tcr ON tcr.id_viaje=i.id_viaje AND tcr.tabla='' AND tcr.campo='tipo_comision_responsable'
+
+  LEFT JOIN valores_dinamicos vd ON tcr.valor_texto = vd.codigo AND vd.id_lista = 108
+
+  LEFT JOIN campos_dinamicos cdi ON cdi.id_lista = vd.id_lista
+
+	WHERE nom.valor_texto=nom
+
+    AND YEAR(ini.valor_fecha)=anio
+
+	AND ap1.valor_texto=ap1
+
+	AND IF(ap2.valor_texto IS NULL, '', ap2.valor_texto)=ap2
+
+;
+
+
+
+END IF;
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -6748,9 +7209,9 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8 */ ;
 /*!50003 SET collation_connection  = utf8_general_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`172.20.32.34` PROCEDURE `get_viaje_datos_suscripcion`(idViaje INT(11))
+CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `get_viaje_datos_suscripcion`(idViaje INT(11))
 BEGIN
 	
 
@@ -7137,6 +7598,184 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_funcionarios_mas_viajes_por_dep_anio_titulares` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_funcionarios_mas_viajes_por_dep_anio_titulares`(IN idDependencia INT(11), anio INT(11))
+BEGIN
+
+IF idDependencia=1 THEN
+
+	select p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, 
+
+	COUNT(v.id_viaje) as total_viajes, p.cargo
+
+	from personas p
+
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+
+	INNER JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+
+	INNER JOIN viajes_claros_detalle v ON v.id_viaje=i.id_viaje AND v.campo='costo_total'
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+
+	WHERE u.id_dependencia=idDependencia
+
+    AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY p.id_persona
+
+	ORDER BY total_viajes DESC LIMIT 3;
+
+ELSE 
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, 
+
+	ap1.valor_texto as apellido1, 
+
+	ap2.valor_texto as apellido2,
+
+	COUNT(*) as num_viajes,
+
+	car.valor_texto as cargo
+
+	FROM viajes_claros_detalle nom
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=nom.id_viaje
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle car ON car.id_viaje=i.id_viaje AND car.tabla='personas' AND car.campo='cargo'
+
+  INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=nom.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+	WHERE 
+
+		nom.tabla='personas' 
+
+		AND nom.campo='nombres'
+
+		AND i.id_dependencia=idDependencia
+
+		AND YEAR(anio_viaje.valor_fecha) = anio
+
+    AND tps.campo = 'tipo_servidor_publico'
+
+    AND tps.valor_texto = 1
+
+	GROUP BY nombres, apellido1, apellido2
+
+	ORDER BY num_viajes DESC
+
+	LIMIT 10;
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_funcionarios_mas_viajes_por_dep_titulares` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_funcionarios_mas_viajes_por_dep_titulares`(IN idDependencia INT(11))
+BEGIN
+
+IF idDependencia=1 THEN
+
+	select p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, 
+
+	COUNT(v.id_viaje) as total_viajes, p.cargo
+
+	from personas p
+
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+
+	INNER JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+
+	INNER JOIN viajes_claros_detalle v ON v.id_viaje=i.id_viaje AND v.campo='costo_total'
+
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+
+	WHERE u.id_dependencia=idDependencia
+
+	GROUP BY p.id_persona
+
+	ORDER BY total_viajes DESC LIMIT 3;
+
+ELSE 
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, 
+
+	ap1.valor_texto as apellido1, 
+
+	ap2.valor_texto as apellido2,
+
+	COUNT(*) as num_viajes,
+
+	car.valor_texto as cargo
+
+	FROM viajes_claros_detalle nom
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=nom.id_viaje
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle car ON car.id_viaje=i.id_viaje AND car.tabla='personas' AND car.campo='cargo'
+
+  INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=nom.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+	WHERE 
+
+		nom.tabla='personas' 
+
+		AND nom.campo='nombres'
+
+		AND i.id_dependencia=idDependencia
+
+    AND tps.campo = 'tipo_servidor_publico'
+
+    AND tps.valor_texto = 1
+
+	GROUP BY nombres, apellido1, apellido2
+
+	ORDER BY num_viajes DESC
+
+	LIMIT 10;
+
+END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `grafica_funcionarios_mayor_gasto_por_dep` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -7236,6 +7875,196 @@ ELSE
 	ORDER BY total_gasto DESC
 	LIMIT 10;
 END IF;
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_funcionarios_mayor_gasto_por_dep_anio_titulares` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_funcionarios_mayor_gasto_por_dep_anio_titulares`(IN idDependencia INT(11), anio INT(11))
+BEGIN
+
+
+
+IF idDependencia=1 THEN
+
+	select p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, 
+
+		SUM(v.valor_numerico) as total_gasto, p.cargo
+
+	from personas p
+
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+
+	INNER JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+
+	INNER JOIN viajes_claros_detalle v ON v.id_viaje=i.id_viaje AND v.campo='costo_total'
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+
+	WHERE u.id_dependencia=idDependencia
+
+    AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY p.id_persona
+
+	ORDER BY total_gasto DESC LIMIT 3;
+
+ELSE
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, 
+
+	ap1.valor_texto as apellido1, 
+
+	ap2.valor_texto as apellido2,
+
+	SUM(costo.valor_numerico) as total_gasto,
+
+	car.valor_texto as cargo
+
+	FROM viajes_claros_detalle nom
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=nom.id_viaje
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle car ON car.id_viaje=i.id_viaje AND car.tabla='personas' AND car.campo='cargo'
+
+	INNER JOIN viajes_claros_detalle costo ON costo.id_viaje=i.id_viaje AND costo.tabla='' AND costo.campo='costo_total'
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+  INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=nom.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+	WHERE 
+
+		nom.tabla='personas' 
+
+		AND nom.campo='nombres'
+
+		AND i.id_dependencia=idDependencia
+
+		AND YEAR(anio_viaje.valor_fecha) = anio
+
+    AND tps.campo = 'tipo_servidor_publico'
+
+    AND tps.valor_texto = 1
+
+	GROUP BY nombres, apellido1, apellido2
+
+	ORDER BY total_gasto DESC
+
+	LIMIT 10;
+
+END IF;
+
+
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_funcionarios_mayor_gasto_por_dep_titulares` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_funcionarios_mayor_gasto_por_dep_titulares`(IN idDependencia INT(11))
+BEGIN
+
+
+
+IF idDependencia=1 THEN
+
+	select p.id_persona, p.nombres, p.apellido_paterno, p.apellido_materno, 
+
+		SUM(v.valor_numerico) as total_gasto, p.cargo
+
+	from personas p
+
+	INNER JOIN comisiones c ON c.id_persona=p.id_persona
+
+	INNER JOIN viajes_claros_instancias i ON i.id_comision=c.id_comision
+
+	INNER JOIN viajes_claros_detalle v ON v.id_viaje=i.id_viaje AND v.campo='costo_total'
+
+	INNER JOIN usuarios u ON u.id_persona=p.id_persona
+
+	WHERE u.id_dependencia=idDependencia
+
+	GROUP BY p.id_persona
+
+	ORDER BY total_gasto DESC LIMIT 3;
+
+ELSE
+
+	SELECT 0 as id_persona, nom.valor_texto as nombres, 
+
+	ap1.valor_texto as apellido1, 
+
+	ap2.valor_texto as apellido2,
+
+	SUM(costo.valor_numerico) as total_gasto,
+
+	car.valor_texto as cargo
+
+	FROM viajes_claros_detalle nom
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=nom.id_viaje
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle car ON car.id_viaje=i.id_viaje AND car.tabla='personas' AND car.campo='cargo'
+
+	INNER JOIN viajes_claros_detalle costo ON costo.id_viaje=i.id_viaje AND costo.tabla='' AND costo.campo='costo_total'
+
+  INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=nom.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+	WHERE 
+
+		nom.tabla='personas' 
+
+		AND nom.campo='nombres'
+
+		AND i.id_dependencia=idDependencia
+
+    AND tps.campo = 'tipo_servidor_publico'
+
+    AND tps.valor_texto = 1
+
+	GROUP BY nombres, apellido1, apellido2
+
+	ORDER BY total_gasto DESC
+
+	LIMIT 10;
+
+END IF;
+
+
 
 END ;;
 DELIMITER ;
@@ -7699,27 +8528,48 @@ DELIMITER ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `grafica_ultimos_viajes_por_dep`(IN idDependencia INT(11))
-BEGIN
-  
-      select v.id_viaje, v.id_dependencia, DATE_FORMAT(v.fecha_publicacion, '%d/%m/%y') as fecha_publicacion, 
-      0 as id_persona, ev.valor_texto as nombre_evento, pais.valor_texto as pais_destino, 
-      cd.valor_texto as ciudad_destino,
-      DATE_FORMAT(salida_viaje.valor_fecha, '%d/%m/%y') as fecha_salida,
-      DATE_FORMAT(regreso_viaje.valor_fecha, '%d/%m/%y') as fecha_regreso,
-      nom.valor_texto as nombre,ap1.valor_texto as apellido1,ap2.valor_texto as apellido2
-    from viajes_claros_instancias v
-    INNER JOIN viajes_claros_detalle nom ON v.id_viaje=nom.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-    INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=v.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-    LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=v.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-    INNER JOIN viajes_claros_detalle ev ON ev.id_viaje=v.id_viaje AND ev.campo='nombre_evento'
-    INNER JOIN viajes_claros_detalle pais ON pais.id_viaje=v.id_viaje AND pais.campo='pais_destino'
-    INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciudad_destino'
-    INNER JOIN viajes_claros_detalle salida_viaje ON salida_viaje.id_viaje=v.id_viaje AND salida_viaje.tabla='' AND salida_viaje.campo='fecha_hora_salida'
-    INNER JOIN viajes_claros_detalle regreso_viaje ON regreso_viaje.id_viaje=v.id_viaje AND regreso_viaje.tabla='' AND regreso_viaje.campo='fecha_hora_regreso'
-    INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=v.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
-    WHERE v.id_dependencia=idDependencia
-    ORDER BY salida_viaje.valor_fecha DESC LIMIT 10;
-    
+BEGIN
+
+  
+
+      select v.id_viaje, v.id_dependencia, DATE_FORMAT(v.fecha_publicacion, '%d/%m/%y') as fecha_publicacion, 
+
+      0 as id_persona, ev.valor_texto as nombre_evento, pais.valor_texto as pais_destino, 
+
+      cd.valor_texto as ciudad_destino,
+
+      DATE_FORMAT(salida_viaje.valor_fecha, '%d/%m/%y') as fecha_salida,
+
+      DATE_FORMAT(regreso_viaje.valor_fecha, '%d/%m/%y') as fecha_regreso,
+
+      nom.valor_texto as nombre,ap1.valor_texto as apellido1,ap2.valor_texto as apellido2
+
+    from viajes_claros_instancias v
+
+    INNER JOIN viajes_claros_detalle nom ON v.id_viaje=nom.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+    INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=v.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+    LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=v.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+    INNER JOIN viajes_claros_detalle ev ON ev.id_viaje=v.id_viaje AND ev.campo='nombre_evento'
+
+    INNER JOIN viajes_claros_detalle pais ON pais.id_viaje=v.id_viaje AND pais.campo='pais_destino'
+
+    INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciudad_destino'
+
+    INNER JOIN viajes_claros_detalle salida_viaje ON salida_viaje.id_viaje=v.id_viaje AND salida_viaje.tabla='' AND salida_viaje.campo='fecha_hora_salida'
+
+    INNER JOIN viajes_claros_detalle regreso_viaje ON regreso_viaje.id_viaje=v.id_viaje AND regreso_viaje.tabla='' AND regreso_viaje.campo='fecha_hora_regreso'
+
+    INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=v.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+    WHERE v.id_dependencia=idDependencia
+
+    ORDER BY salida_viaje.valor_fecha DESC LIMIT 10;
+
+    
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7770,29 +8620,52 @@ DELIMITER ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`%` PROCEDURE `grafica_ultimos_viajes_por_dep_titulares`(IN idDependencia INT(11))
-BEGIN
-  
-      select v.id_viaje, v.id_dependencia, DATE_FORMAT(v.fecha_publicacion, '%d/%m/%y') as fecha_publicacion, 
-      0 as id_persona, ev.valor_texto as nombre_evento, pais.valor_texto as pais_destino, 
-      cd.valor_texto as ciudad_destino,
-      DATE_FORMAT(salida_viaje.valor_fecha, '%d/%m/%y') as fecha_salida,
-      DATE_FORMAT(regreso_viaje.valor_fecha, '%d/%m/%y') as fecha_regreso,
-      nom.valor_texto as nombre,ap1.valor_texto as apellido1,ap2.valor_texto as apellido2
-    from viajes_claros_instancias v
-    INNER JOIN viajes_claros_detalle nom ON v.id_viaje=nom.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-    INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=v.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-    LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=v.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-    INNER JOIN viajes_claros_detalle ev ON ev.id_viaje=v.id_viaje AND ev.campo='nombre_evento'
-    INNER JOIN viajes_claros_detalle pais ON pais.id_viaje=v.id_viaje AND pais.campo='pais_destino'
-    INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciudad_destino'
-    INNER JOIN viajes_claros_detalle salida_viaje ON salida_viaje.id_viaje=v.id_viaje AND salida_viaje.tabla='' AND salida_viaje.campo='fecha_hora_salida'
-    INNER JOIN viajes_claros_detalle regreso_viaje ON regreso_viaje.id_viaje=v.id_viaje AND regreso_viaje.tabla='' AND regreso_viaje.campo='fecha_hora_regreso'
-    INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=v.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
-    WHERE v.id_dependencia=idDependencia
-    AND tps.campo = 'tipo_servidor_publico'
-    AND tps.valor_texto = 1
-    ORDER BY salida_viaje.valor_fecha DESC LIMIT 10;
-    
+BEGIN
+
+  
+
+      select v.id_viaje, v.id_dependencia, DATE_FORMAT(v.fecha_publicacion, '%d/%m/%y') as fecha_publicacion, 
+
+      0 as id_persona, ev.valor_texto as nombre_evento, pais.valor_texto as pais_destino, 
+
+      cd.valor_texto as ciudad_destino,
+
+      DATE_FORMAT(salida_viaje.valor_fecha, '%d/%m/%y') as fecha_salida,
+
+      DATE_FORMAT(regreso_viaje.valor_fecha, '%d/%m/%y') as fecha_regreso,
+
+      nom.valor_texto as nombre,ap1.valor_texto as apellido1,ap2.valor_texto as apellido2
+
+    from viajes_claros_instancias v
+
+    INNER JOIN viajes_claros_detalle nom ON v.id_viaje=nom.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+    INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=v.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+    LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=v.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+    INNER JOIN viajes_claros_detalle ev ON ev.id_viaje=v.id_viaje AND ev.campo='nombre_evento'
+
+    INNER JOIN viajes_claros_detalle pais ON pais.id_viaje=v.id_viaje AND pais.campo='pais_destino'
+
+    INNER JOIN viajes_claros_detalle cd ON cd.id_viaje=v.id_viaje AND cd.campo='ciudad_destino'
+
+    INNER JOIN viajes_claros_detalle salida_viaje ON salida_viaje.id_viaje=v.id_viaje AND salida_viaje.tabla='' AND salida_viaje.campo='fecha_hora_salida'
+
+    INNER JOIN viajes_claros_detalle regreso_viaje ON regreso_viaje.id_viaje=v.id_viaje AND regreso_viaje.tabla='' AND regreso_viaje.campo='fecha_hora_regreso'
+
+    INNER JOIN viajes_claros_detalle tps ON tps.id_viaje=v.id_viaje AND tps.tabla='' AND tps.campo='tipo_servidor_publico' -- nuevo
+
+    WHERE v.id_dependencia=idDependencia
+
+    AND tps.campo = 'tipo_servidor_publico'
+
+    AND tps.valor_texto = 1
+
+    ORDER BY salida_viaje.valor_fecha DESC LIMIT 10;
+
+    
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7884,81 +8757,149 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_viaticos_por_funcionario`(IN idPersona INT(11),
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_viaticos_por_funcionario`(IN idPersona INT(11),
+
 	inNombres VARCHAR(200), inApellido1 VARCHAR(200), inApellido2 VARCHAR(200))
-BEGIN
-
-
-IF idPersona > 0 THEN
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-	WHERE v.campo='viaticos_comprobados'
-	AND c.id_persona=idPersona
-	GROUP BY c.id_persona
-UNION ALL
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-	WHERE v.campo='viaticos_sin_comprobar'
-	AND c.id_persona=idPersona
-	GROUP BY c.id_persona
-UNION ALL
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-	WHERE v.campo='viaticos_devueltos'
-	AND c.id_persona=idPersona
-	GROUP BY c.id_persona;
-	
-
-ELSE
-
-	SELECT 'Viáticos comprobados',
-		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
-	WHERE nom.valor_texto=inNombres
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
-UNION ALL
-	SELECT 'Gastos sin comprobantes',
-		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v2 ON v2.id_viaje=i.id_viaje AND v2.tabla='' AND v2.campo='viaticos_sin_comprobar'
-	WHERE nom.valor_texto=inNombres
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
-UNION ALL
-	SELECT 'Viáticos devueltos',
-		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v3 ON v3.id_viaje=i.id_viaje AND v3.tabla='' AND v3.campo='viaticos_devueltos'	
-	WHERE nom.valor_texto=inNombres
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2;
-
-END IF;
-
-
+BEGIN
+
+
+
+
+
+IF idPersona > 0 THEN
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+	WHERE v.campo='viaticos_comprobados'
+
+	AND c.id_persona=idPersona
+
+	GROUP BY c.id_persona
+
+UNION ALL
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+	WHERE v.campo='viaticos_sin_comprobar'
+
+	AND c.id_persona=idPersona
+
+	GROUP BY c.id_persona
+
+UNION ALL
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+	WHERE v.campo='viaticos_devueltos'
+
+	AND c.id_persona=idPersona
+
+	GROUP BY c.id_persona;
+
+	
+
+
+
+ELSE
+
+
+
+	SELECT 'Vi�ticos comprobados',
+
+		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+
+	WHERE nom.valor_texto=inNombres
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+
+UNION ALL
+
+	SELECT 'Gastos de comprobaci�n diversa *',
+
+		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v2 ON v2.id_viaje=i.id_viaje AND v2.tabla='' AND v2.campo='viaticos_sin_comprobar'
+
+	WHERE nom.valor_texto=inNombres
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+
+UNION ALL
+
+	SELECT 'Vi�ticos devueltos',
+
+		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v3 ON v3.id_viaje=i.id_viaje AND v3.tabla='' AND v3.campo='viaticos_devueltos'	
+
+	WHERE nom.valor_texto=inNombres
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2;
+
+
+
+END IF;
+
+
+
+
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -7969,91 +8910,332 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-CREATE DEFINER=`viajes_admin`@`localhost` PROCEDURE `grafica_viaticos_por_funcionario_anio`(IN idPersona INT(11),
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_viaticos_por_funcionario_anio`(IN idPersona INT(11),
+
 	inNombres VARCHAR(200), inApellido1 VARCHAR(200), inApellido2 VARCHAR(200),IN anio INT(11))
-BEGIN
-
-IF idPersona > 0 THEN
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE v.campo='viaticos_comprobados'
-	AND c.id_persona=idPersona
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	GROUP BY c.id_persona
-UNION ALL
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE v.campo='viaticos_sin_comprobar'
-	AND c.id_persona=idPersona
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	GROUP BY c.id_persona
-UNION ALL
-	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
-	FROM viajes_claros_detalle v
-	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
-	INNER JOIN comisiones c ON c.id_comision=i.id_comision
-	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE v.campo='viaticos_devueltos'
-	AND c.id_persona=idPersona
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	GROUP BY c.id_persona;
-	
-
-ELSE
-
-	SELECT 'Viáticos comprobados',
-		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
-	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE nom.valor_texto=inNombres
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
-UNION ALL
-	SELECT 'Gastos sin comprobantes',
-		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v2 ON v2.id_viaje=i.id_viaje AND v2.tabla='' AND v2.campo='viaticos_sin_comprobar'
-	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE nom.valor_texto=inNombres
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
-UNION ALL
-	SELECT 'Viáticos devueltos',
-		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
-	FROM viajes_claros_instancias i
-	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
-	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
-	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
-	LEFT JOIN viajes_claros_detalle v3 ON v3.id_viaje=i.id_viaje AND v3.tabla='' AND v3.campo='viaticos_devueltos'	
-	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
-	WHERE nom.valor_texto=inNombres
-	AND YEAR(anio_viaje.valor_fecha) = anio
-	AND ap1.valor_texto=inApellido1
-	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2;
-
-END IF;
-
+BEGIN
+
+
+
+IF idPersona > 0 THEN
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+    INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE v.campo='viaticos_comprobados'
+
+	AND c.id_persona=idPersona
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY c.id_persona
+
+UNION ALL
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE v.campo='viaticos_sin_comprobar'
+
+	AND c.id_persona=idPersona
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY c.id_persona
+
+UNION ALL
+
+	SELECT v.campo, ROUND(SUM(v.valor_numerico),2)
+
+	FROM viajes_claros_detalle v
+
+	INNER JOIN viajes_claros_instancias i ON i.id_viaje=v.id_viaje
+
+	INNER JOIN comisiones c ON c.id_comision=i.id_comision
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE v.campo='viaticos_devueltos'
+
+	AND c.id_persona=idPersona
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	GROUP BY c.id_persona;
+
+	
+
+
+
+ELSE
+
+
+
+	SELECT 'Vi�ticos comprobados',
+
+		ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE nom.valor_texto=inNombres
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+
+UNION ALL
+
+	SELECT 'Gastos de comprobaci�n diversa *',
+
+		ROUND(IFNULL(SUM(v2.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v2 ON v2.id_viaje=i.id_viaje AND v2.tabla='' AND v2.campo='viaticos_sin_comprobar'
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE nom.valor_texto=inNombres
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+
+UNION ALL
+
+	SELECT 'Vi�ticos devueltos',
+
+		ROUND(IFNULL(SUM(v3.valor_numerico), 0),2) as valor
+
+	FROM viajes_claros_instancias i
+
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+
+	LEFT JOIN viajes_claros_detalle v3 ON v3.id_viaje=i.id_viaje AND v3.tabla='' AND v3.campo='viaticos_devueltos'	
+
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+
+	WHERE nom.valor_texto=inNombres
+
+	AND YEAR(anio_viaje.valor_fecha) = anio
+
+	AND ap1.valor_texto=inApellido1
+
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2;
+
+
+
+END IF;
+
+
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_viaticos_por_funcionario_anio_nacionales_inter` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_viaticos_por_funcionario_anio_nacionales_inter`(IN idPersona INT(11),
+
+	inNombres VARCHAR(200), inApellido1 VARCHAR(200), inApellido2 VARCHAR(200),IN anio INT(11))
+BEGIN
+
+SELECT 'Viaticos Nacionales',ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+  INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+  LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+  WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND YEAR(anio_viaje.valor_fecha) = anio
+  AND pa.valor_texto='M�xico'
+  
+UNION ALL
+
+  SELECT 'Viaticos Internacionales',ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+  INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+  LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+  WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND YEAR(anio_viaje.valor_fecha) = anio
+  AND pa.valor_texto!='M�xico'
+
+  UNION ALL
+
+  SELECT 'Gatos Pasajes Nacionales',ROUND(IFNULL(SUM(gp.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+  INNER JOIN viajes_claros_detalle gp ON gp.id_viaje=i.id_viaje AND gp.campo like '%gasto_total_pasaje%'
+	WHERE nom.valor_texto=inNombres
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto='M�xico'
+
+  UNION ALL
+
+  SELECT 'Gatos Pasajes Internacionales',ROUND(IFNULL(SUM(gp.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+  INNER JOIN viajes_claros_detalle gp ON gp.id_viaje=i.id_viaje AND gp.campo like '%gasto_total_pasaje%'
+	WHERE nom.valor_texto=inNombres
+	AND YEAR(anio_viaje.valor_fecha) = anio
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto!='M�xico';
+
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `grafica_viaticos_por_funcionario_nacionales_inter` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`%` PROCEDURE `grafica_viaticos_por_funcionario_nacionales_inter`(IN idPersona INT(11),
+	inNombres VARCHAR(200), inApellido1 VARCHAR(200), inApellido2 VARCHAR(200))
+BEGIN
+
+   SELECT 'Viaticos Nacionales',ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+  LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+  WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto='M�xico'
+
+UNION ALL
+
+  SELECT 'Viaticos Internacionales',ROUND(IFNULL(SUM(v1.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle v1 ON v1.id_viaje=i.id_viaje AND v1.tabla='' AND v1.campo='viaticos_comprobados'
+  LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo ='pais_destino'
+	WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto!='M�xico'
+
+UNION ALL
+
+  SELECT 'Gatos Pasajes Nacionales',ROUND(IFNULL(SUM(gp.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+  INNER JOIN viajes_claros_detalle gp ON gp.id_viaje=i.id_viaje AND gp.campo like '%gasto_total_pasaje%'
+	WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto='M�xico'
+
+  UNION ALL
+  
+  SELECT 'Gatos Pasajes Internacionales',ROUND(IFNULL(SUM(gp.valor_numerico), 0),2) as valor
+	FROM viajes_claros_instancias i
+	INNER JOIN viajes_claros_detalle nom ON nom.id_viaje=i.id_viaje AND nom.tabla='personas' AND nom.campo='nombres'
+	INNER JOIN viajes_claros_detalle ap1 ON ap1.id_viaje=i.id_viaje AND ap1.tabla='personas' AND ap1.campo='apellido_paterno'
+	LEFT JOIN viajes_claros_detalle ap2 ON ap2.id_viaje=i.id_viaje AND ap2.tabla='personas' AND ap2.campo='apellido_materno'
+	LEFT JOIN viajes_claros_detalle c ON c.id_viaje=i.id_viaje AND c.tabla='' AND c.campo='costo_total'
+	INNER JOIN viajes_claros_detalle anio_viaje ON anio_viaje.id_viaje=i.id_viaje AND anio_viaje.tabla='' AND anio_viaje.campo='fecha_hora_salida'
+	LEFT JOIN viajes_claros_detalle pa ON pa.id_viaje=i.id_viaje AND pa.tabla='paises' AND pa.campo='pais_destino'
+  INNER JOIN viajes_claros_detalle gp ON gp.id_viaje=i.id_viaje AND gp.campo like '%gasto_total_pasaje%'
+	WHERE nom.valor_texto=inNombres
+	AND ap1.valor_texto=inApellido1
+	AND IF(ap2.valor_texto is null, '', ap2.valor_texto)=inApellido2
+  AND pa.valor_texto!='M�xico';
+
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -10029,4 +11211,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-20 18:08:04
+-- Dump completed on 2016-10-31 11:53:57
