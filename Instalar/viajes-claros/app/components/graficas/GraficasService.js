@@ -14,8 +14,18 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
         }
     }
     
+    /* Obtiene el anio seleccionado */
+    function getAnioSeleccionado() {
+        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&$rootScope.anioConsulta!='todos los años')
+    		return $rootScope.anioConsulta;
+    	else if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta=='todos los años')
+    		return 0;
+    	else
+    		return new Date().getFullYear();
+    }
+    
     this.getHotelesMasVisitados = function () {
-        var url = config.restUrl + "grafica/getHotelesMasVisitados/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getHotelesMasVisitados/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -23,7 +33,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getGraficaTipoViaje = function() {
-        var url = config.restUrl + "grafica/getGraficaTipoViaje/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getGraficaTipoViaje/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -31,7 +41,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getGraficaTipoPasaje = function() {
-        var url = config.restUrl + "grafica/getGraficaTipoPasaje/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getGraficaTipoPasaje/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -39,7 +49,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getGraficaAerolineas = function() {
-        var url = config.restUrl + "grafica/getGraficaAerolineas/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getGraficaAerolineas/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -47,7 +57,15 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getGraficaCdInternacionales = function() {
-        var url = config.restUrl + "grafica/getGraficaCiudadesInternacionales/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getGraficaCiudadesInternacionales/" + getIdDependencia()+','+getAnioSeleccionado();
+        var promise = $http.get(url).then(function (response) {
+            return response.data;
+        });
+        return promise;
+    };
+    
+    this.getGraficaCdNacionales = function() {
+        var url = config.restUrl + "grafica/getGraficaCiudadesNacionales/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -71,7 +89,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getGraficaViajesPorMes = function() {
-        var url = config.restUrl + "grafica/getGraficaViajesPorMes/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getGraficaViajesPorMes/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -79,7 +97,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getTotalViaticos = function() {
-        var url = config.restUrl + "grafica/getTotalViaticos/" + getIdDependencia();
+        var url = config.restUrl + "grafica/getTotalViaticos/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });
@@ -87,7 +105,7 @@ myApp.service('GraficasService', ['$http', '$log', '$rootScope', 'config',
     };
     
     this.getTotalGasto = function() {
-        var url = config.restUrl + "util/totalGastoByDependencia/" + getIdDependencia();
+        var url = config.restUrl + "util/totalGastoByDependenciaAnio/" + getIdDependencia()+','+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });

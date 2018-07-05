@@ -14,12 +14,22 @@ myApp.service('GlobalService', ['$rootScope', '$http', 'config', '$log', functio
             return 1;
         }
     }
+    
+    /* Obtiene el anio seleccionado */
+    function getAnioSeleccionado() {
+        if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!=''&&$rootScope.anioConsulta!='todos los años')
+    		return $rootScope.anioConsulta;
+    	else if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta=='todos los años')
+    		return 0;
+    	else
+    		return new Date().getFullYear();
+    }
         
     /**
      * Obtiene los funcionarios de la dependencia actual seleccionada
      */
     this.getFuncionarios = function() {
-        var url = config.restUrl + "funcionario/getAllResumen";
+        var url = config.restUrl + "funcionario/getAllResumen/"+getAnioSeleccionado();
         var promise = $http.get(url).then(function (response) {
             return response.data;
         });

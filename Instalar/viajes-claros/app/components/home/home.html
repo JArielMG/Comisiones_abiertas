@@ -9,7 +9,7 @@
                         <a href="#/"><img src="assets/img/logosolo.png" alt="logo" class="logo"></a>
                         <h1><strong>Viajes</strong>Claros</h1>
                         <p>Conoce los gastos y resultados de los viajes de trabajo de todos los servidores públicos del <strong>{{slcDependencia.siglas}}</strong>.</p>
-			<p>Seleccione un año para ver el detalle correspondiente: <select ng-model="thisYear" ng-style="form-group" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select></p>
+			<!--<p>Seleccione un año para ver el detalle correspondiente: <select ng-model="thisYear" ng-style="form-group" ng-options="year for year in years track by year" ng-change="changeAnio(thisYear)"></select></p>-->
                         <p class="total-viajes"><span count-to="{{totalViajes}}" value="0" duration="1" type="int"></span> viajes realizados en {{thisYear}}</p>
 				
 			
@@ -47,7 +47,7 @@
         <div class="row">
             <div class="col-xs-12 col-sm-4 col-md-4">
                 <div class="col panel panel-default">
-                    <div class="panel-heading text-center"><h5>Los <b>tres últimos</b> viajes de <strong>{{slcDependencia.siglas}}</strong></h5></div>
+                    <div class="panel-heading text-center"><h5>Los <b>TRES ÚLTIMOS</b> viajes de <strong>{{slcDependencia.siglas}}</strong></h5></div>
                     <div class="list-group">
                         <div class="list-group-item clearfix" ng-repeat="f in tresViajes">
                             <div class="col-sm-2">
