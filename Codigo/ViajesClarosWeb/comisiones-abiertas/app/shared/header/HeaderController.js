@@ -28,7 +28,31 @@ myApp.controller('HeaderController', ['$scope', '$rootScope', '$location', '$rou
         $rootScope.slcDependencia = dep;
         $route.reload();
     };
-    
+    	
+	HeaderService.getUltimosViajes($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresViajes = dep;
+	});
+	
+	HeaderService.getUltimosViajesTitulares($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresViajesTitulares = dep;
+	});
+	
+	HeaderService.getFuncionariosMayorGasto($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresServidores = dep;
+	});
+	
+	HeaderService.getFuncionariosMayorGastoTitulares($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresServidoresTitulares = dep;
+	});
+
+	HeaderService.getFuncionariosMasViajes($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresServidoresViajes = dep;
+	});
+	
+	HeaderService.getFuncionariosMasViajesTitulares($rootScope.slcDependencia).then(function (dep) {
+		$scope.tresServidoresViajesTitulares = dep;
+	});
+	
     HeaderService.getDependencias().then(function(d) {
         $scope.listDependencias = d;
     }). finally(function() {
@@ -52,7 +76,17 @@ myApp.controller('HeaderController', ['$scope', '$rootScope', '$location', '$rou
 		           item.chartPorc.labels = [$filter('number')(porcentajes.porcentajeViaje, 2) + ' % de días de comisión del total de días laborales', 'Tiempo en la institución'];
 		           item.totalDiasViaje = porcentajes.totalDiasViaje;
 		           item.totalDiasInstitucion = porcentajes.totalDiasInstitucion;
-		           $rootScope.funcionariosCompara.splice(i,1,item);	            
+				   
+				   HeaderService.getComplementariosPerfil(item).then(function(d) {
+					   item.ctoTotalComisNac = d.ctoTotalComisNac;
+					   item.comisNac = d.comisNac;
+					});
+					
+					HeaderService.getDiasTrabajados(item).then(function(d) {
+					   item.diasTrabajoNac = d.diasTrabajoNac;
+					});
+										
+		           $rootScope.funcionariosCompara.splice(i,1,item);
 		        });
 	    })(i,item); 
 	}

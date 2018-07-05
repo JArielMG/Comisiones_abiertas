@@ -3,14 +3,21 @@ package mx.org.inai.viajesclaros.admin.ejb;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.ejb.Stateless;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import mx.org.inai.viajesclaros.domain.DatosServidorPublicoDomain;
 import mx.org.inai.viajesclaros.domain.SimpleElementDomain;
 import mx.org.inai.viajesclaros.domain.SuscripcionCampoDomain;
 import mx.org.inai.viajesclaros.domain.ViajeDomain;
@@ -196,6 +203,45 @@ public class SuscripcionService {
             throw new Exception(e.getMessage());
         }
     }
+    
+    /**
+     * Obtiene los datos parametrizados del viaje para su envío a suscriptores
+     *
+     * @param idViaje
+     * @return
+     * @throws Exception
+     */
+    private DatosServidorPublicoDomain getDatosServidorPublico(Integer idViaje) throws Exception {
+        try {
+            Session session = em.unwrap(Session.class);
+            List<DatosServidorPublicoDomain> list = session.createSQLQuery("CALL get_datos_servidor_publico(:idViaje)")
+                    .setParameter("idViaje", idViaje)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            DatosServidorPublicoDomain servidorPublico = new DatosServidorPublicoDomain();
+                            servidorPublico.setNombreCompleto((String) tuple[0]);
+                            servidorPublico.setDependencia((String) tuple[1]);
+
+                            return servidorPublico;
+                        }
+                    })
+                    .list();
+            session.flush();
+            session.clear();
+
+            if (list.size() > 0) {
+                return list.get(0);
+            } else {
+                return new DatosServidorPublicoDomain();
+            }
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LOS DATOS DEL SERVIDOR PÚBLICO", e);
+            throw new Exception(e.getMessage());
+        }
+    }
 
     /**
      * Realiza el proceso de envío de correos. Es llamado desde el web por medio
@@ -214,19 +260,41 @@ public class SuscripcionService {
             for (SimpleElementDomain d : list) {
                 String detalle = "";
                 ViajeDomain viajeDomain = this.getDatosViajeSuscripcion(d.getId());
+                DatosServidorPublicoDomain datosServidorPublico = this.getDatosServidorPublico(d.getId());
                 for (int i = 0; i < viajeDomain.getHeaders().size(); i++) {
                     log.info("-> " + viajeDomain.getHeaders().get(i) + ": " + viajeDomain.getDatos().get(i));
                     detalle += "<br/><b>" + viajeDomain.getHeaders().get(i) + "</b> : " + viajeDomain.getDatos().get(i);
                 }
 
-                String html = "<h2>Viajes Claros</h2><p>Se ha registrado un nuevo viaje del "
-                        + "funcionario <b>[funcionario]</b> en el sitio web Viajes Claros.</p>"
-                        + "<h3>Detalle del viaje</h3>"
-                        + "<div>[detalle]</div>";
-                html = html.replace("[detalle]", detalle);
+                String mensajeHtml = "<img src=\"cid:image\"><p><strong style='font-size:14.0pt;color:#028E8E'>"
+                    + "Comisi&oacute;n oficial de trabajo</strong>"
+                    + "</p><p>Estimado(a) usuario(a),</p><p>&nbsp;</p>"
+                    + "<p>El servidor p&uacute;blico <strong style='font-size:14.0pt;color:#028E8E'>" 
+                    + datosServidorPublico.getNombreCompleto()+ ".</strong> del " 
+                    + datosServidorPublico.getDependencia() + " ha realizado una nueva comisión de "
+                    + "trabajo.</p><br/><div>[detalle]</div><p>Si usted desea dejar de recibir estas "
+                    + "notificaciones, favor de ponerse en contacto a trav&eacute;s del correo "
+                    + "electr&oacute;nico <a href='mailto:comisionesabiertas@inai.org.mx'>"
+                    + "comisionesabiertas@inai.org.mx</a>, o al tel&eacute;fono "
+                    + "(55) 5004 2400 ext. 2157, 2191 y 2126.</p><p>&nbsp;</p>"
+                    + "<table style='background-color: #f2f2f2;'><tbody><tr>"
+                    + "<td style='text-align: center; color: #575756; font-size: 10.0pt; "
+                    + "font-family: HelveticaNeue-Medium,sans-serif; "
+                    + "mso-bidi-font-family: HelveticaNeue-Medium;'>"
+                    + "<p>Instituto Nacional de Transparencia, Acceso a la Informaci&oacute;n y "
+                    + "Protecci&oacute;n de Datos Personales</p><p>Insurgentes Sur No. 3211"
+                    + " Col. Insurgentes Cuicuilco, Delegaci&oacute;n Coyoac&aacute;n, "
+                    + "C.P. 04530</p><p>Correo: <a href='mailto:comisionesabiertas@inai.org.mx'>"
+                    + "comisionesabiertas@inai.org.mx</a>, tel&eacute;fono "
+                    + "(55) 5004 2400 ext. 2157, 2191 y 2126.</p>"
+                    + "<p style='color: #028e8e;'><strong>"
+                    + "<a href='http://comisionesabiertas.inai.org.mx/comisiones-abiertas/assets/pdf/INAI_aviso_privacidad.pdf'>"
+                    + "Aviso de privacidad</a></strong></p></td></tr></tbody></table>";
+                        
+                mensajeHtml = mensajeHtml.replace("[detalle]", detalle);
 
                 /* ENVIAR EL CORREO */
-                sendMail(d.getDescripcion(), html);
+                sendMail(d.getDescripcion(), mensajeHtml);
             }
 
         } catch (Exception e) {
@@ -264,12 +332,26 @@ public class SuscripcionService {
                 }
             });
 
+            DataSource fds = new FileDataSource("/var/www/html/comisiones-abiertas/assets/img/ComisionesAbiertasMail.png");
+            
+            MimeMultipart multipart = new MimeMultipart("related");
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("viajes.claros@inai.org.mx"));
+            message.setFrom(new InternetAddress("comisionesabiertas@inai.org.mx"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailDir));
-            message.setSubject("Viajes Claros | Se ha registrado un nuevo viaje");
-            message.setContent(html, "text/html; charset=utf-8");
+            message.setSubject("Comisiones Abiertas - Se ha registrado una nueva comisión oficial de trabajo");
+            BodyPart messageBodyPart = new MimeBodyPart();
+                        
+            messageBodyPart.setContent(html, "text/html");
+            multipart.addBodyPart(messageBodyPart);
+                           
+                        
+            messageBodyPart = new MimeBodyPart();
+            messageBodyPart.setDataHandler(new DataHandler(fds));
+            messageBodyPart.setHeader("Content-ID", "<image>");
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
 
+            
             Transport.send(message);
         } catch (Exception e) {
             log.error("ERROR AL ENVIAR UN CORREO. ", e);

@@ -101,9 +101,9 @@ myApp.controller('ViajeController', ['$scope', '$rootScope', '$routeParams', 'Vi
         return $scope.activeCat === index;
     };
     
-    $scope.fbShare = function(idFuncionario) {
+    $scope.fbShare = function(idViaje) {
         window.open(
-        'https://www.facebook.com/sharer/sharer.php?u='+'http://viajesclaros.inai.mx/funcionario/'+idFuncionario, 
+        'https://www.facebook.com/sharer/sharer.php?u='+'http://comisionesabiertas.inai.org.mx/comisiones-abiertas/%23/viaje/'+idViaje, 
         'facebook-share-dialog', 
         'width=520,height=350'); 
         return false;

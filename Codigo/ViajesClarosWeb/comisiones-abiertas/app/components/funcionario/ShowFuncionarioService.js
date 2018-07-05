@@ -49,6 +49,40 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
             return promise;
         };
         
+		/**
+         * obtiene los datos complementarios para el perfil del funcionario
+         * @param {type} idFuncionario
+         * @returns {undefined}
+         */
+		this.getComplementariosPerfil = function (funcionario) {
+            var url = config.restUrl + "funcionario/getComplementariosPerfilPorFuncionario/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionario).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+		
+		/**
+         * obtiene los días trabajados en comisiones nacionales para funcionario
+         * @param {type} idFuncionario
+         * @returns {undefined}
+         */
+		this.getDiasTrabajados = function (funcionario) {
+            var url = config.restUrl + "funcionario/getDiasTrabajadosComisNacionales/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionario).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+		
+		this.getPorcentajeDiasComisionFuncionario = function (funcionario) {
+            var url = config.restUrl + "funcionario/getPorcentajeDiasComision/"+getAnioSeleccionado();
+            var promise = $http.post(url, funcionario).then(function (response) {
+                return response.data;
+            });
+            return promise;
+        };
+		
         /**
          * obtiene el cargo de funcionario
          * @param {type} idFuncionario
@@ -76,12 +110,62 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
 		  var fechaFinArray = viajes.fechaFin.split('/');
 		  viajes.fechaInicio = new Date(parseInt(fechaInicioArray[2]),parseInt(fechaInicioArray[1])-1,parseInt(fechaInicioArray[0]));
   		  viajes.fechaFin = new Date(parseInt(fechaFinArray[2]),parseInt(fechaFinArray[1])-1,parseInt(fechaFinArray[0]));
+		  var tipoComision = viajes.tipoComision;//Aquí va la parte para mostrar el tipo de comisión
 		});
                 return response.data;
             });
             return promise;
         };
-
+		
+		
+		/*this.getUltimosViajes = function(dependencia) {
+			var url = config.restUrl + "grafica/getUltimosViajes/" + getIdDependencia();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};
+		
+		this.getUltimosViajesTitulares = function(dependencia) {
+			var url = config.restUrl + "grafica/getUltimosViajesTitulares/" + getIdDependencia();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};
+		
+		this.getFuncionariosMayorGasto = function(dependencia) {
+			var url = config.restUrl + "grafica/getFuncionariosMayorGasto/" + getIdDependencia()+','+getAnioSeleccionado();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};
+		
+		this.getFuncionariosMayorGastoTitulares = function(dependencia) {
+			var url = config.restUrl + "grafica/getFuncionariosMayorGastoTitulares/" + getIdDependencia()+','+getAnioSeleccionado();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};
+		
+		this.getFuncionariosMasViajes = function(dependencia) {
+			var url = config.restUrl + "grafica/getFuncionariosMasViajes/" + getIdDependencia()+','+getAnioSeleccionado();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};
+		
+		this.getFuncionariosMasViajesTitulares = function(dependencia) {
+			var url = config.restUrl + "grafica/getFuncionariosMasViajesTitulares/" + getIdDependencia()+','+getAnioSeleccionado();
+			var promise = $http.get(url).then(function (response) {
+				return response.data;
+			});
+			return promise;
+		};*/
+		
         /**
          * Obtiene los encabezados de la tabla de resultados
          * @param {type} dependencia
@@ -98,16 +182,16 @@ myApp.service('ShowFuncionarioService', ['$http', 'config', '$log', '$rootScope'
             return promise;
         };
 
-        this.getPorcentajeDiasComisionFuncionario = function (funcionario) {
-            var url = config.restUrl + "funcionario/getPorcentajeDiasComision/"+getAnioSeleccionado();
+        this.getGraficaViaticosPorFuncionario = function (funcionario) {
+            var url = config.restUrl + "grafica/getGraficaViaticosPorFuncionario/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });
             return promise;
         };
-
-        this.getGraficaViaticosPorFuncionario = function (funcionario) {
-            var url = config.restUrl + "grafica/getGraficaViaticosPorFuncionario/"+getAnioSeleccionado();
+		
+		this.getGraficaViaticosPorFuncionarioNacInter = function (funcionario) {
+            var url = config.restUrl + "grafica/getGraficaViaticosPorFuncionarioNacInter/"+getAnioSeleccionado();
             var promise = $http.post(url, funcionario).then(function (response) {
                 return response.data;
             });

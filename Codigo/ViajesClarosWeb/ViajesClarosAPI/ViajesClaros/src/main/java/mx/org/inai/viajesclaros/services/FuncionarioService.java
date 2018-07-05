@@ -22,13 +22,19 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.ejb.Stateless;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import mx.org.inai.viajesclaros.model.FuncionarioModel;
@@ -606,13 +612,7 @@ public class FuncionarioService {
         try {
             Session session = em.unwrap(Session.class);
             log.info("mail: " + model.getEmail());
-            session.createSQLQuery("CALL insert_suscripcion_email_config(:idFuncionario, :email, :nom, :ap1, :ap2)")
-                    .setParameter("idFuncionario", model.getId())
-                    .setParameter("email", model.getEmail())
-                    .setParameter("nom", model.getNombres())
-                    .setParameter("ap1", model.getApellido1())
-                    .setParameter("ap2", model.getApellido2())
-                    .executeUpdate();
+            
             List<MailProperties> mailProp = session.createSQLQuery("CALL viajes_claros.obten_mail_server()")
                 .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
@@ -629,9 +629,6 @@ public class FuncionarioService {
                         }
                     })
                     .list();
-            
-            session.flush();
-            session.clear();
             
             Properties props = new Properties();
             props.put("mail.smtp.host", mailProp.get(0).getHost());
@@ -653,26 +650,77 @@ public class FuncionarioService {
 		  });
 
 		try {
-
-			Message message = new MimeMessage(mailSession);
+                        DataSource fds = new FileDataSource("/var/www/html/comisiones-abiertas/assets/img/ComisionesAbiertasMail.png");
+                        String mensajeHtml = "<img src=\"cid:image\"><p><strong style='font-size:14.0pt;color:#028E8E'>"
+                                + "Confirmaci&oacute;n de suscripci&oacute;n</strong>"
+                                + "</p><p>Bienvenido(a),</p><p>&nbsp;</p>"
+                                + "<p>Este mensaje ha sido enviado autom&aacute;ticamente en respuesta a "
+                                + "una solicitud de suscripci&oacute;n de usuario al sitio web Comisiones "
+                                + "Abiertas <a href='http://comisionesabiertas.inai.mx'>"
+                                + "comisionesabiertas.inai.mx</a>., para recibir informaci&oacute;n "
+                                + "de las comisiones oficiales de trabajo del servidor "
+                                + "p&uacute;blico <strong style='font-size:14.0pt;color:#028E8E'>" 
+                                + model.getNombres()+" "+model.getApellido1()
+                                + " " + model.getApellido2() + ".</strong>"
+                                + "</p><p>&nbsp;</p><p>Si usted no ha solicitado la suscripci&oacute;n a "
+                                + "Comisiones Abiertas y no desea recibir esta informaci&oacute;n, favor "
+                                + "de ponerse en contacto a trav&eacute;s del correo electr&oacute;nico "
+                                + "<a href='mailto:comisionesabiertas@inai.org.mx'>"
+                                + "comisionesabiertas@inai.org.mx</a>, o al tel&eacute;fono "
+                                + "(55) 5004 2400 ext. 2157, 2191 y 2126.</p><p>&nbsp;</p>"
+                                + "<table style='background-color: #f2f2f2;'><tbody><tr>"
+                                + "<td style='text-align: center; color: #575756; font-size: 10.0pt; "
+                                + "font-family: HelveticaNeue-Medium,sans-serif; "
+                                + "mso-bidi-font-family: HelveticaNeue-Medium;'>"
+                                + "<p>Instituto Nacional de Transparencia, Acceso a la Informaci&oacute;n y "
+                                + "Protecci&oacute;n de Datos Personales</p><p>Insurgentes Sur No. 3211"
+                                + " Col. Insurgentes Cuicuilco, Delegaci&oacute;n Coyoac&aacute;n, "
+                                + "C.P. 04530</p><p>Correo: <a href='mailto:comisionesabiertas@inai.org.mx'>"
+                                + "comisionesabiertas@inai.org.mx</a>, tel&eacute;fono "
+                                + "(55) 5004 2400 ext. 2157, 2191 y 2126.</p>"
+                                + "<p style='color: #028e8e;'><strong>"
+                                + "<a href='http://comisionesabiertas.inai.org.mx/comisiones-abiertas/assets/pdf/INAI_aviso_privacidad.pdf'>"
+                                + "Aviso de privacidad</a></strong></p></td></tr></tbody></table>";
+			
+                        
+                        MimeMultipart multipart = new MimeMultipart("related");
+                        Message message = new MimeMessage(mailSession);
 			message.setFrom(new InternetAddress(username));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(model.getEmail()));
-			message.setSubject("Suscripción a Viajes Claros");
-			message.setText("Estimado usuario: "
-				+ "\n\n Se ha realizado exitosamente la suscripción al funcionario : " + 
-                                model.getNombres() + " " +model.getApellido1() + " " + model.getApellido2() + ".\n");
-                                    
+			message.setSubject("Suscripción a Comisiones Abiertas");
                         
+                        
+                        BodyPart messageBodyPart = new MimeBodyPart();
+                        
+			messageBodyPart.setContent(mensajeHtml, "text/html");
+                        multipart.addBodyPart(messageBodyPart);
+                           
+                        
+                        messageBodyPart = new MimeBodyPart();
+                        messageBodyPart.setDataHandler(new DataHandler(fds));
+                        messageBodyPart.setHeader("Content-ID", "<image>");
+                        multipart.addBodyPart(messageBodyPart);
+                        message.setContent(multipart);
 			Transport.send(message);
 
 			System.out.println("Done");
+                        
+                        session.createSQLQuery("CALL insert_suscripcion_email_config(:idFuncionario, :email, :nom, :ap1, :ap2)")
+                        .setParameter("idFuncionario", model.getId())
+                        .setParameter("email", model.getEmail())
+                        .setParameter("nom", model.getNombres())
+                        .setParameter("ap1", model.getApellido1())
+                        .setParameter("ap2", model.getApellido2())
+                        .executeUpdate();
 
 		} catch (MessagingException e) {
 			log.error("ERROR AL INTENTAR ENVIAR EL CORREO DE SUSCRIPCIÓN",e);
 			//System.out.println("****** Sent message horribly.... " + e.getMessage());
 			throw new RuntimeException(e);
 		}
+                session.flush();
+                session.clear();
             
         } catch(Exception e) {
             log.error("ERROR AL REALIZAR LA SUSCRIPCIÓN", e);

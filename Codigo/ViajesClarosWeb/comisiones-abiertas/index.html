@@ -5,9 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
         <title>ComisionesAbiertas</title>
-        <meta property="og:title"content="ViajesClaros | {{metaService.getTitle()}}" />
+        <meta property="og:title"content="ComisionesAbiertas" />
         <meta property="og:url" content="http://comisionesabiertas.inai.org.mx/{{metaService.getUrl()}}" />
-        <meta property="og:description" content="{{metaService.getDescription()}}" /> 
+        <meta property="og:description" content="Conoce los gastos y resultados de las comisiones de trabajo de todos los servidores públicos del INAI." /> 
         <meta property="og:image" content="assets/img/screen.jpg" />
         <meta name="description" content="Conoce los gastos y resultados de las comisiones de trabajo de todos los servidores públicos del INAI.">
         
@@ -27,10 +27,10 @@
 
         <div id="content">
             <div ng-view autoscroll="true"></div>
-            <div id="clearfooter"></div>
+            <!--<div id="clearfooter"></div>-->
+			
+			<div ng-include="'app/shared/footer/footer.html'"></div>
         </div>
-
-        <div ng-include="'app/shared/footer/footer.html'"></div>
 
 	<script>
 	        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -42,8 +42,7 @@
 	        ga('send', 'pageview');
 	
 	</script>
-
-        <script src="assets/libs/angular.min.js"></script>
+		<script src="assets/libs/angular.min.js"></script>
         <script src="assets/libs/angular-locale_es-mx.js"></script>
         <script src="assets/libs/angular-route.min.js"></script>
         <script src="assets/libs/angular-resource.min.js"></script>
@@ -59,7 +58,8 @@
         <script src="assets/libs/angular-chart.min.js"></script>
         <script src="assets/libs/angular-smooth-scroll.min.js"></script>
         <script src="assets/js/json2xml.js"></script>
-        <script src="app/app.modules.js"></script>
+		<script src="assets/js/auxiliares.js"></script>
+        <script src="app/app.modules.js"></script>		
         <script src="app/app.config.js"></script>
         <script src="app/app.routes.js"></script>
         <script src="app/app.constant.js"></script>
