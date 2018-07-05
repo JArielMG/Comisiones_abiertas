@@ -10,13 +10,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(FlujosInstancias.class)
 public abstract class FlujosInstancias_ {
 
-	public static volatile SingularAttribute<FlujosInstancias, FlujosInstanciasPK> flujosInstanciasPK;
-	public static volatile SingularAttribute<FlujosInstancias, Date> fechaFin;
-	public static volatile SingularAttribute<FlujosInstancias, FlujosTrabajo> flujosTrabajo;
 	public static volatile SingularAttribute<FlujosInstancias, Comisiones> comisiones;
+	public static volatile CollectionAttribute<FlujosInstancias, AprobacionesBitacora> aprobacionesBitacoraCollection;
+	public static volatile SingularAttribute<FlujosInstancias, FlujosInstanciasPK> flujosInstanciasPK;
 	public static volatile SingularAttribute<FlujosInstancias, Boolean> asignado;
 	public static volatile SingularAttribute<FlujosInstancias, Date> fechaInicio;
-	public static volatile CollectionAttribute<FlujosInstancias, AprobacionesBitacora> aprobacionesBitacoraCollection;
+	public static volatile SingularAttribute<FlujosInstancias, FlujosTrabajo> flujosTrabajo;
+	public static volatile SingularAttribute<FlujosInstancias, Date> fechaFin;
 
 }
 

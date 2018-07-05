@@ -6,6 +6,12 @@
         <param-value>Production</param-value>
     </context-param>
     
+    <env-entry>
+        <env-entry-name>PathComisiones</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>comisionesabiertas.inai.org.mx</env-entry-value>
+    </env-entry>
+    
     <listener>
         <listener-class>mx.org.inai.viajesclaros.admin.quartz.EmailSubscripciones</listener-class>
     </listener>

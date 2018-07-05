@@ -140,18 +140,18 @@ public class FormularioAction extends HttpServlet {
 				DatosFuncionariosVO funcionario = datosFuncionario.get(0);
 				
 				List <String> encabezados=new ArrayList<String>();
-				encabezados.add(0, "Id comisión");
+				encabezados.add(0, "Id comisiÃ³n");
 				encabezados.add(1, "Estatus");
 				encabezados.add(2, "Fecha salida");
 				encabezados.add(3, "Fecha regreso");
-				encabezados.add(4, "País destino");
+				encabezados.add(4, "PaÃ­s destino");
 				encabezados.add(5, "Ciudad destino");
 				
 				List<ComisionesUsuario> comisionesUsuario = formSrv.obtenerComisionesUsuario(funcionario.getIdPersona());
 				
 				request.setAttribute("encabezados", encabezados);
 				request.setAttribute("valoresTabla", comisionesUsuario);	
-				//Se valida que exista una comisión en curso
+				//Se valida que exista una comisiÃ³n en curso
 			}
 		}else if (action.equals("verDetalleComision")) {
 			//org.apache.shiro.subject.Subject currentUser = SecurityUtils.getSubject();
@@ -171,7 +171,7 @@ public class FormularioAction extends HttpServlet {
 				
 				ArrayList<Comisiones> comisionFuncionario = formSrv.obtenerComisionFuncionario(Integer.valueOf(idComision));
 				
-				//Se valida que exista la comisión
+				//Se valida que exista la comisiÃ³n
 				if (comisionFuncionario!=null&&!comisionFuncionario.isEmpty()){
 					
 					Comisiones comisionEnCurso = comisionFuncionario.get(0);
@@ -222,14 +222,14 @@ public class FormularioAction extends HttpServlet {
 						if (comisionEnCurso.getEstatus().equals("C")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Solicitud de comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisiÃ³n");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "C");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("R")){
-							request.setAttribute("nombreFormulario", "Solicitud de comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisiÃ³n");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -240,24 +240,24 @@ public class FormularioAction extends HttpServlet {
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
 						/*}else if(comisionEnCurso.getEstatus().equals("A")){
-							request.setAttribute("nombreFormulario", "Solicitud de comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisiÃ³n");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de solicitud de viáticos y pasajes.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de solicitud de viÃ¡ticos y pasajes.");
 					
 						*/
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EA")){
-							request.setAttribute("nombreFormulario", "Solicitud de comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisiÃ³n");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos y pasajes.");
+							request.setAttribute("mensajeError", "Su comisiÃ³n se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobaciÃ³n de la misma a fin de continuar con la solicitud de viÃ¡ticos y pasajes.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
 						/*else{
-							request.setAttribute("nombreFormulario", "Solicitud de comisión");
+							request.setAttribute("nombreFormulario", "Solicitud de comisiÃ³n");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+							request.setAttribute("mensajeError", "Su comisiï¿½n esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menï¿½ correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menï¿½ \"Reportes comisiones\".");
 						}*/
 					}
 					
@@ -266,14 +266,14 @@ public class FormularioAction extends HttpServlet {
 						if (comisionEnCurso.getEstatus().equals("A")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+							request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "A");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("RV")){
-							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+							request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -284,24 +284,24 @@ public class FormularioAction extends HttpServlet {
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
 						/*}else if(comisionEnCurso.getEstatus().equals("F")){
-							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+							request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el informe de comisión y el desglose de gastos al regreso de su comisión conforme a los Lineamientos internos que regulan la asignación de comisiones, viáticos y pasajes nacionales e internacionales para el Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el informe de comisiï¿½n y el desglose de gastos al regreso de su comisiï¿½n conforme a los Lineamientos internos que regulan la asignaciï¿½n de comisiones, viï¿½ticos y pasajes nacionales e internacionales para el Instituto Nacional de Transparencia, Acceso a la Informaciï¿½n y Protecciï¿½n de Datos Personales.");
 					
 						*/
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EV")){
-							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+							request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con la solicitud de viáticos y pasajes.");
+							request.setAttribute("mensajeError", "Su comisiï¿½n se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobaciï¿½n de la misma a fin de continuar con la solicitud de viï¿½ticos y pasajes.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
 						/*else{
-							request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+							request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+							request.setAttribute("mensajeError", "Su comisiï¿½n esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menï¿½ correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menï¿½ \"Reportes comisiones\".");
 						}*/
 					}
 					
@@ -331,21 +331,21 @@ public class FormularioAction extends HttpServlet {
 							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de publicación de la comisión.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Favor de llenar el formulario de publicaciï¿½n de la comisiï¿½n.");
 						*/
 						
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EG")){
 							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con el desglose de gastos.");
+							request.setAttribute("mensajeError", "Su comisiï¿½n se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobaciï¿½n de la misma a fin de continuar con el desglose de gastos.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
 						/*else{
 							request.setAttribute("nombreFormulario", "Desglose de gastos");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+							request.setAttribute("mensajeError", "Su comisiï¿½n esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menï¿½ correspondiente para continuar con el proceso de la misma o puede imprimir su solicitud en el menï¿½ \"Reportes comisiones\".");
 						}*/
 						
 						List<RegistrosGastosComisionVO> gastosFuncionario = formSrv.obtenerRegistrosGastosIdComision(comisionEnCurso.getIdComision());
@@ -362,14 +362,14 @@ public class FormularioAction extends HttpServlet {
 						if (comisionEnCurso.getEstatus().equals("CM")){
 							request.setAttribute("error", false);
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
-							request.setAttribute("nombreFormulario", "Informe de comisión");
+							request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 							request.setAttribute("seccionesFormulario", seccionesFormulario);
 							request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 							request.setAttribute("estatus", "CM");
 
 						// Se setean los atributos para el formulario cuando el estatus es "R"
 						}else if(comisionEnCurso.getEstatus().equals("RP")){
-							request.setAttribute("nombreFormulario", "Informe de comisión");
+							request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 							request.setAttribute("idComision", comisionEnCurso.getIdComision());
 							request.setAttribute("error", false);
 							request.setAttribute("rechazada", true);
@@ -380,24 +380,24 @@ public class FormularioAction extends HttpServlet {
 						
 						// Se setean los atributos para el formulario cuando el estatus es "A"
 						}else if(comisionEnCurso.getEstatus().equals("P")){
-							request.setAttribute("nombreFormulario", "Informe de comisión");
+							request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 							request.setAttribute("error", false);
 							request.setAttribute("autorizada", true);
-							request.setAttribute("mensajeAutorizada", estatusTexto+". Ha finalizado el proceso de publicación de la comisión.");
+							request.setAttribute("mensajeAutorizada", estatusTexto+". Ha finalizado el proceso de publicaciï¿½n de la comisiï¿½n.");
 					
 						
 						// Se setean los atributos para el formulario cuando el estatus es "EA"
 						}else if(comisionEnCurso.getEstatus().equals("EP")){
-							request.setAttribute("nombreFormulario", "Informe de comisión");
+							request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobación de la misma a fin de continuar con el proceso de publicación.");
+							request.setAttribute("mensajeError", "Su comisiï¿½n se encuentra con el estatus: \""+estatusTexto+". Debe esperar a la aprobaciï¿½n de la misma a fin de continuar con el proceso de publicaciï¿½n.");
 						}
 						
 						// Se setean los atributos para el formulario cuando el estatus es otro distinto a los anteriores
 						/*else{
-							request.setAttribute("nombreFormulario", "Informe de comisión");
+							request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 							request.setAttribute("error", true);
-							request.setAttribute("mensajeError", "Su comisión esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menú correspondiente para continuar con el proceso de la misma  o puede imprimir su solicitud en el menú \"Reportes comisiones\".");
+							request.setAttribute("mensajeError", "Su comisiï¿½n esta en curso con el estatus: \""+estatusTexto+"\". \nSeleccione el menï¿½ correspondiente para continuar con el proceso de la misma  o puede imprimir su solicitud en el menï¿½ \"Reportes comisiones\".");
 						}*/
 					}
 					
@@ -406,7 +406,7 @@ public class FormularioAction extends HttpServlet {
 				//Caso que aplica para cuando el funcionario no tiene comisiones en curso
 				else if (comisionFuncionario!=null&&comisionFuncionario.isEmpty()&&idComision.equals("0")){
 					
-					// Se obtiene el formulario vacío
+					// Se obtiene el formulario vacï¿½o
 					List<SeccionesFormulario> seccionesFormulario = formSrv.getCamposFormulario(1, funcionario.getIdTipoPersona(),funcionario.getTipoRepresentacion());
 					
 					// Se precargan los datos del funcionario en el formulario
@@ -428,38 +428,38 @@ public class FormularioAction extends HttpServlet {
 						}
 					}
 					
-					// Se setean los atributos para el formulario de la comisión recién creada
+					// Se setean los atributos para el formulario de la comisiï¿½n reciï¿½n creada
 					request.setAttribute("error", false);
 					// Se setea idComision como 0 para indicar que 
 					request.setAttribute("idComision", 0);
-					request.setAttribute("nombreFormulario", "Solicitud de comisión");
+					request.setAttribute("nombreFormulario", "Solicitud de comisiï¿½n");
 					request.setAttribute("seccionesFormulario", seccionesFormulario);
 					request.setAttribute("nombreDepedencia", funcionario.getNombreDependencia());
 					request.setAttribute("estatus", "C");
 				}/*else{
 					if (action.equals("oficioViaticos"))
-						request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+						request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 					else if (action.equals("oficioGastos"))
 						request.setAttribute("nombreFormulario", "Desglose de gastos");
 					else if (action.equals("oficioPublicacion"))
-						request.setAttribute("nombreFormulario", "Informe de comisión");
+						request.setAttribute("nombreFormulario", "Informe de comisiï¿½n");
 					request.setAttribute("error", true);
-					request.setAttribute("mensajeError", "Actualmente no cuenta con comisiones en curso. Si desea crear una comisión vaya al menú \"Solicitud de Comisión\"");
+					request.setAttribute("mensajeError", "Actualmente no cuenta con comisiones en curso. Si desea crear una comisiï¿½n vaya al menï¿½ \"Solicitud de Comisiï¿½n\"");
 				}*/
 				
 				request.setAttribute("tipoRepresentacionFun", funcionario.getTipoRepresentacion());
 				
-			// Se setean los atributos para generar un mensaje de error al no haber encontrado información del funcionario
+			// Se setean los atributos para generar un mensaje de error al no haber encontrado informaciï¿½n del funcionario
 			}else{
-				request.setAttribute("nombreFormulario", "Solicitud de comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisiï¿½n");
 				request.setAttribute("error", true);
-				request.setAttribute("mensajeError", "No se encontro información del funcionario para realizar la Solicitud de Comisión");
+				request.setAttribute("mensajeError", "No se encontro informaciï¿½n del funcionario para realizar la Solicitud de Comisiï¿½n");
 			}
 			request.setAttribute("datosGuardados", false);
 			
-		// Se ejecuta para salvar información del formulario
+		// Se ejecuta para salvar informaciï¿½n del formulario
 		}
-		//Se ejecuta al cargar el formulario de solicitud  de comisión
+		//Se ejecuta al cargar el formulario de solicitud  de comisiï¿½n
 		else if (action.equals("salvarDatosComision")){
 			String idComisionString = request.getParameter("id_comision");
 			String estatus = request.getParameter("estatus");
@@ -475,7 +475,7 @@ public class FormularioAction extends HttpServlet {
 				//Se valida que exista el funcionario
 				if (datosFuncionario!=null&&!datosFuncionario.isEmpty()){
 					DatosFuncionariosVO funcionario = datosFuncionario.get(0);
-					// Se crea una nueva comisión con el estatus "C"
+					// Se crea una nueva comisiï¿½n con el estatus "C"
 					idComision = formSrv.insertarNuevaComision("C",funcionario.getIdDependencia(),funcionario.getIdPersona(),funcionario.getIdUsuario());
 				}
 			}	
@@ -525,19 +525,19 @@ public class FormularioAction extends HttpServlet {
 					}
 			}
 			if (estatus.equals("C")||estatus.equals("R"))
-				request.setAttribute("nombreFormulario", "Solicitud de comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisiï¿½n");
 			else if (estatus.equals("A")||estatus.equals("RV"))
-				request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+				request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 			else if (estatus.equals("F")||estatus.equals("RG"))
 				request.setAttribute("nombreFormulario", "Desglose de gastos");
 			else if (estatus.equals("CM")||estatus.equals("RP"))
-				request.setAttribute("nombreFormulario", "Solicitud de publicación");
+				request.setAttribute("nombreFormulario", "Solicitud de publicaciï¿½n");
 			
 			request.setAttribute("idComision", idComision);
 			request.setAttribute("estatus", estatus);
 			request.setAttribute("datosGuardados", true);
 			request.setAttribute("comisionEnviada", false);
-			request.setAttribute("mensajeGuardado", "Se han guardado los datos éxitosamente. Puede proceder a enviar su solicitud o regresar al formulario para realizar cambios antes de su envío. ");
+			request.setAttribute("mensajeGuardado", "Se han guardado los datos ï¿½xitosamente. Puede proceder a enviar su solicitud o regresar al formulario para realizar cambios antes de su envï¿½o. ");
 			
 		}		
 		
@@ -549,16 +549,16 @@ public class FormularioAction extends HttpServlet {
 			
 			if (estatus.equals("C")||estatus.equals("R")) {
 				sFlujo = "1";
-				request.setAttribute("nombreFormulario", "Solicitud de comisión");
+				request.setAttribute("nombreFormulario", "Solicitud de comisiï¿½n");
 			} else if (estatus.equals("A")||estatus.equals("RV")) {
 				sFlujo = "2";
-				request.setAttribute("nombreFormulario", "Solicitud de viáticos y pasajes");
+				request.setAttribute("nombreFormulario", "Solicitud de viï¿½ticos y pasajes");
 			} else if (estatus.equals("F")||estatus.equals("RG")) {
 				sFlujo = "3";
 				request.setAttribute("nombreFormulario", "Desglose de gastos");
 			} else if (estatus.equals("CM")||estatus.equals("RP")) {
 				sFlujo = "4";
-				request.setAttribute("nombreFormulario", "Solicitud de publicación");
+				request.setAttribute("nombreFormulario", "Solicitud de publicaciï¿½n");
 			}
 			
 			Integer idFlujo = Integer.parseInt(sFlujo);
@@ -576,7 +576,7 @@ public class FormularioAction extends HttpServlet {
 			formSrv.actualizaEstatusComision(Integer.valueOf(idComisionString),regresaSiguienteEstatusComision(estatus));
 			
 			request.setAttribute("comisionEnviada", true);
-			request.setAttribute("mensajeEnviada", "Se ha enviado su solicitud para su aprobación.");
+			request.setAttribute("mensajeEnviada", "Se ha enviado su solicitud para su aprobaciï¿½n.");
 			//request.setAttribute("error", error);
 			
 		}
@@ -893,7 +893,7 @@ public class FormularioAction extends HttpServlet {
 				System.out.println("funcionario.getIdPersona(): "+funcionario.getIdPersona()+" funcionario.nombre: "+funcionario.getUsuario());
 			
 				List <String> encabezados=new ArrayList<String>();
-				encabezados.add(0, "Id Comisión");
+				encabezados.add(0, "Id Comisiï¿½n");
 				encabezados.add(1, "Flujo 1");
 				encabezados.add(2, "Flujo 2");
 				encabezados.add(3, "Flujo 3");

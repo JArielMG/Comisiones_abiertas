@@ -8,11 +8,13 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+import static mx.org.inai.viajesclaros.admin.controllers.ListasController.log;
 import mx.org.inai.viajesclaros.admin.ejb.CampoDinamicoService;
 import mx.org.inai.viajesclaros.admin.ejb.ListaService;
 import mx.org.inai.viajesclaros.domain.CampoDomain;
 import mx.org.inai.viajesclaros.domain.ListaValoresDomain;
 import mx.org.inai.viajesclaros.domain.SimpleElementDomain;
+import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -35,6 +37,10 @@ public class CamposDinamicosController {
     private CampoDomain campoInsert;
     private CampoDomain campoDelete;
     private Boolean edicionCampo; // Para identificar si es edición o es un nuevo campo
+    private String filtroCampo = "";
+    private String editLista = "";
+    private String editCategoria = "";
+    final static Logger log = Logger.getLogger(ListasController.class);
     
     @PostConstruct
     public void init() {
@@ -43,7 +49,7 @@ public class CamposDinamicosController {
             campoDelete = new CampoDomain();
             edicionCampo = false;
             setCamposDinamicos(campoDinamicoService.findAll());
-            setListas(listaService.findAll());
+            setListas(listaService.findAllOrdenada());
             setTiposDato(campoDinamicoService.getTiposDato());
             setTiposControl(campoDinamicoService.getTiposControl());
             setCategorias(campoDinamicoService.gatCategorias());
@@ -64,6 +70,10 @@ public class CamposDinamicosController {
      */
     public void saveCampo() {
         try {
+            if(campoInsert.getIdTipoDato() == null)
+                campoInsert.setIdTipoDato(1);
+            if(campoInsert.getIdTipoControl() == null)
+                campoInsert.setIdTipoControl(1);
             if (edicionCampo) {
                 campoDinamicoService.updateCampo(campoInsert);
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
@@ -76,7 +86,7 @@ public class CamposDinamicosController {
             /* Actualizar datos */
             edicionCampo = false;
             campoInsert = new CampoDomain();
-            setCamposDinamicos(campoDinamicoService.findAll());
+            setCamposDinamicos(campoDinamicoService.findAllFiltro(getFiltroCampo()));
             RequestContext.getCurrentInstance().addCallbackParam("saved", true);
         } catch(Exception e) {
             RequestContext.getCurrentInstance().addCallbackParam("saved", false);
@@ -92,7 +102,7 @@ public class CamposDinamicosController {
                     "", "Se eliminó el campo " + campoDelete.getCampo()));
             /* Actualizar lista */
             campoDelete = new CampoDomain();
-            setCamposDinamicos(campoDinamicoService.findAll());
+            setCamposDinamicos(campoDinamicoService.findAllFiltro(getFiltroCampo()));
             RequestContext.getCurrentInstance().addCallbackParam("deleted", true);
         } catch(Exception e) {
             RequestContext.getCurrentInstance().addCallbackParam("deleted", false);
@@ -109,6 +119,7 @@ public class CamposDinamicosController {
         if (campoInsert.getIdLista() != null) {
             campoInsert.setIdTipoDato(2); // TEXTO
             campoInsert.setIdTipoControl(2); // LISTA
+            campoInsert.setIdLista(campoInsert.getIdLista());
         } else {
             campoInsert.setIdTipoControl(1); // TEXTO
         }
@@ -123,6 +134,23 @@ public class CamposDinamicosController {
         }
     }
 
+    public void filtrarCampos() {
+        try {
+            log.info("valor cuadro: " + getFiltroCampo());
+            setCamposDinamicos(campoDinamicoService.findAllFiltro(getFiltroCampo()));
+        } catch (Exception e) {
+            log.error("ERROR AL SELECCIONAR LISTA.", e);
+        }
+    }
+    
+    public void nuevoCampo(){
+        try {
+            log.info("valor cuadro: " + getEditLista() + " " + getEditCategoria());
+        } catch (Exception e) {
+            log.error("ERROR AL SELECCIONAR LISTA.", e);
+        }
+    }
+    
     /**
      * @return the camposDinamicos
      */
@@ -233,5 +261,26 @@ public class CamposDinamicosController {
      */
     public void setCategorias(List<SimpleElementDomain> categorias) {
         this.categorias = categorias;
+    }
+    
+    public String getFiltroCampo() {
+       return filtroCampo;
+    }
+    public void setFiltroCampo(String filtroCampo) {
+       this.filtroCampo = filtroCampo;
+    }
+    
+    public String getEditLista() {
+       return editLista;
+    }
+    public void setEditLista(String editLista) {
+       this.editLista = editLista;
+    }
+    
+    public String getEditCategoria() {
+       return editCategoria;
+    }
+    public void seteditCategoria(String editCategoria) {
+       this.editCategoria = editCategoria;
     }
 }

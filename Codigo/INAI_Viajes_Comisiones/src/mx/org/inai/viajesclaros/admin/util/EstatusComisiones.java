@@ -1,17 +1,17 @@
 package mx.org.inai.viajesclaros.admin.util;
 
 public class EstatusComisiones {
-	public static final String C = "Comisi髇 creada";
-	public static final String EA = "Comisi髇 en espera de aprobaci髇";
-    public static final String R = "Comisi髇 rechazada";
-    public static final String A = "Comisi髇 autorizada";
-    public static final String EV = "Comisi髇 en aprobaci髇 de vi醫icos y pasajes";
-    public static final String RV = "Comisi髇 rechazada en vi醫icos y pasajes";
-    public static final String F = "Comisi髇 fondeada";
-    public static final String EG = "Comisi髇 en desglose de gastos";
-    public static final String RG = "Comisi髇 rechazada en desglose de gastos";
-    public static final String CM = "Comisi髇 comprobada";
-    public static final String EP = "Comisi髇 en espera de publicaci髇";
-    public static final String RP = "Comisi髇 rechazada en publicaci髇";
-    public static final String P = "Comisi髇 publicada";
+    public static final String C = "Comisi贸n creada";
+    public static final String EA = "Comisi贸n en espera de aprobaci贸n";
+    public static final String R = "Comisi贸n rechazada";
+    public static final String A = "Comisi贸n autorizada";
+    public static final String EV = "Comisi贸n en aprobaci贸n de vi谩ticos y pasajes";
+    public static final String RV = "Comisi贸n rechazada en vi谩ticos y pasajes";
+    public static final String F = "Comisi贸n fondeada";
+    public static final String EG = "Comisi贸n en desglose de gastos";
+    public static final String RG = "Comisi贸n rechazada en desglose de gastos";
+    public static final String CM = "Comisi贸n comprobada";
+    public static final String EP = "Comisi贸n en espera de publicaci贸n";
+    public static final String RP = "Comisi贸n rechazada en publicaci贸n";
+    public static final String P = "Comisi贸n publicada";
 }

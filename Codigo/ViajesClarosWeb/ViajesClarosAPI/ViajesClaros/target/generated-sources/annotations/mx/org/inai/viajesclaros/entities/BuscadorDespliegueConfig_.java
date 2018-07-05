@@ -8,11 +8,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(BuscadorDespliegueConfig.class)
 public abstract class BuscadorDespliegueConfig_ {
 
-	public static volatile SingularAttribute<BuscadorDespliegueConfig, Short> orden;
-	public static volatile SingularAttribute<BuscadorDespliegueConfig, Boolean> mostrar;
 	public static volatile SingularAttribute<BuscadorDespliegueConfig, BuscadorDespliegueConfigPK> buscadorDespliegueConfigPK;
 	public static volatile SingularAttribute<BuscadorDespliegueConfig, ViajesClarosConfig> viajesClarosConfig;
+	public static volatile SingularAttribute<BuscadorDespliegueConfig, Short> orden;
 	public static volatile SingularAttribute<BuscadorDespliegueConfig, Dependencias> dependencias;
+	public static volatile SingularAttribute<BuscadorDespliegueConfig, Boolean> mostrar;
 
 }
 

@@ -15,8 +15,12 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.ServletContext;
 import mx.org.inai.viajesclaros.domain.DatosServidorPublicoDomain;
 import mx.org.inai.viajesclaros.domain.SimpleElementDomain;
 import mx.org.inai.viajesclaros.domain.SuscripcionCampoDomain;
@@ -247,8 +251,14 @@ public class SuscripcionService {
      * Realiza el proceso de envío de correos. Es llamado desde el web por medio
      * de una tarea programada.
      */
-    public void procesoEnvioDeCorreos() {
-
+    public void procesoEnvioDeCorreos() throws NamingException {
+        
+        String nombre = "";
+        String dependencia = "";
+        Context ctx = new InitialContext();
+        Context env = (Context) ctx.lookup("java:comp/env");
+        final String ruta = (String) env.lookup("PathComisiones");
+        
         try {
 
             /* Obtiene los datos de los viajes recientes */
@@ -263,15 +273,24 @@ public class SuscripcionService {
                 DatosServidorPublicoDomain datosServidorPublico = this.getDatosServidorPublico(d.getId());
                 for (int i = 0; i < viajeDomain.getHeaders().size(); i++) {
                     log.info("-> " + viajeDomain.getHeaders().get(i) + ": " + viajeDomain.getDatos().get(i));
-                    detalle += "<br/><b>" + viajeDomain.getHeaders().get(i) + "</b> : " + viajeDomain.getDatos().get(i);
+                    detalle += "<br/><b>" + getAcuteString(viajeDomain.getHeaders().get(i)) + "</b> : " + getAcuteString(viajeDomain.getDatos().get(i));
                 }
-
+                
+                /*detalle += "<br/><b>Nombre del Evento:</b> " + getAcuteString(viajeDomain.getDatos().get(3));
+                detalle += "<br/><b>Motivo:</b>   ";
+                detalle += "<br/><b>De:</b> " + getAcuteString(viajeDomain.getDatos().get(2)) + " <b>A:</b> " + getAcuteString(viajeDomain.getDatos().get(2));
+                detalle += "<br/><b>Monto total de la comisi&oacute;n:</b> " + getAcuteString(viajeDomain.getDatos().get(0));*/
+                detalle += "<br/><a href='http://" + ruta + "/comisiones-abiertas/#/viaje/" + d.getId() + "'>"
+                    + "Consultar Detalle</a>";
+                
+                nombre = getAcuteString(datosServidorPublico.getNombreCompleto());
+                dependencia = getAcuteString(datosServidorPublico.getDependencia());
                 String mensajeHtml = "<img src=\"cid:image\"><p><strong style='font-size:14.0pt;color:#028E8E'>"
                     + "Comisi&oacute;n oficial de trabajo</strong>"
                     + "</p><p>Estimado(a) usuario(a),</p><p>&nbsp;</p>"
                     + "<p>El servidor p&uacute;blico <strong style='font-size:14.0pt;color:#028E8E'>" 
-                    + datosServidorPublico.getNombreCompleto()+ ".</strong> del " 
-                    + datosServidorPublico.getDependencia() + " ha realizado una nueva comisión de "
+                    + nombre + ".</strong> del " 
+                    + dependencia + " ha realizado una nueva comisi&oacute;n de "
                     + "trabajo.</p><br/><div>[detalle]</div><p>Si usted desea dejar de recibir estas "
                     + "notificaciones, favor de ponerse en contacto a trav&eacute;s del correo "
                     + "electr&oacute;nico <a href='mailto:comisionesabiertas@inai.org.mx'>"
@@ -288,7 +307,7 @@ public class SuscripcionService {
                     + "comisionesabiertas@inai.org.mx</a>, tel&eacute;fono "
                     + "(55) 5004 2400 ext. 2157, 2191 y 2126.</p>"
                     + "<p style='color: #028e8e;'><strong>"
-                    + "<a href='http://comisionesabiertas.inai.org.mx/comisiones-abiertas/assets/pdf/INAI_aviso_privacidad.pdf'>"
+                    + "<a href='http://" + ruta + "/comisiones-abiertas/assets/pdf/INAI_aviso_privacidad.pdf'>"
                     + "Aviso de privacidad</a></strong></p></td></tr></tbody></table>";
                         
                 mensajeHtml = mensajeHtml.replace("[detalle]", detalle);
@@ -358,4 +377,10 @@ public class SuscripcionService {
         }
     }
 
+    private String getAcuteString(String cadena){
+        cadena = cadena.replace("á","&aacute;").replace("é","&eacute;").replace("í","&iacute;").replace("ó","&oacute;").replace("ú","&uacute;");
+        cadena = cadena.replace("Á","&Aacute;").replace("É","&Eacute;").replace("Í","&Iacute;").replace("Ó","&Oacute;").replace("Ú","&Uacute;");
+        cadena = cadena.replace("Ñ","&Ntilde;").replace("ñ","&ntilde;").replace("Ü","&Uuml;").replace("ü","&uuml;");
+        return cadena;
+    }
 }

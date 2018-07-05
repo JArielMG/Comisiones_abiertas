@@ -11,11 +11,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ViajesClarosInstancias.class)
 public abstract class ViajesClarosInstancias_ {
 
-	public static volatile SingularAttribute<ViajesClarosInstancias, Date> fechaPublicacion;
-	public static volatile SingularAttribute<ViajesClarosInstancias, Dependencias> idDependencia;
 	public static volatile SingularAttribute<ViajesClarosInstancias, Comisiones> idComision;
 	public static volatile CollectionAttribute<ViajesClarosInstancias, ViajesClarosDetalle> viajesClarosDetalleCollection;
 	public static volatile SingularAttribute<ViajesClarosInstancias, BigInteger> idArchivo;
+	public static volatile SingularAttribute<ViajesClarosInstancias, Date> fechaPublicacion;
+	public static volatile SingularAttribute<ViajesClarosInstancias, Dependencias> idDependencia;
 	public static volatile SingularAttribute<ViajesClarosInstancias, Integer> idViaje;
 
 }

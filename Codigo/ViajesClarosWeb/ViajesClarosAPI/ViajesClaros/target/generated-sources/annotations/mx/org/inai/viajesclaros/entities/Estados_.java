@@ -9,9 +9,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Estados.class)
 public abstract class Estados_ {
 
-	public static volatile SingularAttribute<Estados, Paises> idPais;
-	public static volatile SingularAttribute<Estados, String> nombreEstado;
 	public static volatile SingularAttribute<Estados, Integer> idEstado;
+	public static volatile SingularAttribute<Estados, String> nombreEstado;
+	public static volatile SingularAttribute<Estados, Paises> idPais;
 	public static volatile CollectionAttribute<Estados, Ciudades> ciudadesCollection;
 
 }

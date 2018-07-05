@@ -1,5 +1,7 @@
 mx\org\inai\viajesclaros\admin\ejb\FiltroBusquedaService$4.class
 mx\org\inai\viajesclaros\admin\ejb\CalendarioService$3.class
+mx\org\inai\viajesclaros\admin\ejb\ListaService$4.class
+mx\org\inai\viajesclaros\admin\ejb\CargaMasivaService$3.class
 mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$9.class
 mx\org\inai\viajesclaros\admin\ejb\CampoDinamicoService$2.class
 mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$2.class
@@ -16,6 +18,7 @@ mx\org\inai\viajesclaros\admin\ejb\FiltroBusquedaService$1.class
 mx\org\inai\viajesclaros\admin\ejb\FlujoService.class
 mx\org\inai\viajesclaros\admin\ejb\SuscripcionService.class
 mx\org\inai\viajesclaros\admin\ejb\DependenciaService$1.class
+mx\org\inai\viajesclaros\admin\ejb\CampoDinamicoService$5.class
 mx\org\inai\viajesclaros\admin\ejb\CalendarioService.class
 mx\org\inai\viajesclaros\admin\ejb\CampoBaseService$1.class
 mx\org\inai\viajesclaros\admin\ejb\DependenciaService.class
@@ -33,6 +36,7 @@ mx\org\inai\viajesclaros\admin\ejb\GastosService$1.class
 mx\org\inai\viajesclaros\admin\ejb\ViajeService.class
 mx\org\inai\viajesclaros\admin\ejb\PersonaService.class
 mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$4.class
+mx\org\inai\viajesclaros\admin\ejb\SuscripcionService$5.class
 mx\org\inai\viajesclaros\admin\ejb\CampoDinamicoService$4.class
 mx\org\inai\viajesclaros\admin\ejb\CalendarioService$1.class
 mx\org\inai\viajesclaros\admin\ejb\FiltroBusquedaService$2.class
@@ -40,6 +44,7 @@ mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$1.class
 mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$7.class
 mx\org\inai\viajesclaros\admin\ejb\TablaCampoService$10.class
 mx\org\inai\viajesclaros\admin\ejb\CargaMasivaService$2.class
+mx\org\inai\viajesclaros\admin\ejb\ListaService$3.class
 mx\org\inai\viajesclaros\admin\ejb\CampoDinamicoService.class
 mx\org\inai\viajesclaros\admin\ejb\SuscripcionService$1.class
 mx\org\inai\viajesclaros\admin\ejb\GastosService.class
@@ -49,6 +54,7 @@ mx\org\inai\viajesclaros\admin\ejb\FiltroBusquedaService$3.class
 mx\org\inai\viajesclaros\admin\ejb\SuscripcionService$4.class
 mx\org\inai\viajesclaros\admin\ejb\CampoDinamicoService$3.class
 mx\org\inai\viajesclaros\admin\ejb\UserService$1.class
+mx\org\inai\viajesclaros\admin\ejb\CargaMasivaService$4.class
 mx\org\inai\viajesclaros\admin\ejb\PersonaService$1.class
 mx\org\inai\viajesclaros\admin\ejb\GraficaService$1.class
 mx\org\inai\viajesclaros\admin\ejb\CargaMasivaService$1.class

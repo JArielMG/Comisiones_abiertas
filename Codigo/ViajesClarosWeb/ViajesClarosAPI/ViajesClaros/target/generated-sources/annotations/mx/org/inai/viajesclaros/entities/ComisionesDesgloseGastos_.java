@@ -9,14 +9,14 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ComisionesDesgloseGastos.class)
 public abstract class ComisionesDesgloseGastos_ {
 
-	public static volatile SingularAttribute<ComisionesDesgloseGastos, String> campo;
 	public static volatile SingularAttribute<ComisionesDesgloseGastos, Comisiones> idComision;
-	public static volatile SingularAttribute<ComisionesDesgloseGastos, RegistrosGastosComision> idRegistroGastoComision;
 	public static volatile SingularAttribute<ComisionesDesgloseGastos, Date> valorFecha;
-	public static volatile SingularAttribute<ComisionesDesgloseGastos, Double> valorNumerico;
-	public static volatile SingularAttribute<ComisionesDesgloseGastos, String> valorTexto;
-	public static volatile SingularAttribute<ComisionesDesgloseGastos, Integer> idDesgloseGastos;
 	public static volatile SingularAttribute<ComisionesDesgloseGastos, String> tabla;
+	public static volatile SingularAttribute<ComisionesDesgloseGastos, Integer> idDesgloseGastos;
+	public static volatile SingularAttribute<ComisionesDesgloseGastos, String> valorTexto;
+	public static volatile SingularAttribute<ComisionesDesgloseGastos, Double> valorNumerico;
+	public static volatile SingularAttribute<ComisionesDesgloseGastos, String> campo;
+	public static volatile SingularAttribute<ComisionesDesgloseGastos, RegistrosGastosComision> idRegistroGastoComision;
 
 }
 

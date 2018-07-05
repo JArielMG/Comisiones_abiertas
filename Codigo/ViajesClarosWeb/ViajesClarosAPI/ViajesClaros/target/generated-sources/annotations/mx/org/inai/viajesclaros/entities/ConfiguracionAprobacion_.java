@@ -8,13 +8,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ConfiguracionAprobacion.class)
 public abstract class ConfiguracionAprobacion_ {
 
-	public static volatile SingularAttribute<ConfiguracionAprobacion, String> nombre;
-	public static volatile SingularAttribute<ConfiguracionAprobacion, FlujosTrabajo> idFlujo;
-	public static volatile SingularAttribute<ConfiguracionAprobacion, Dependencias> idDependencia;
 	public static volatile SingularAttribute<ConfiguracionAprobacion, Areas> idArea;
-	public static volatile SingularAttribute<ConfiguracionAprobacion, Jerarquias> idJerarquia;
 	public static volatile SingularAttribute<ConfiguracionAprobacion, Integer> idConfAprobacion;
 	public static volatile SingularAttribute<ConfiguracionAprobacion, Boolean> editable;
+	public static volatile SingularAttribute<ConfiguracionAprobacion, FlujosTrabajo> idFlujo;
+	public static volatile SingularAttribute<ConfiguracionAprobacion, Dependencias> idDependencia;
+	public static volatile SingularAttribute<ConfiguracionAprobacion, String> nombre;
+	public static volatile SingularAttribute<ConfiguracionAprobacion, Jerarquias> idJerarquia;
 
 }
 

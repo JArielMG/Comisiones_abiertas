@@ -52,15 +52,44 @@ public class ListaService {
             throw new Exception(e.getMessage());
         }
     }
+    
+    public List<ListaValoresDomain> findAllOrdenada() throws Exception {
+        try {
+            Session session = em.unwrap(Session.class);
+            
+            List<ListaValoresDomain> listas = session.createSQLQuery("CALL get_listas_valores_ordenada()")
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ListaValoresDomain domain = new ListaValoresDomain();
+                            domain.setIdList((Integer) tuple[0]);
+                            domain.setNombreLista((String) tuple[1]);
+                            domain.setHabilitada((Boolean) tuple[2]);
+                            Boolean b = (Integer)tuple[3] != 0; // Si es dif de 0, no se puede eliminar
+                            domain.setConstraintFails(b);
+                            return domain;
+                        }
+                    }).list();
+            
+            session.flush();
+            session.clear();
+            return listas;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LISTAS. " + e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
 
     /**
      * Obtiene todos los valores dinámicos
      * @return
      * @throws Exception 
      */
-    public List<ValorListaDomain> findAllValores() throws Exception {
+    /*public List<ValorListaDomain> findAllValores() throws Exception {
         return this.findValoresDinamicos(null);
-    }
+    }*/
     
     /**
      * Obtiene los valores dinámicos de la lista indicada
@@ -68,9 +97,9 @@ public class ListaService {
      * @return
      * @throws Exception 
      */
-    public List<ValorListaDomain> findValoresPorIdLista(Integer idLista) throws Exception {
+    /*public List<ValorListaDomain> findValoresPorIdLista(Integer idLista) throws Exception {
         return this.findValoresDinamicos(idLista);
-    }
+    }*/
     
     /**
      * Consulta los valores dinámicos de la lista indicada; si el idLista es null, obtiene todos los valores
@@ -78,12 +107,13 @@ public class ListaService {
      * @return
      * @throws Exception 
      */
-    private List<ValorListaDomain> findValoresDinamicos(Integer idLista) throws Exception {
+    private List<ValorListaDomain> findValoresDinamicos(Integer idLista, String filtro) throws Exception {
         try {
             Session session = em.unwrap(Session.class);
 
-            List<ValorListaDomain> valores = session.createSQLQuery("CALL get_valores_dinamicos(:idLista)")
+            List<ValorListaDomain> valores = session.createSQLQuery("CALL get_valores_dinamicos_filtro(:idLista, :filtro)")
                     .setParameter("idLista", idLista)
+                    .setParameter("filtro", filtro)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
 
@@ -243,4 +273,44 @@ public class ListaService {
             throw new Exception(e.getMessage());
         }
     }
+    
+    ////////LEO
+    public List<ListaValoresDomain> findAllFilter(String filtro) throws Exception {
+        try {
+            Session session = em.unwrap(Session.class);
+            
+            List<ListaValoresDomain> listas = session.createSQLQuery("CALL get_listas_valores_filtradas(:filtro)")
+                    .setParameter("filtro", filtro)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            ListaValoresDomain domain = new ListaValoresDomain();
+                            domain.setIdList((Integer) tuple[0]);
+                            domain.setNombreLista((String) tuple[1]);
+                            domain.setHabilitada((Boolean) tuple[2]);
+                            Boolean b = (Integer)tuple[3] != 0; // Si es dif de 0, no se puede eliminar
+                            domain.setConstraintFails(b);
+                            return domain;
+                        }
+                    }).list();
+            
+            session.flush();
+            session.clear();
+            return listas;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR LISTAS FILTRADAS. " + e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
+    
+    public List<ValorListaDomain> findAllValores(String filtro) throws Exception {
+        return this.findValoresDinamicos(null, filtro);
+    }
+    
+    public List<ValorListaDomain> findValoresPorIdLista(Integer idLista, String filtro) throws Exception {
+        return this.findValoresDinamicos(idLista, filtro);
+    }
+    //////////////
 }

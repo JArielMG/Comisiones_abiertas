@@ -12,7 +12,7 @@
         <ui:composition template="../template/layout.xhtml">
             <ui:define name="content">
 
-                <div class="container default-width-content">
+                <div class="container">
 
                     <h4 class="text-center"><strong>CONFIGURACIÓN DE CAMPOS</strong><br/>
                         <small>Los campos agregados estarán disponibles en la configuración del Buscador, Carga masiva, Pantallas de flujos y Suscripción</small></h4>
@@ -43,19 +43,29 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">CAMPOS</div>
                                 <div class="panel-body">
+                                    <br/>
+                                    <label for="txFiltroListas" class="control-label col-sm-2">
+                                        Filtro:
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:inputText id="txFiltroListas" styleClass="form-control" maxlength="50" value='#{tablaCampoController.filtroCampo}' onfocus="this.value = this.value + ' '; this.value = this.value.substring(0,this.value.length - 1);">
+                                            <p:ajax event="keyup" update="@form table1" listener="#{tablaCampoController.filtrarCampos}"/>
+                                        </h:inputText>
+                                    </div>
+                                        <br/><br/><br/>
                                     <p:dataTable styleClass="small" id="table1" 
                                                  emptyMessage="Todos los campos han sido agregados"
                                                  value="#{tablaCampoController.camposConfig}" var="campo"
                                                  rows="10" paginator="true" paginatorPosition="bottom"
                                                  currentPageReportTemplate="{currentPage} de {totalPages}"
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                                        <p:column headerText="Tabla">
+                                        <p:column headerText="Tabla"  width="25%">
                                             <h:outputText value="#{campo.tabla==''?'c. dinámicos':campo.tabla}"/>
                                         </p:column>
                                         <p:column headerText="Campo">
                                             <h:outputText value="#{campo.campo}"/>
                                         </p:column>
-                                        <p:column styleClass="text-center" headerText="Opciones">
+                                        <p:column styleClass="text-center" headerText="Opciones"  width="25%">
                                             <p:commandLink styleClass="btn btn-info btn-xs animate-all" 
                                                            process="@this" update=":formCampos"
                                                            action="#{tablaCampoController.insertTablaCampo}">
@@ -82,13 +92,13 @@
                                                  currentPageReportTemplate="{currentPage} de {totalPages}"
                                                  rowStyleClass="#{tablaCampo.constraintFails?'bg-warning':null}"
                                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                                        <p:column headerText="Tabla">
+                                        <p:column headerText="Tabla"  width="25%">
                                             <h:outputText value="#{tablaCampo.tabla==''?'campos dinámicos':tablaCampo.tabla}"/>
                                         </p:column>
                                         <p:column headerText="Campo">
                                             <h:outputText value="#{tablaCampo.campo}"/>
                                         </p:column>
-                                        <p:column styleClass="col-sm-2 text-center" headerText="Opciones">
+                                        <p:column styleClass="col-sm-2 text-center" headerText="Opciones"  width="15%">
                                             <p:commandLink update=":formDeleteCampo"
                                                            rendered="#{!tablaCampo.constraintFails}"
                                                            oncomplete="PF('dlg1').show();return false;">

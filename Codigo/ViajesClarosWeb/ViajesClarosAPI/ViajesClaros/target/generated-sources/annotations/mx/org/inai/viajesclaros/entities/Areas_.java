@@ -9,11 +9,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Areas.class)
 public abstract class Areas_ {
 
-	public static volatile SingularAttribute<Areas, Dependencias> idDependencia;
 	public static volatile SingularAttribute<Areas, String> nombreArea;
 	public static volatile SingularAttribute<Areas, Integer> idArea;
-	public static volatile CollectionAttribute<Areas, Usuarios> usuariosCollection;
 	public static volatile CollectionAttribute<Areas, ConfiguracionAprobacion> configuracionAprobacionCollection;
+	public static volatile CollectionAttribute<Areas, Usuarios> usuariosCollection;
+	public static volatile SingularAttribute<Areas, Dependencias> idDependencia;
 
 }
 

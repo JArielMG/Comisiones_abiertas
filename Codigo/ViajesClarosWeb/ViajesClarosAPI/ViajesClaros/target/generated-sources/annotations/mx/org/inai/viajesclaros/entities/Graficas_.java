@@ -9,10 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Graficas.class)
 public abstract class Graficas_ {
 
-	public static volatile SingularAttribute<Graficas, Integer> idGrafica;
-	public static volatile CollectionAttribute<Graficas, Dependencias> dependenciasCollection;
 	public static volatile SingularAttribute<Graficas, String> descripcion;
 	public static volatile SingularAttribute<Graficas, String> grafica;
+	public static volatile CollectionAttribute<Graficas, Dependencias> dependenciasCollection;
+	public static volatile SingularAttribute<Graficas, Integer> idGrafica;
 
 }
 

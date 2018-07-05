@@ -9,12 +9,12 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(SeccionesFormulario.class)
 public abstract class SeccionesFormulario_ {
 
-	public static volatile SingularAttribute<SeccionesFormulario, Integer> ordenSeccion;
-	public static volatile SingularAttribute<SeccionesFormulario, FlujosTrabajo> idFlujo;
-	public static volatile SingularAttribute<SeccionesFormulario, String> nombreSeccion;
-	public static volatile SingularAttribute<SeccionesFormulario, Integer> idSeccion;
 	public static volatile SingularAttribute<SeccionesFormulario, String> etiqueta;
 	public static volatile CollectionAttribute<SeccionesFormulario, FlujosCamposConfig> flujosCamposConfigCollection;
+	public static volatile SingularAttribute<SeccionesFormulario, Integer> ordenSeccion;
+	public static volatile SingularAttribute<SeccionesFormulario, FlujosTrabajo> idFlujo;
+	public static volatile SingularAttribute<SeccionesFormulario, Integer> idSeccion;
+	public static volatile SingularAttribute<SeccionesFormulario, String> nombreSeccion;
 
 }
 

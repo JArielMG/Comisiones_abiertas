@@ -8,12 +8,12 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(GastosCamposConfig.class)
 public abstract class GastosCamposConfig_ {
 
-	public static volatile SingularAttribute<GastosCamposConfig, Integer> orden;
-	public static volatile SingularAttribute<GastosCamposConfig, Boolean> listaHabilitada;
-	public static volatile SingularAttribute<GastosCamposConfig, GastosCamposConfigPK> gastosCamposConfigPK;
-	public static volatile SingularAttribute<GastosCamposConfig, Short> obligatorio;
 	public static volatile SingularAttribute<GastosCamposConfig, String> etiqueta;
+	public static volatile SingularAttribute<GastosCamposConfig, Boolean> listaHabilitada;
 	public static volatile SingularAttribute<GastosCamposConfig, String> subtipo;
+	public static volatile SingularAttribute<GastosCamposConfig, Integer> orden;
+	public static volatile SingularAttribute<GastosCamposConfig, Short> obligatorio;
+	public static volatile SingularAttribute<GastosCamposConfig, GastosCamposConfigPK> gastosCamposConfigPK;
 
 }
 

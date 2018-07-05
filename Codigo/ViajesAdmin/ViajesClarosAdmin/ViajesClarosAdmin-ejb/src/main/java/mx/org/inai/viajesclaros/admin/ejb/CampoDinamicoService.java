@@ -59,6 +59,43 @@ public class CampoDinamicoService {
             throw new Exception(e.getMessage());
         }
     }
+    
+    public List<CampoDomain> findAllFiltro(String filtro) throws Exception {
+        try {
+            Session session = em.unwrap(Session.class);
+
+            List<CampoDomain> campos = session.createSQLQuery("CALL get_campos_dinamicos_filtrados(:filtro)")
+                    .setParameter("filtro", filtro)
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            CampoDomain campo = new CampoDomain();
+                            campo.setCampo((String) tuple[0]);
+                            campo.setIdLista((Integer) tuple[1]);
+                            campo.setDescripcion((String) tuple[2]);
+                            campo.setDespliegue((String) tuple[3]);
+                            campo.setIdTipoDato((Integer) tuple[5]);
+                            campo.setIdTipoControl((Integer) tuple[6]);
+                            campo.setTipoDato((String) tuple[7]);
+                            campo.setTipoControl((String) tuple[8]);
+                            campo.setNombreLista((String) tuple[9]);
+                            campo.setCategoria((String) tuple[10]);
+                            Boolean b = (Integer) tuple[11] != 0;
+                            campo.setConstraintFails(b);
+                            return campo;
+                        }
+                    }).list();
+
+            session.flush();
+            session.clear();
+            return campos;
+        } catch (Exception e) {
+            log.error("ERROR AL CONSULTAR CAMPOS DINÁMICOS. " + e.getMessage());
+            throw new Exception(e.getMessage());
+        }
+    }
 
     /**
      * Guarda un campo dinámico en la BD

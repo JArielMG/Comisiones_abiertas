@@ -45,6 +45,7 @@ public class TablaCampoController {
     private TablaCampoDomain tablaCampoDelete;
     private String tablaSelected;
     final static Logger log = Logger.getLogger(TablaCampoController.class);
+    private String filtroCampo = "";
     
     @PostConstruct
     public void init() {
@@ -52,7 +53,7 @@ public class TablaCampoController {
             tablaCampoInsert = new TablaCampoDomain();
             setTablas(tablaCampoService.findTablas());
             setTablaCampoList(tablaCampoService.findAll());
-            setCamposConfig(tablaCampoService.findCamposConfigDisponibles());
+            setCamposConfig(tablaCampoService.findCamposConfigDisponibles(getFiltroCampo()));
         } catch(Exception e) {
             log.error("Error al cargar los datos iniciales. ", e);
         }
@@ -68,12 +69,11 @@ public class TablaCampoController {
             tablaCampoDelete = new TablaCampoDomain();
             if (tablaSelected == null) {
                 setTablaCampoList(tablaCampoService.findAll());
-                setCamposConfig(tablaCampoService.findCamposConfigDisponibles());
+                setCamposConfig(tablaCampoService.findCamposConfigDisponibles(getFiltroCampo()));
             } else {
                 setTablaCampoList(tablaCampoService.findCamposConfigPorTabla(
                         tablaSelected.equals("CAMPOS_DINAMICOS")?"":tablaSelected));
-                setCamposConfig(tablaCampoService.findCamposConfigDisponiblesPorTabla(
-                        tablaSelected.equals("CAMPOS_DINAMICOS")?"":tablaSelected));
+                setCamposConfig(tablaCampoService.findCamposConfigDisponiblesPorTabla(tablaSelected.equals("CAMPOS_DINAMICOS")?"":tablaSelected, getFiltroCampo()));
             }
         } catch(Exception e) {
             log.error("ERROR AL REINICIAR LOS VALORES DE LA PANTALLA (reinit).");
@@ -122,6 +122,18 @@ public class TablaCampoController {
         } catch(Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", e.getMessage()));
+        }
+    }
+    
+    public void filtrarCampos(){
+        try {
+            log.info("valor cuadro: " + getFiltroCampo());
+            if(tablaSelected != null)
+                setCamposConfig(tablaCampoService.findCamposConfigDisponiblesPorTabla(tablaSelected.equals("CAMPOS_DINAMICOS")?"":tablaSelected, getFiltroCampo()));
+            else
+                setCamposConfig(tablaCampoService.findCamposConfigDisponiblesPorTabla(null, getFiltroCampo()));
+        } catch (Exception e) {
+            log.error("ERROR AL SELECCIONAR LISTA.", e);
         }
     }
     
@@ -209,4 +221,11 @@ public class TablaCampoController {
         this.tablaSelected = tablaSelected;
     }
 
+    public String getFiltroCampo() {
+        return filtroCampo;
+    }
+
+    public void setFiltroCampo(String filtroCampo) {
+        this.filtroCampo = filtroCampo;
+    }
 }

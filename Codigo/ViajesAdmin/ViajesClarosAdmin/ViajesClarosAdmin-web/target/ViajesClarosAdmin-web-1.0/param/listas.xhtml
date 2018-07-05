@@ -12,7 +12,7 @@
         <ui:composition template="../template/layout.xhtml">
             <ui:define name="content">
 
-                <div class="container default-width-content">
+                <div class="container col-sm-16">
                     <h:form id="formListas" prependId="false">
                         <h4 class="text-center"><strong>CONFIGURACIÓN DE LISTAS</strong></h4>
 
@@ -33,6 +33,16 @@
                                                    process="@this" update="formListas" 
                                                    actionListener="#{listasController.unselectRow}">
                                         <i class="fa fa-rotate-right"></i></p:commandLink>
+                                        <br/>
+                                    <label for="txFiltroListas" class="control-label col-sm-2">
+                                        Filtro:
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:inputText id="txFiltroListas" styleClass="form-control" maxlength="50" value='#{listasController.filtroLista}' onfocus="this.value = this.value + ' '; this.value = this.value.substring(0,this.value.length - 1);">
+                                            <p:ajax event="keyup" update="@form table2" listener="#{listasController.filtrarLista}"/>
+                                        </h:inputText>
+                                    </div>
+                                        <br/><br/><br/>
                                     <p:dataTable styleClass="small" id="table2" 
                                                  emptyMessage="No se encontraron listas" 
                                                  value="#{listasController.listas}" var="lista" 
@@ -66,7 +76,6 @@
                                             </p:commandLink>
                                         </p:column>
                                     </p:dataTable>
-                                    
                                     <h6 class="small gray bg-warning">
                                         Campos que no se pueden eliminar porque están siendo usados.</h6>
                                 </div>
@@ -83,6 +92,16 @@
                                                     return false;">
                                         <i class="fa fa-plus"></i> <strong>Agregar valor</strong>
                                     </button>
+                                    <br/>
+                                    <label for="txFiltroValores" class="control-label col-sm-2">
+                                        Filtro:
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <h:inputText id="txFiltroValores" styleClass="form-control" maxlength="50" value='#{listasController.filtroValor}' onfocus="this.value = this.value + ' '; this.value = this.value.substring(0,this.value.length - 1);">
+                                            <p:ajax event="keyup" update="@form table1" listener="#{listasController.filtrarValor}"/>
+                                        </h:inputText>
+                                    </div>
+                                        <br/><br/><br/>
                                     <p:dataTable styleClass="small" id="table1" 
                                                  emptyMessage="No se encontraron valores"
                                                  value="#{listasController.valores}" var="valor"

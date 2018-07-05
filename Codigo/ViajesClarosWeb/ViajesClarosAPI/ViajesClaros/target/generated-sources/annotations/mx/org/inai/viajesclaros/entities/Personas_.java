@@ -10,20 +10,20 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Personas.class)
 public abstract class Personas_ {
 
-	public static volatile SingularAttribute<Personas, Categoria> idCategoria;
+	public static volatile SingularAttribute<Personas, String> apellidoPaterno;
+	public static volatile CollectionAttribute<Personas, AprobacionesBitacora> aprobacionesBitacoraCollection;
 	public static volatile SingularAttribute<Personas, String> titulo;
 	public static volatile SingularAttribute<Personas, String> nombres;
-	public static volatile SingularAttribute<Personas, String> email;
-	public static volatile SingularAttribute<Personas, Posiciones> idPosicion;
-	public static volatile CollectionAttribute<Personas, Comisiones> comisionesCollection;
 	public static volatile SingularAttribute<Personas, String> apellidoMaterno;
-	public static volatile SingularAttribute<Personas, String> apellidoPaterno;
-	public static volatile SingularAttribute<Personas, TipoPersona> idTipoPersona;
 	public static volatile SingularAttribute<Personas, Date> fechaIngreso;
+	public static volatile SingularAttribute<Personas, Posiciones> idPosicion;
 	public static volatile CollectionAttribute<Personas, Usuarios> usuariosCollection;
-	public static volatile SingularAttribute<Personas, Integer> idPersona;
+	public static volatile SingularAttribute<Personas, TipoPersona> idTipoPersona;
 	public static volatile SingularAttribute<Personas, String> cargo;
-	public static volatile CollectionAttribute<Personas, AprobacionesBitacora> aprobacionesBitacoraCollection;
+	public static volatile SingularAttribute<Personas, Categoria> idCategoria;
+	public static volatile SingularAttribute<Personas, Integer> idPersona;
+	public static volatile SingularAttribute<Personas, String> email;
+	public static volatile CollectionAttribute<Personas, Comisiones> comisionesCollection;
 
 }
 

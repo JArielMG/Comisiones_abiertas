@@ -112,7 +112,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        			// El comisionado es su autorizador
 		        			if (usuario.getPersona().getTipoPersona().getDescripcion().equals("Comisionado")) {
 		        				processAPI.assignUserTask(tarea, usuario.getIdBonita());
-		        				// Se comenta por error en envío de mail
+		        				// Se comenta por error en envÃ­o de mail
 		        				//SendMail.email(usuario.getPersona().getEmail(), flujo, instance);
 		        			
 		        			} else if (usuario.getJefeArea()) { // Es jefe area
@@ -121,7 +121,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        				
 		        				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
 		        					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-		        					// Se comenta por error en envío de mail
+		        					// Se comenta por error en envÃ­o de mail
 		        					//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
 		        				}
 		        			} else { // Es cualquier otro funcionario
@@ -134,14 +134,14 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        					
 		        					if (jefe != null) {
 		        						processAPI.assignUserTask(tarea, jefe.getIdBonita());
-		        						// Se comenta por error en envío de mail
+		        						// Se comenta por error en envÃ­o de mail
 		        						//SendMail.email(jefe.getPersona().getEmail(), flujo, instance);
 		        					}
 		        					
 		        				} else { // Se toma la jerarquia para aprobar
 		        					for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
 			        					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-			        					// Se comenta por error en envío de mail
+			        					// Se comenta por error en envÃ­o de mail
 			        					//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
 			        				}
 		        				}
@@ -153,7 +153,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        				
 		        				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
 		        					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-		        					// Se comenta por error en envío de mail
+		        					// Se comenta por error en envÃ­o de mail
 			        				//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
 		        				}
 		        			} else if (usuario.getJefeArea()) { // Es jefe area
@@ -162,7 +162,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        				
 		        				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
 		        					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-		        					// Se comenta por error en envío de mail
+		        					// Se comenta por error en envÃ­o de mail
 		        					//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
 		        				}
 		        			} else { // Es cualquier otro funcionario
@@ -175,14 +175,14 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
 		        					
 		        					if (jefe != null) {
 		        						processAPI.assignUserTask(tarea, jefe.getIdBonita());
-		        						// Se comenta por error en envío de mail
+		        						// Se comenta por error en envÃ­o de mail
 				        				//SendMail.email(jefe.getPersona().getEmail(), flujo, instance);
 		        					}
 		        					
 		        				} else { // Se toma la jerarquia para aprobar
 		        					for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
 			        					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-			        					// Se comenta por error en envío de mail
+			        					// Se comenta por error en envÃ­o de mail
 				        				//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
 			        				}
 		        				}
@@ -195,7 +195,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
         				
         				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
         					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-        					// Se comenta por error en envío de mail
+        					// Se comenta por error en envÃ­o de mail
 	        				//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
         				}
         				
@@ -206,7 +206,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
         				
         				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
         					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-        					// Se comenta por error en envío de mail
+        					// Se comenta por error en envÃ­o de mail
 	        				//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
         				}
 		        		
@@ -217,7 +217,7 @@ public class BonitaProcesosAdmin extends BonitaAmbienteAdmin{
         				
         				for (JerarMiembroVO miembro : miemServ.obtenerMiembros(grpVO.getJerarquia())) {
         					processAPI.assignUserTask(tarea, miembro.getUsuario().getIdBonita());
-        					// Se comenta por error en envío de mail
+        					// Se comenta por error en envÃ­o de mail
         					//SendMail.email(miembro.getUsuario().getPersona().getEmail(), flujo, instance);
         				}
         				

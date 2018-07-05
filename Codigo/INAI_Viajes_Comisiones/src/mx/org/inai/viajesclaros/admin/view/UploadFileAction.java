@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import com.csvreader.CsvWriter;
+import java.util.Calendar;
 
 import mx.org.inai.viajesclaros.admin.model.DependenciaVO;
 import mx.org.inai.viajesclaros.admin.service.DependenciaServices;
@@ -48,125 +49,115 @@ public class UploadFileAction extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//HttpSession sesion = request.getSession(true);
-		FileUtil fu = new FileUtil();
-		String destino = "cargaArchivo.jsp";
-		String action = request.getParameter("submit");
-		String tipo = request.getParameter("tipo");
-		int idDep = Integer.parseInt(request.getParameter("dependencia"));
+            //HttpSession sesion = request.getSession(true);
+            FileUtil fu = new FileUtil();
+            String destino = "cargaArchivo.jsp";
+            String action = request.getParameter("submit");
+            String tipo = request.getParameter("tipo");
+            int idDep = Integer.parseInt(request.getParameter("dependencia"));
 
-		Part filePart = request.getPart("archivo");
-		
-		File errores = null;
-		
-		
-		if (action == null) {
-			action = "listar";
-		}
-		
-		if (action.equals("listar")) {
-			ArrayList<DependenciaVO> dependencias = depenServ.obtenerDependencias();
-			request.setAttribute("dependencias", dependencias);
-            destino = "cargaArchivo.jsp";
+            DependenciaVO dep = new DependenciaVO();
+            dep.setId(idDep);
+            dep = depenServ.obtenerDependencia(dep);
             
+            Part filePart = request.getPart("archivo");
+
+            File errores = null;
+
+            if (action == null) {
+                    action = "listar";
+            }
+
+            if (action.equals("listar")) {
+                ArrayList<DependenciaVO> dependencias = depenServ.obtenerDependencias();
+                request.setAttribute("dependencias", dependencias);
+            }else{
+                if(!tipo.equals("0")){				
+                    long res = 0;
+                    int tieneLayout = upFileSrv.tieneLayout(idDep);
+                    System.out.println("Tiene layout: " + tieneLayout);
+                    if(tieneLayout > 0){
+                        if (action.equals("Cargar")) {         	        	
+                            res = validaArchivo(tipo, filePart, idDep);    
+                            System.out.println("respuesta llave: "+ res);
+                            if(res > 1000){//significa que genero errores en la carga
+                                OutputStream os = response.getOutputStream();
+                                
+                                Calendar c = Calendar.getInstance();
+                                String dia = String.format("%02d", c.get(Calendar.DAY_OF_MONTH));
+                                String mes = String.format("%02d", c.get(Calendar.MONTH) + 1);
+                                String annio = String.format("%02d", c.get(Calendar.YEAR));
+                                String hora = String.format("%02d", c.get(Calendar.HOUR_OF_DAY));
+                                String min = String.format("%02d", c.get(Calendar.MINUTE));
+                                
+                                String nombre = dep.getSiglas() + "_" + annio + mes + dia + "_" + hora + min + "_ErroresCarga.txt";
+                                
+                                response.addHeader("Content-Disposition","attachment;filename=" + nombre); 
+                                response.setContentType("text/plain"); 
+                                response.setBufferSize(8192 * 16);
+                                
+                                errores= fu.generaErrores(res, nombre);
+
+                                int length = (int) errores.length();		        		 		              
+                                byte[] bytes = new byte[length];		         
+                                FileInputStream fin = new FileInputStream(errores);		         
+                                fin.read(bytes);
+                                fin.close();
+                                
+                                os.write(bytes);
+                                os.flush();
+                                os.close();
+                                
+                                //upFileSrv.eliminaDetalleError(res);
+
+                            }else   if (res == 1) {
+                                request.setAttribute("mensaje", "No ha seleccionado un archivo");
+                            }else if (res == 2) {
+                                request.setAttribute("mensaje", "Tipo de archivo inv&aacute;lido, s&oacute;lo XML y CSV, asegurese de que la extensi&oacute;n del archivo y el tipo seleccionado coincidan");
+                            }else if (res == 3) {
+                                request.setAttribute("mensaje", "El archivo excede de 10 MB");
+                            }else if (res == 4) {
+                                request.setAttribute("mensaje", "El n&uacute;mero de colmnas del archivo es incorrecto");
+                            }else if (res == 5) {
+                                request.setAttribute("mensaje", "Las columnas del archivo no corresponden al layout vigente");
+                            }else if (res == 6) {
+                                request.setAttribute("mensaje", "Se presentaron problemas en la validaciÃ³n de los datos");
+                            }else if (res == 7) {
+                                request.setAttribute("mensaje", "El archivo present&oacute; problemas en la carga");
+                            }else if (res == 8) {
+                                request.setAttribute("mensaje", "El archivo present&oacute; problemas en el procesamiento de algunos registros y estos nos e procesaron");            
+                            } else {		            	
+                                request.setAttribute("mensaje", "Archivo cargado exitosamente");
+                            }
+                        }else if (action.equals("Descargar Layout")) {
+                            OutputStream os = response.getOutputStream();
+                            if(tipo.equals("CSV")){	        	
+                                response.addHeader("Content-Disposition","attachment;filename=Layout.csv"); 
+                                response.setContentType("application/vnd.ms-excel"); 
+
+                                CsvWriter layout = fu.generaLayoutCSV(os, idDep);			        	 
+                                //layout.flush();
+                                layout.close();
+                            }else{
+                                response.addHeader("Content-Disposition","attachment;filename=Layout.xml"); 			    					    		
+                                response.setContentType("application/xml; charset=utf-8");
+                                fu.generaLayoutXML("layout.xml", os, idDep);
+                            }    	
+                        }
+                    }else{
+                        request.setAttribute("mensaje", "La dependencia seleccionada no tiene un layout registrado en la aplicaciÃ³n");
+                    }
+                }else{
+                    request.setAttribute("mensaje", "Seleccione el tipo de archivo");
+                }
+            }
             RequestDispatcher rd = request.getRequestDispatcher(destino);
             rd.forward(request, response);
-		}else{
-			if(!tipo.equals("0")){				
-				long res = 0;
-				int tieneLayout = upFileSrv.tieneLayout(idDep);
-				System.out.println("Tiene layout: " + tieneLayout);
-				if(tieneLayout > 0){
-			        if (action.equals("Cargar")) {         	        	
-			        	res = validaArchivo(tipo, filePart, idDep);    
-			        	System.out.println("respuesta llave: "+ res);
-			        	if(res > 1000)//significa que genero errores en la carga
-						{
-			        		OutputStream os = response.getOutputStream();
-			        		response.addHeader("Content-Disposition","attachment;filename=ErroresCarga.txt"); 
-				    		response.setContentType("application/rtf"); 
-				    		response.setCharacterEncoding("ISO-8859-1");
-			        		errores= fu.generaErrores(res);
-			        		
-			        		int length = (int) errores.length();		        		 		              
-			                byte[] bytes = new byte[length];		         
-			                FileInputStream fin = new FileInputStream(errores);		         
-			                fin.read(bytes);
-			                fin.close();
-			                os.write(bytes);
-			                os.flush();
-			                
-			                //upFileSrv.eliminaDetalleError(res);
-							
-						}else   if (res == 1) {
-			            	request.setAttribute("mensaje", "No ha seleccionado un archivo");
-			            	destino = "cargaArchivo.jsp";
-			            }else if (res == 2) {
-			            	request.setAttribute("mensaje", "Tipo de archivo inv&aacute;lido, s&oacute;lo XML y CSV, asegurese de que la extensi&oacute;n del archivo y el tipo seleccionado coincidan");
-			            	destino = "cargaArchivo.jsp";
-			            }else if (res == 3) {
-			            	request.setAttribute("mensaje", "El archivo excede de 10 MB");
-			            	destino = "cargaArchivo.jsp"; 
-			            }else if (res == 4) {
-			            	request.setAttribute("mensaje", "El n&uacute;mero de colmnas del archivo es incorrecto");
-			            	destino = "cargaArchivo.jsp";
-			            }else if (res == 5) {
-			            	request.setAttribute("mensaje", "Las columnas del archivo no corresponden al layout vigente");
-			            	destino = "cargaArchivo.jsp";	
-			            }else if (res == 6) {
-			            	request.setAttribute("mensaje", "Se presentaron problemas en la validación de los datos");
-			            	destino = "cargaArchivo.jsp";
-			            }else if (res == 7) {
-			            	request.setAttribute("mensaje", "El archivo present&oacute; problemas en la carga");
-			            	destino = "cargaArchivo.jsp";
-			            }else if (res == 8) {
-			            	request.setAttribute("mensaje", "El archivo present&oacute; problemas en el procesamiento de algunos registros y estos nos e procesaron");
-			            	destino = "cargaArchivo.jsp";		            
-			            } else {		            	
-			            	request.setAttribute("mensaje", "Archivo cargado exitosamente");
-			            	destino = "cargaArchivo.jsp";
-			            }
-			        	
-
-			            RequestDispatcher rd = request.getRequestDispatcher(destino);
-			            rd.forward(request, response);
-			        }else if (action.equals("Descargar Layout")) {
-			        	OutputStream os = response.getOutputStream();
-			        	if(tipo.equals("CSV")){	        	
-				        	response.addHeader("Content-Disposition","attachment;filename=Layout.csv"); 
-				    		response.setContentType("application/vnd.ms-excel"); 
-				    					    		
-				        	CsvWriter layout = fu.generaLayoutCSV(os, idDep);			        	 
-				        	//layout.flush();
-				        	layout.close();
-			        	}else{
-			        		response.addHeader("Content-Disposition","attachment;filename=Layout.xml"); 			    					    		
-				    		response.setContentType("application/xml; charset=utf-8");
-				    		fu.generaLayoutXML("layout.xml", os, idDep);
-			        	}
-			        	
-			        }
-				}else{
-					request.setAttribute("mensaje", "La dependencia seleccionada no tiene un layout registrado en la aplicación");
-	            	destino = "cargaArchivo.jsp";
-	            	
-
-	                RequestDispatcher rd = request.getRequestDispatcher(destino);
-	                rd.forward(request, response);
-				}
-			}else{
-				request.setAttribute("mensaje", "Seleccione el tipo de archivo");
-            	destino = "cargaArchivo.jsp";
-
-                RequestDispatcher rd = request.getRequestDispatcher(destino);
-                rd.forward(request, response);
-			}
-		}
 	}
 	
 	
 	
-	/**Valida extensión y header del archivo*/
+	/**Valida extensiÃ³n y header del archivo*/
 	private long validaArchivo(String tipo, Part filePart, int idDep) throws ServletException, IOException{
 		FileUtil fu = new FileUtil();
 		long res = 0;

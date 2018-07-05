@@ -10,8 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class ViajesClarosConfig_ {
 
 	public static volatile CollectionAttribute<ViajesClarosConfig, BuscadorFiltrosConfig> buscadorFiltrosConfigCollection;
-	public static volatile CollectionAttribute<ViajesClarosConfig, BuscadorDespliegueConfig> buscadorDespliegueConfigCollection;
 	public static volatile SingularAttribute<ViajesClarosConfig, ViajesClarosConfigPK> viajesClarosConfigPK;
+	public static volatile CollectionAttribute<ViajesClarosConfig, BuscadorDespliegueConfig> buscadorDespliegueConfigCollection;
 
 }
 

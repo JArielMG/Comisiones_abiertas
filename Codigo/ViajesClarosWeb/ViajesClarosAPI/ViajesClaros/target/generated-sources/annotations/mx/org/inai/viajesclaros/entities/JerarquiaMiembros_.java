@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(JerarquiaMiembros.class)
 public abstract class JerarquiaMiembros_ {
 
+	public static volatile SingularAttribute<JerarquiaMiembros, Integer> idMiembro;
 	public static volatile SingularAttribute<JerarquiaMiembros, Usuarios> idUsuario;
 	public static volatile SingularAttribute<JerarquiaMiembros, Jerarquias> idJerarquia;
-	public static volatile SingularAttribute<JerarquiaMiembros, Integer> idMiembro;
 
 }
 

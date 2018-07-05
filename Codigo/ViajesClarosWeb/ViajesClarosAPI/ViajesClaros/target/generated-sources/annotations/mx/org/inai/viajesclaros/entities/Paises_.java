@@ -9,12 +9,12 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Paises.class)
 public abstract class Paises_ {
 
-	public static volatile SingularAttribute<Paises, Boolean> predeterminado;
-	public static volatile SingularAttribute<Paises, String> nombrePais;
-	public static volatile SingularAttribute<Paises, Integer> idPais;
-	public static volatile CollectionAttribute<Paises, Estados> estadosCollection;
 	public static volatile SingularAttribute<Paises, String> clavePais;
+	public static volatile CollectionAttribute<Paises, Estados> estadosCollection;
+	public static volatile SingularAttribute<Paises, Integer> idPais;
+	public static volatile SingularAttribute<Paises, Boolean> predeterminado;
 	public static volatile CollectionAttribute<Paises, Ciudades> ciudadesCollection;
+	public static volatile SingularAttribute<Paises, String> nombrePais;
 
 }
 

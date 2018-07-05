@@ -8,16 +8,16 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(FlujosCamposConfig.class)
 public abstract class FlujosCamposConfig_ {
 
-	public static volatile SingularAttribute<FlujosCamposConfig, Integer> orden;
-	public static volatile SingularAttribute<FlujosCamposConfig, Boolean> listaHabilitada;
-	public static volatile SingularAttribute<FlujosCamposConfig, FlujosCamposConfigPK> flujosCamposConfigPK;
-	public static volatile SingularAttribute<FlujosCamposConfig, Boolean> soloLectura;
-	public static volatile SingularAttribute<FlujosCamposConfig, SeccionesFormulario> idSeccionFormulario;
-	public static volatile SingularAttribute<FlujosCamposConfig, String> clase;
-	public static volatile SingularAttribute<FlujosCamposConfig, FlujosTrabajo> flujosTrabajo;
-	public static volatile SingularAttribute<FlujosCamposConfig, Short> obligatorio;
 	public static volatile SingularAttribute<FlujosCamposConfig, String> etiqueta;
+	public static volatile SingularAttribute<FlujosCamposConfig, Boolean> listaHabilitada;
+	public static volatile SingularAttribute<FlujosCamposConfig, SeccionesFormulario> idSeccionFormulario;
+	public static volatile SingularAttribute<FlujosCamposConfig, Boolean> soloLectura;
+	public static volatile SingularAttribute<FlujosCamposConfig, FlujosTrabajo> flujosTrabajo;
 	public static volatile SingularAttribute<FlujosCamposConfig, String> subtipo;
+	public static volatile SingularAttribute<FlujosCamposConfig, Integer> orden;
+	public static volatile SingularAttribute<FlujosCamposConfig, FlujosCamposConfigPK> flujosCamposConfigPK;
+	public static volatile SingularAttribute<FlujosCamposConfig, Short> obligatorio;
+	public static volatile SingularAttribute<FlujosCamposConfig, String> clase;
 
 }
 

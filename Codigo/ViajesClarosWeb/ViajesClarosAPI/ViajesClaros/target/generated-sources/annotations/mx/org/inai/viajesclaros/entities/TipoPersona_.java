@@ -10,8 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class TipoPersona_ {
 
 	public static volatile SingularAttribute<TipoPersona, String> codigoTipo;
-	public static volatile CollectionAttribute<TipoPersona, Personas> personasCollection;
 	public static volatile SingularAttribute<TipoPersona, String> descripcion;
+	public static volatile CollectionAttribute<TipoPersona, Personas> personasCollection;
 	public static volatile SingularAttribute<TipoPersona, Integer> idTipo;
 
 }

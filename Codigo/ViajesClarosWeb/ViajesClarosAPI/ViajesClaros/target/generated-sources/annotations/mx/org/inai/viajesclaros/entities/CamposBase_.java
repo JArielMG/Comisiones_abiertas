@@ -8,13 +8,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CamposBase.class)
 public abstract class CamposBase_ {
 
+	public static volatile SingularAttribute<CamposBase, String> descripcion;
 	public static volatile SingularAttribute<CamposBase, String> categoria;
-	public static volatile SingularAttribute<CamposBase, CamposBasePK> camposBasePK;
+	public static volatile SingularAttribute<CamposBase, Integer> tipoControl;
 	public static volatile SingularAttribute<CamposBase, Boolean> busquedaDefecto;
+	public static volatile SingularAttribute<CamposBase, CamposBasePK> camposBasePK;
 	public static volatile SingularAttribute<CamposBase, Integer> tipoDato;
 	public static volatile SingularAttribute<CamposBase, String> despliegue;
-	public static volatile SingularAttribute<CamposBase, String> descripcion;
-	public static volatile SingularAttribute<CamposBase, Integer> tipoControl;
 
 }
 

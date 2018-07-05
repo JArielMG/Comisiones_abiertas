@@ -8,8 +8,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ViajesClarosConfigPK.class)
 public abstract class ViajesClarosConfigPK_ {
 
-	public static volatile SingularAttribute<ViajesClarosConfigPK, String> campo;
 	public static volatile SingularAttribute<ViajesClarosConfigPK, String> tabla;
+	public static volatile SingularAttribute<ViajesClarosConfigPK, String> campo;
 
 }
 

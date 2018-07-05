@@ -9,10 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class SuscripcionEmailConfigPK_ {
 
 	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> apellido2;
-	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> nombres;
-	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> email;
 	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> apellido1;
 	public static volatile SingularAttribute<SuscripcionEmailConfigPK, Integer> idPersona;
+	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> email;
+	public static volatile SingularAttribute<SuscripcionEmailConfigPK, String> nombres;
 
 }
 

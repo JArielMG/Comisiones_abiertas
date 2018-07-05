@@ -52,9 +52,9 @@ public class SendMail {
 			message.setFrom(new InternetAddress(config.getUsuario()));
 			message.setRecipients(Message.RecipientType.TO,
 				InternetAddress.parse(emailTo));
-			message.setSubject("Administración de Viajes Claros - " + flujo.getNombre());
+			message.setSubject("AdministraciÃ³n de Viajes Claros - " + flujo.getNombre());
 			message.setText("Estimado usuario: "
-				+ "\n\n Le ha llegado a su bandeja de notificaciones, la solicitud de aprobación para la siguiente tarea: "
+				+ "\n\n Le ha llegado a su bandeja de notificaciones, la solicitud de aprobaciÃ³n para la siguiente tarea: "
 				+ instance.getId() + ". Favor de ingresar al sitio para mayor detalle.\n");
 
 			Transport.send(message);

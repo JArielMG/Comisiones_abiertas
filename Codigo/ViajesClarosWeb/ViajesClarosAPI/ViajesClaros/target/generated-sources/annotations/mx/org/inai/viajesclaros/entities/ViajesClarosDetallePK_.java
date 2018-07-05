@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ViajesClarosDetallePK.class)
 public abstract class ViajesClarosDetallePK_ {
 
-	public static volatile SingularAttribute<ViajesClarosDetallePK, String> campo;
-	public static volatile SingularAttribute<ViajesClarosDetallePK, Integer> idViaje;
 	public static volatile SingularAttribute<ViajesClarosDetallePK, String> tabla;
+	public static volatile SingularAttribute<ViajesClarosDetallePK, Integer> idViaje;
+	public static volatile SingularAttribute<ViajesClarosDetallePK, String> campo;
 
 }
 

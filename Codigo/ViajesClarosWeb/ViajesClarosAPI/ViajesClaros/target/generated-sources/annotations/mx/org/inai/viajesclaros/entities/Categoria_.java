@@ -9,11 +9,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Categoria.class)
 public abstract class Categoria_ {
 
-	public static volatile SingularAttribute<Categoria, Integer> idCategoria;
 	public static volatile SingularAttribute<Categoria, Double> topeHospedaje;
-	public static volatile SingularAttribute<Categoria, String> nombreCategoria;
 	public static volatile CollectionAttribute<Categoria, Personas> personasCollection;
 	public static volatile SingularAttribute<Categoria, Double> topeViaticos;
+	public static volatile SingularAttribute<Categoria, Integer> idCategoria;
+	public static volatile SingularAttribute<Categoria, String> nombreCategoria;
 
 }
 

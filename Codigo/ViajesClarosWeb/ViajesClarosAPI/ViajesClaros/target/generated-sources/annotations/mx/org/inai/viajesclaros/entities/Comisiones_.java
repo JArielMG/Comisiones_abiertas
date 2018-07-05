@@ -9,16 +9,16 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Comisiones.class)
 public abstract class Comisiones_ {
 
-	public static volatile CollectionAttribute<Comisiones, ViajesClarosInstancias> viajesClarosInstanciasCollection;
-	public static volatile CollectionAttribute<Comisiones, RegistrosGastosComision> registrosGastosComisionCollection;
 	public static volatile CollectionAttribute<Comisiones, FlujosInstancias> flujosInstanciasCollection;
-	public static volatile SingularAttribute<Comisiones, Usuarios> idUsuario;
-	public static volatile SingularAttribute<Comisiones, Dependencias> idDependencia;
+	public static volatile CollectionAttribute<Comisiones, RegistrosGastosComision> registrosGastosComisionCollection;
 	public static volatile SingularAttribute<Comisiones, Integer> idComision;
-	public static volatile SingularAttribute<Comisiones, Personas> idPersona;
 	public static volatile SingularAttribute<Comisiones, String> estatus;
 	public static volatile CollectionAttribute<Comisiones, ComisionesDesgloseGastos> comisionesDesgloseGastosCollection;
+	public static volatile SingularAttribute<Comisiones, Usuarios> idUsuario;
 	public static volatile CollectionAttribute<Comisiones, ComisionesDetalle> comisionesDetalleCollection;
+	public static volatile SingularAttribute<Comisiones, Dependencias> idDependencia;
+	public static volatile CollectionAttribute<Comisiones, ViajesClarosInstancias> viajesClarosInstanciasCollection;
+	public static volatile SingularAttribute<Comisiones, Personas> idPersona;
 
 }
 

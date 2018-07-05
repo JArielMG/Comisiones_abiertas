@@ -9,8 +9,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(Posiciones.class)
 public abstract class Posiciones_ {
 
-	public static volatile SingularAttribute<Posiciones, Integer> idPosicion;
 	public static volatile CollectionAttribute<Posiciones, Personas> personasCollection;
+	public static volatile SingularAttribute<Posiciones, Integer> idPosicion;
 	public static volatile SingularAttribute<Posiciones, String> nombrePosicion;
 
 }

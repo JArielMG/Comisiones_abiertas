@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(AprobacionesBitacoraPK.class)
 public abstract class AprobacionesBitacoraPK_ {
 
-	public static volatile SingularAttribute<AprobacionesBitacoraPK, Integer> idFlujo;
 	public static volatile SingularAttribute<AprobacionesBitacoraPK, Integer> idComision;
 	public static volatile SingularAttribute<AprobacionesBitacoraPK, Long> idInstancia;
+	public static volatile SingularAttribute<AprobacionesBitacoraPK, Integer> idFlujo;
 	public static volatile SingularAttribute<AprobacionesBitacoraPK, Integer> idFuncionario;
 
 }

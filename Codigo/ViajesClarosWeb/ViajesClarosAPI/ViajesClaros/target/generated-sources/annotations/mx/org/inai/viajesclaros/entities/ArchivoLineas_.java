@@ -8,11 +8,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ArchivoLineas.class)
 public abstract class ArchivoLineas_ {
 
-	public static volatile SingularAttribute<ArchivoLineas, String> comentarios;
-	public static volatile SingularAttribute<ArchivoLineas, ArchivosProcesados> idArchivo;
-	public static volatile SingularAttribute<ArchivoLineas, Integer> idError;
-	public static volatile SingularAttribute<ArchivoLineas, String> estatus;
 	public static volatile SingularAttribute<ArchivoLineas, Integer> idLinea;
+	public static volatile SingularAttribute<ArchivoLineas, String> estatus;
+	public static volatile SingularAttribute<ArchivoLineas, Integer> idError;
+	public static volatile SingularAttribute<ArchivoLineas, ArchivosProcesados> idArchivo;
+	public static volatile SingularAttribute<ArchivoLineas, String> comentarios;
 
 }
 

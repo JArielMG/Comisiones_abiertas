@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(BuscadorDespliegueConfigPK.class)
 public abstract class BuscadorDespliegueConfigPK_ {
 
-	public static volatile SingularAttribute<BuscadorDespliegueConfigPK, String> campo;
-	public static volatile SingularAttribute<BuscadorDespliegueConfigPK, Integer> idDependencia;
 	public static volatile SingularAttribute<BuscadorDespliegueConfigPK, String> tabla;
+	public static volatile SingularAttribute<BuscadorDespliegueConfigPK, Integer> idDependencia;
+	public static volatile SingularAttribute<BuscadorDespliegueConfigPK, String> campo;
 
 }
 

@@ -10,8 +10,8 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class RegistrosGastosComision_ {
 
 	public static volatile SingularAttribute<RegistrosGastosComision, Comisiones> idComision;
-	public static volatile SingularAttribute<RegistrosGastosComision, Integer> idRegistroGastoComision;
 	public static volatile CollectionAttribute<RegistrosGastosComision, ComisionesDesgloseGastos> comisionesDesgloseGastosCollection;
+	public static volatile SingularAttribute<RegistrosGastosComision, Integer> idRegistroGastoComision;
 
 }
 

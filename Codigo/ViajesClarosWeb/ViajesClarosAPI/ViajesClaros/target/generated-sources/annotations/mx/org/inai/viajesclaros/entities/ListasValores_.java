@@ -9,10 +9,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(ListasValores.class)
 public abstract class ListasValores_ {
 
+	public static volatile CollectionAttribute<ListasValores, CamposDinamicos> camposDinamicosCollection;
+	public static volatile SingularAttribute<ListasValores, String> nombreLista;
 	public static volatile SingularAttribute<ListasValores, Boolean> habilitada;
 	public static volatile SingularAttribute<ListasValores, Integer> idLista;
-	public static volatile SingularAttribute<ListasValores, String> nombreLista;
-	public static volatile CollectionAttribute<ListasValores, CamposDinamicos> camposDinamicosCollection;
 	public static volatile CollectionAttribute<ListasValores, ValoresDinamicos> valoresDinamicosCollection;
 
 }

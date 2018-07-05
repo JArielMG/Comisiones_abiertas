@@ -612,6 +612,7 @@ public class FuncionarioService {
         try {
             Session session = em.unwrap(Session.class);
             log.info("mail: " + model.getEmail());
+            String nombre = "";
             
             List<MailProperties> mailProp = session.createSQLQuery("CALL viajes_claros.obten_mail_server()")
                 .setResultTransformer(new BasicTransformerAdapter() {
@@ -632,7 +633,7 @@ public class FuncionarioService {
             
             Properties props = new Properties();
             props.put("mail.smtp.host", mailProp.get(0).getHost());
-            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.starttls.enable", "false");
             props.put("mail.smtp.auth", "true");
             props.put("mail.smtp.port", mailProp.get(0).getPuerto());
 
@@ -650,18 +651,18 @@ public class FuncionarioService {
 		  });
 
 		try {
+                        nombre = getAcuteString(model.getNombres()) + " " + getAcuteString(model.getApellido1()) + " " + getAcuteString(model.getApellido2());
                         DataSource fds = new FileDataSource("/var/www/html/comisiones-abiertas/assets/img/ComisionesAbiertasMail.png");
                         String mensajeHtml = "<img src=\"cid:image\"><p><strong style='font-size:14.0pt;color:#028E8E'>"
                                 + "Confirmaci&oacute;n de suscripci&oacute;n</strong>"
                                 + "</p><p>Bienvenido(a),</p><p>&nbsp;</p>"
                                 + "<p>Este mensaje ha sido enviado autom&aacute;ticamente en respuesta a "
                                 + "una solicitud de suscripci&oacute;n de usuario al sitio web Comisiones "
-                                + "Abiertas <a href='http://comisionesabiertas.inai.mx'>"
-                                + "comisionesabiertas.inai.mx</a>., para recibir informaci&oacute;n "
+                                + "Abiertas <a href='http://comisionesabiertas.inai.org.mx/'>"
+                                + "comisionesabiertas.inai.org.mx/</a>., para recibir informaci&oacute;n "
                                 + "de las comisiones oficiales de trabajo del servidor "
                                 + "p&uacute;blico <strong style='font-size:14.0pt;color:#028E8E'>" 
-                                + model.getNombres()+" "+model.getApellido1()
-                                + " " + model.getApellido2() + ".</strong>"
+                                + nombre + ".</strong>"
                                 + "</p><p>&nbsp;</p><p>Si usted no ha solicitado la suscripci&oacute;n a "
                                 + "Comisiones Abiertas y no desea recibir esta informaci&oacute;n, favor "
                                 + "de ponerse en contacto a trav&eacute;s del correo electr&oacute;nico "
@@ -726,5 +727,12 @@ public class FuncionarioService {
             log.error("ERROR AL REALIZAR LA SUSCRIPCIÓN", e);
         }
         return new SimpleObjectModel();
+    }
+    
+    private String getAcuteString(String cadena){
+        cadena = cadena.replace("á","&aacute;").replace("é","&eacute;").replace("í","&iacute;").replace("ó","&oacute;").replace("ú","&uacute;");
+        cadena = cadena.replace("Á","&Aacute;").replace("É","&Eacute;").replace("Í","&Iacute;").replace("Ó","&Oacute;").replace("Ú","&Uacute;");
+        cadena = cadena.replace("Ñ","&Ntilde;").replace("ñ","&ntilde;").replace("Ü","&Uuml;").replace("ü","&uuml;");
+        return cadena;
     }
 }

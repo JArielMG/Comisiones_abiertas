@@ -12,7 +12,7 @@
         <ui:composition template="../template/layout.xhtml">
             <ui:define name="content">
 
-                <div class="container default-width-content">
+                <div class="container">
                     <h4 class="text-center"><strong>CONFIGURACIÓN DE CAMPOS DINÁMICOS</strong></h4>
 
                     <h:form id="formCampos" prependId="false">
@@ -22,6 +22,17 @@
                                         return false;">
                             <i class="fa fa-plus"></i> <strong>Agregar campo</strong>
                         </button>
+                        
+                        <br/>
+                        <label for="txFiltroCampo" class="control-label col-sm-2">
+                            Filtro:
+                        </label>
+                        <div class="col-sm-10">
+                            <h:inputText id="txFiltroCampo" styleClass="form-control" maxlength="50" value="#{camposDinamicosController.filtroCampo}" onfocus="this.value = this.value + ' '; this.value = this.value.substring(0,this.value.length - 1);">
+                                <p:ajax event="keyup" update="@form" listener="#{camposDinamicosController.filtrarCampos}"/>
+                            </h:inputText>
+                        </div>
+                        <br/><br/><br/>
 
                         <p:dataTable styleClass="small" id="table1" 
                                      emptyMessage="No se encontraron campos"
@@ -30,30 +41,39 @@
                                      currentPageReportTemplate="{currentPage} de {totalPages}"
                                      paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
-                            <p:column headerText="Campo">
+                            <p:column headerText="Campo" width="15%">
                                 <h:outputText value="#{campo.campo}"/>
                             </p:column>
-                            <p:column headerText="Descripción">
+                            <p:column headerText="Descripción"  width="15%">
                                 <h:outputText value="#{campo.descripcion}"/>
                             </p:column>
-                            <p:column headerText="Despliegue">
+                            <p:column headerText="Despliegue"  width="15%">
                                 <h:outputText value="#{campo.despliegue}"/>
                             </p:column>
                             <p:column headerText="Lista">
                                 <h:outputText value="#{campo.nombreLista}"/>
                             </p:column>
-                            <p:column headerText="Tipo de dato">
+                            <p:column headerText="Tipo de dato"  width="6%">
                                 <h:outputText value="#{campo.tipoDato}"/>
                             </p:column>
-                            <p:column headerText="Tipo de control">
+                            <p:column headerText="Tipo de control"  width="8%">
                                 <h:outputText value="#{campo.tipoControl}"/>
                             </p:column>
-                            <p:column headerText="Categoría">
+                            <p:column headerText="Categoría"  width="14%">
                                 <h:outputText value="#{campo.categoria}"/>
                             </p:column>
-                            <p:column styleClass="col-sm-1" headerText="Opciones">
+                            <p:column styleClass="col-sm-1" headerText="Opciones"  width="6%">
                                 <p:commandLink styleClass="col-xs-offset-3 pull-right" update=":formAddCampo"
-                                               oncomplete="PF('dlg1').show();return false;"  >
+                                               oncomplete="PF('dlg1').show();
+                                               var y = document.getElementById('slCategoria').options; 
+                                               for(var i = 0; i != y.length; i++)
+                                                  if('#{campo.categoria}' == y[i].text)
+                                                    document.getElementById('slCategoria').selectedIndex = y[i].index;
+                                               var z = document.getElementById('slLista').options; 
+                                               for(var i = 0; i != z.length; i++)
+                                                  if('#{campo.nombreLista}' == z[i].text)
+                                                    document.getElementById('slLista').selectedIndex = z[i].index;
+                                               return false;"  >
                                     <i class="fa fa-pencil"></i>
                                     <f:setPropertyActionListener value="#{true}"
                                                                  target="#{camposDinamicosController.edicionCampo}"/>
@@ -155,7 +175,6 @@
                                                      value="#{camposDinamicosController.campoInsert.idTipoControl}">
                                         <f:selectItems value="#{camposDinamicosController.tiposControl}"
                                                        var="c" itemLabel="#{c.descripcion}" itemValue="#{c.id}"/>
-                                        <p:ajax process="@this" update="@this hdTipoControl"/>
                                     </h:selectOneMenu>
                                 </div>
                                 <p:inputText type="hidden" id="hdTipoControl" value="#{camposDinamicosController.campoInsert.idTipoControl}"/>

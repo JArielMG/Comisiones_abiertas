@@ -8,10 +8,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(RelCargaDepParam.class)
 public abstract class RelCargaDepParam_ {
 
+	public static volatile SingularAttribute<RelCargaDepParam, Integer> idTipoCarga;
+	public static volatile SingularAttribute<RelCargaDepParam, Integer> idparametro;
 	public static volatile SingularAttribute<RelCargaDepParam, Integer> id;
 	public static volatile SingularAttribute<RelCargaDepParam, Integer> idDependencia;
-	public static volatile SingularAttribute<RelCargaDepParam, Integer> idparametro;
-	public static volatile SingularAttribute<RelCargaDepParam, Integer> idTipoCarga;
 
 }
 

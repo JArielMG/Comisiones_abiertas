@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CatDependencia.class)
 public abstract class CatDependencia_ {
 
-	public static volatile SingularAttribute<CatDependencia, String> dependecia;
 	public static volatile SingularAttribute<CatDependencia, String> siglas;
 	public static volatile SingularAttribute<CatDependencia, Integer> idDependencia;
+	public static volatile SingularAttribute<CatDependencia, String> dependecia;
 
 }
 

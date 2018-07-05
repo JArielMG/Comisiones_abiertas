@@ -47,6 +47,8 @@ public class ListasController {
     private ListaValoresDomain listaDelete;
     private ListaValoresDomain selectedLista;
     private Boolean edicionValor;
+    private String filtroLista;
+    private String filtroValor = "";
     final static Logger log = Logger.getLogger(ListasController.class);
 
     @PostConstruct
@@ -55,7 +57,7 @@ public class ListasController {
             setEdicionValor((Boolean) false);
             valorInsert = new ValorListaDomain();
             listaInsert = new ListaValoresDomain();
-            setValores(listaService.findAllValores());
+            setValores(listaService.findAllValores(getFiltroValor()));
             setListas(listaService.findAll());
         } catch (Exception e) {
             System.out.println("ERROR EN POSTCONSTRUCTOR. " + e.getMessage());
@@ -73,11 +75,11 @@ public class ListasController {
             valorInsert = new ValorListaDomain();
             if (selectedLista == null) {
                 setListas(listaService.findAll());
-                setValores(listaService.findAllValores());
+                setValores(listaService.findAllValores(getFiltroValor()));
             } else {
                 valorInsert.setIdLista(selectedLista.getIdList());
                 setListas(listaService.findAll());
-                setValores(listaService.findValoresPorIdLista(selectedLista.getIdList()));
+                setValores(listaService.findValoresPorIdLista(selectedLista.getIdList(), getFiltroValor()));
             }
         } catch(Exception e) {
             log.error("ERROR AL REINICIAR LOS VALORES.", e);
@@ -115,7 +117,7 @@ public class ListasController {
             selectedLista = new ListaValoresDomain();
             listaInsert = new ListaValoresDomain();
             setListas(listaService.findAll());
-            setValores(listaService.findAllValores());
+            setValores(listaService.findAllValores(getFiltroValor()));
         } catch (Exception e) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR,
                     "Error", "Error al guardar la lista. " + e.getMessage()));
@@ -183,7 +185,7 @@ public class ListasController {
     public void selectRow() {
         try {
             log.info("SELECTED LISTA: " + selectedLista.getIdList());
-            setValores(listaService.findValoresPorIdLista(selectedLista.getIdList()));
+            setValores(listaService.findValoresPorIdLista(selectedLista.getIdList(), getFiltroValor()));
             /* Por si se quiere agregar un campo cuando una lista está seleccionada, 
              * por default se mostrará esa lista seleccionada */
             valorInsert.setIdLista(selectedLista.getIdList());
@@ -191,11 +193,39 @@ public class ListasController {
             log.error("ERROR AL SELECCIONAR LISTA.", e);
         }
     }
+    
+    
+    ////////////////LEO
+    public void filtrarLista() {
+        try {
+            log.info("valor cuadro: " + getFiltroLista());
+            setListas(listaService.findAllFilter(getFiltroLista()));
+        } catch (Exception e) {
+            log.error("ERROR AL SELECCIONAR LISTA.", e);
+        }
+    }
+    
+    public void filtrarValor() {
+        try {
+            log.info("valor cuadro: " + getFiltroValor());
+            if(selectedLista == null)
+                setValores(listaService.findAllValores(getFiltroValor()));
+            else
+                setValores(listaService.findValoresPorIdLista(selectedLista.getIdList(), getFiltroValor()));
+        } catch (Exception e) {
+            log.error("ERROR AL SELECCIONAR LISTA.", e);
+        }
+    }
+    ////////////
 
     public void unselectRow() {
         try {
             this.selectedLista = new ListaValoresDomain();
-            setValores(listaService.findAllValores());
+            setFiltroValor("");
+            if(selectedLista == null)
+                setValores(listaService.findAllValores(getFiltroValor()));
+            else
+                setValores(listaService.findValoresPorIdLista(selectedLista.getIdList(), getFiltroValor()));
         } catch (Exception e) {
             log.error("ERROR AL DESELECCIONAR LISTA.", e);
         }
@@ -313,4 +343,17 @@ public class ListasController {
         this.selectedLista = selectedLista;
     }
 
+    public String getFiltroLista() {
+        return filtroLista;
+     }
+     public void setFiltroLista(String filtroLista) {
+        this.filtroLista = filtroLista;
+     }
+
+     public String getFiltroValor() {
+        return filtroValor;
+     }
+     public void setFiltroValor(String filtroValor) {
+        this.filtroValor = filtroValor;
+     }
 }

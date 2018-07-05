@@ -78,7 +78,7 @@ public class FiltroBusquedaService {
                             @Override
                             public Object transformTuple(Object[] tuple, String[] aliases) {
                                 Integer id = (Integer) tuple[0];
-                                String descripcion = (String) tuple[1];
+                                String descripcion = tuple[1].toString();
 
                                 return new SimpleElementDomain(id, descripcion);
                             }

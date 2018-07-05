@@ -47,6 +47,7 @@ import org.xml.sax.SAXException;
 
 import com.csvreader.CsvReader;
 import com.csvreader.CsvWriter;
+import java.util.GregorianCalendar;
 
 public class FileUtil {
 	
@@ -330,25 +331,25 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 		cadena = cadena.replaceAll("\"","&quot;");
 		cadena = cadena.replaceAll("'", "&apos;");
 		//cadena = cadena.replaceAll("/", "&frasl;");
-		cadena = cadena.replaceAll("°", "&iexcl;");
-		cadena = cadena.replaceAll("ø", "&iquest;");
-		cadena = cadena.replaceAll("Æ", "&reg;");
-		cadena = cadena.replaceAll("©", "&copy;");
-		cadena = cadena.replaceAll("Ä", "&euro;");
-		cadena = cadena.replaceAll("·", "&aacute;");
-		cadena = cadena.replaceAll("È", "&eacute;");
-		cadena = cadena.replaceAll("Ì", "&iacute;");
-		cadena = cadena.replaceAll("Û", "&oacute;");
-		cadena = cadena.replaceAll("˙", "&uacute;");
-		cadena = cadena.replaceAll("Ò", "&ntilde;");
-		cadena = cadena.replaceAll("¸", "&uuml;");
-		cadena = cadena.replaceAll("¡", "&Aacute;");
-		cadena = cadena.replaceAll("…", "&Eacute;");
-		cadena = cadena.replaceAll("Õ", "&Iacute;");
-		cadena = cadena.replaceAll("”", "&Oacute;");
-		cadena = cadena.replaceAll("⁄", "&Uacute;");
-		cadena = cadena.replaceAll("—", "&Ntilde;");
-		cadena = cadena.replaceAll("‹", "&Uuml;");*/
+		cadena = cadena.replaceAll("¬°", "&iexcl;");
+		cadena = cadena.replaceAll("¬ø", "&iquest;");
+		cadena = cadena.replaceAll("¬Æ", "&reg;");
+		cadena = cadena.replaceAll("¬©", "&copy;");
+		cadena = cadena.replaceAll("‚Ç¨", "&euro;");
+		cadena = cadena.replaceAll("√°", "&aacute;");
+		cadena = cadena.replaceAll("√©", "&eacute;");
+		cadena = cadena.replaceAll("√≠", "&iacute;");
+		cadena = cadena.replaceAll("√≥", "&oacute;");
+		cadena = cadena.replaceAll("√∫", "&uacute;");
+		cadena = cadena.replaceAll("√±", "&ntilde;");
+		cadena = cadena.replaceAll("√º", "&uuml;");
+		cadena = cadena.replaceAll("√Å", "&Aacute;");
+		cadena = cadena.replaceAll("√â", "&Eacute;");
+		cadena = cadena.replaceAll("√ç", "&Iacute;");
+		cadena = cadena.replaceAll("√ì", "&Oacute;");
+		cadena = cadena.replaceAll("√ö", "&Uacute;");
+		cadena = cadena.replaceAll("√ë", "&Ntilde;");
+		cadena = cadena.replaceAll("√ú", "&Uuml;");*/
 		
 		return res;
 	}
@@ -454,7 +455,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 						continue;
 					}else{	
 						resQuery = 0;
-						error = "El dato de la columna " + etiqueta + " no corresponde a una OperaciÛn v·lida (I,E,C).";
+						error = "El dato de la columna " + etiqueta + " no corresponde a una Operaci√≥n v√°lida (I,E,C).";
 					} //res = 1;
 				
 				}else if(etiqueta.equals("Dependencia")){
@@ -468,14 +469,14 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 						//System.out.println("Dep selecionada: "+ idDep + " Dep del registro: " + idDepReg);
 						if(idDepReg == null || idDep != idDepReg.intValue()){
 							resQuery = 0;
-							error = "El dato de la Dependencia no es igual a la Dependecia que seleccionÛ.";
+							error = "El dato de la Dependencia no es igual a la Dependecia que seleccion√≥.";
 						}					
 					//}
 				}else{			
 					if(valida){
 						//query = "select count(*) from viajes_claros." + tabla + " where " + campo + " = " + filtro;		
 					    resQuery = upFileSrv.validaDato(tabla, campo, filtro);	
-					    error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat·logo.";
+					    error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat√°logo.";
 					}					
 				}
 				if(resQuery == 0){
@@ -492,7 +493,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 						case 1:	
 							//if (!filtro.matches("[0-9]*")){
 							if (!filtro.matches("\\d+(\\.\\d{1,2})?")){
-								error = "El dato " + filtro + " de la columna " + etiqueta + " debe ser numÈrico.";
+								error = "El dato " + filtro + " de la columna " + etiqueta + " debe ser num√©rico.";
 								session = HibernateUtil.getSessionFactory().openSession();
 								upFileSrv.insertaDetalleError(session, llave, numReg, error);
 								session.close();
@@ -506,7 +507,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 								System.out.println(formatter.parse(filtro));
 							}catch (ParseException e) {
 								//e.printStackTrace();
-								error = "El dato " + filtro + " de la columna " + etiqueta + " debe ser una fecha v·lida.";
+								error = "El dato " + filtro + " de la columna " + etiqueta + " debe ser una fecha v√°lida.";
 								session = HibernateUtil.getSessionFactory().openSession();
 								upFileSrv.insertaDetalleError(session, llave, numReg, error);
 								session.close();
@@ -566,7 +567,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 									   resQuery = 1;//sin error
 								   }else{	
 										resQuery = 0;
-										error = "El dato de la columna " + etiqueta + " no corresponde a una OperaciÛn v·lida (I,E,C).";
+										error = "El dato de la columna " + etiqueta + " no corresponde a una Operaci√≥n v√°lida (I,E,C).";
 								   } //res = 1;
 							   }else if(etiqueta.equals("Dependencia")){
 								   /*if(valor.equals("INAI")){
@@ -578,13 +579,13 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 										idDepReg = upFileSrv.obtenerIdDependencia(valor);
 										if(idDepReg == null || idDep != idDepReg.intValue()){
 											resQuery = 0;
-											error = "El dato de la Dependencia no es igual a la Dependecia que seleccionÛ.";
+											error = "El dato de la Dependencia no es igual a la Dependecia que seleccion√≥.";
 										}					
 									//}
 							   }else{		
 								   if(valida){							
 										resQuery = upFileSrv.validaDato(tabla, campo, valor);
-										error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat·logo.";
+										error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat√°logo.";
 								   }							   
 							   }
 							   
@@ -596,7 +597,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 											case 1:	
 												//if (!valor.matches("[0-9]*")){
 												if (!valor.matches("\\d+(\\.\\d{1,2})?")){
-													msjError = "El dato " + valor + " de la columna " + etiqueta + " debe ser numÈrico.";
+													msjError = "El dato " + valor + " de la columna " + etiqueta + " debe ser num√©rico.";
 													session = HibernateUtil.getSessionFactory().openSession();
 													upFileSrv.insertaDetalleError(session, llave, numReg, msjError);
 													session.close();
@@ -610,7 +611,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 													System.out.println("****fecha: " + formatter.parse(valor));
 												}catch (ParseException e) {
 													//e.printStackTrace();
-													msjError = "El dato " + valor + " de la columna " + etiqueta + " debe ser una fecha v·lida.";
+													msjError = "El dato " + valor + " de la columna " + etiqueta + " debe ser una fecha v√°lida.";
 													session = HibernateUtil.getSessionFactory().openSession();
 													upFileSrv.insertaDetalleError(session, llave, numReg, msjError);
 													session.close();
@@ -721,7 +722,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 							continue;
 						}else{	
 							resQuery = 0;
-							error = "El dato de la columna " + etiqueta + " no corresponde a una OperaciÛn v·lida (I,E,C).";
+							error = "El dato de la columna " + etiqueta + " no corresponde a una Operaci√≥n v√°lida (I,E,C).";
 						} //res = 1;
 					}else if(etiqueta.equals("Dependencia")){
 						if(valor.equals("INAI")){
@@ -732,12 +733,12 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 						if(valida){
 							
 							resQuery = upFileSrv.validaDato(tabla, campo, valor);
-							error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat·logo.";
+							error = "El dato de la columna " + etiqueta + " no corresponde a alguno registrado en el cat√°logo.";
 						}	
 					}
 								
 				}//Node
-				//System.out.println("************ DebiÛ fallar: " + resQuery + " - " + numReg);
+				//System.out.println("************ Debi√≥ fallar: " + resQuery + " - " + numReg);
 				if(resQuery == 0){				
 					upFileSrv.insertaDetalleError(llave, numReg, error);
 					System.out.println("************ registro error");
@@ -852,7 +853,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 										}
 										catch(NumberFormatException de){
 											//not a integer or double
-											System.out.println("No es un n˙mero: "+ie.getMessage()+"\n"+de.getMessage());
+											System.out.println("No es un n√∫mero: "+ie.getMessage()+"\n"+de.getMessage());
 										}
 									}									
 								}else if(tipo_dato == 3){
@@ -935,7 +936,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 											}
 											catch(NumberFormatException de){
 												//not a integer or double
-												System.out.println("No es un n˙mero: "+ie.getMessage()+"\n"+de.getMessage());
+												System.out.println("No es un n√∫mero: "+ie.getMessage()+"\n"+de.getMessage());
 											}
 										}									
 									}else if(tipo_dato == 3){
@@ -1076,7 +1077,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 										}
 										catch(NumberFormatException de){
 											//not a integer or double
-											System.out.println("No es un n˙mero: "+ie.getMessage()+"\n"+de.getMessage());
+											System.out.println("No es un n√∫mero: "+ie.getMessage()+"\n"+de.getMessage());
 										}
 									}									
 								}else if(tipo_dato == 3){
@@ -1169,7 +1170,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 											}
 											catch(NumberFormatException de){
 												//not a integer or double
-												System.out.println("No es un n˙mero: "+ie.getMessage()+"\n"+de.getMessage());
+												System.out.println("No es un n√∫mero: "+ie.getMessage()+"\n"+de.getMessage());
 											}
 										}									
 									}else if(tipo_dato == 3){
@@ -1250,7 +1251,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 
 				Date fechaSalida = formatter.parse(fecha);
 				viajes = upFileSrv.obtenerDetalleViajesFecha(fechaSalida);
-				//System.out.println("TamaÒo lista viajes: " + viajes.size());
+				//System.out.println("Tama√±o lista viajes: " + viajes.size());
 				for(int i = 0; i < viajes.size(); i++) {				
 					viajeId = upFileSrv.obtenerDetalleViajeId(viajes.get(i));
 					ViajesDet:
@@ -1459,11 +1460,14 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 	  
 	  /***************************************************************************/
 	  /**Genera archivo de errores para descargar*********************************/
-		public File generaErrores(long llave) throws IOException{			
-			File archivo= new File("errores.txt");
+		public File generaErrores(long llave, String nombre) throws IOException{
+                    
+			File archivo= new File(nombre);
 			FileWriter fw = new FileWriter(archivo);
 			BufferedWriter bw = new BufferedWriter(fw);
 			 
+                        System.out.println(archivo.getAbsolutePath());
+                        
 			System.out.println("Hay errores genera archivo: " + llave);
 			ProcesaInterfazVO bitacora = upFileSrv.obtenerBitacora(llave);
 			bw.write("Archivo: " + bitacora.getArchivo());		
@@ -1478,7 +1482,7 @@ public long separaXML(InputStream contenido, String nombreArchivo, int idDep) th
 			bw.newLine();
 			bw.write("==================== Total de errores ===================");
 			bw.newLine();
-			bw.write("Num Viaje\tDescripciÛn del error");
+			bw.write("Num Viaje\tDescripci√≥n del error");
 			bw.newLine();
 			
 			System.out.println("Escribe encabezado de errores");

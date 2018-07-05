@@ -268,22 +268,28 @@ public class TablaCampoService {
     /**
      * Obtiene los campos que aún no han sido agregados a viajes_claros_config
      *
+     * @param filtro
      * @return
      * @throws Exception
      */
-    public List<TablaCampoDomain> findCamposConfigDisponibles() throws Exception {
-        return findCamposConfigDisponibles(null);
+    public List<TablaCampoDomain> findCamposConfigDisponibles(String filtro) throws Exception {
+        return findCamposConfigDisponibles(null, filtro);
     }
     
     /**
      * Obtiene los campos que aún no han sido agregados a viajes_claros_config de la tabla indicada
      * 
      * @param nombreTabla
+     * @param filtro
      * @return
      * @throws Exception 
      */
+    public List<TablaCampoDomain> findCamposConfigDisponiblesPorTabla(String nombreTabla, String filtro) throws Exception {
+        return findCamposConfigDisponibles(nombreTabla, filtro);
+    }
+    
     public List<TablaCampoDomain> findCamposConfigDisponiblesPorTabla(String nombreTabla) throws Exception {
-        return findCamposConfigDisponibles(nombreTabla);
+        return findCamposConfigDisponibles(nombreTabla, "");
     }
     
     /**
@@ -293,11 +299,12 @@ public class TablaCampoService {
      * @return
      * @throws Exception 
      */
-    private List<TablaCampoDomain> findCamposConfigDisponibles(String nombreTabla) throws Exception {
+    private List<TablaCampoDomain> findCamposConfigDisponibles(String nombreTabla, String filtro) throws Exception {
         try {
             Session session = em.unwrap(Session.class);
-            List<TablaCampoDomain> campos = session.createSQLQuery("CALL get_campos_config_disponibles(:tabla)")
+            List<TablaCampoDomain> campos = session.createSQLQuery("CALL get_campos_config_disponibles(:tabla, :filtro)")
                     .setParameter("tabla", nombreTabla) // Si es null, obtiene todos
+                    .setParameter("filtro", filtro)
                     .setResultTransformer(new BasicTransformerAdapter() {
                         private static final long serialVersionUID = 1L;
 

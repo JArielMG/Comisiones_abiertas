@@ -8,9 +8,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(InterfazConfigPK.class)
 public abstract class InterfazConfigPK_ {
 
+	public static volatile SingularAttribute<InterfazConfigPK, String> tabla;
 	public static volatile SingularAttribute<InterfazConfigPK, Integer> idDependencia;
 	public static volatile SingularAttribute<InterfazConfigPK, String> campo;
-	public static volatile SingularAttribute<InterfazConfigPK, String> tabla;
 
 }
 

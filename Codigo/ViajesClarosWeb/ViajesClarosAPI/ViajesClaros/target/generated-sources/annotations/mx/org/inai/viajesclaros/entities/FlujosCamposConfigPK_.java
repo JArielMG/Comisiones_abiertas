@@ -9,9 +9,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class FlujosCamposConfigPK_ {
 
 	public static volatile SingularAttribute<FlujosCamposConfigPK, Integer> idFlujo;
-	public static volatile SingularAttribute<FlujosCamposConfigPK, String> campo;
-	public static volatile SingularAttribute<FlujosCamposConfigPK, Integer> idTipoPersona;
 	public static volatile SingularAttribute<FlujosCamposConfigPK, String> tabla;
+	public static volatile SingularAttribute<FlujosCamposConfigPK, Integer> idTipoPersona;
+	public static volatile SingularAttribute<FlujosCamposConfigPK, String> campo;
 
 }
 

@@ -191,7 +191,7 @@ public class FormulariosServices {
                 })
                 .list();
 
-	        /* Si el filtro es catálogo, se deben traer los elementos del catálogo */
+	        /* Si el filtro es catÃ¡logo, se deben traer los elementos del catÃ¡logo */
 		for (SeccionesFormulario sf : seccionesFormulario) {
 			List<CamposFormulario> camposFormulario = session.createSQLQuery("CALL get_flujos_campos_config_por_flujo_tipo_persona_seccion(:idFlujo,:idTipoPersona,:idSeccionFormulario)")
 	                .setParameter("idFlujo", idFlujo)
@@ -253,13 +253,13 @@ public class FormulariosServices {
 	                        .list();
 	                cf.setCatalogo(cat);
 	            } else if ((cf.getTipoControl().equals(TipoControl.LISTA) && cf.getListaHabilitada())||(cf.getTipoControl().equals(TipoControl.TEXTO) && cf.getListaHabilitada())) {
-	                /* Es un catálogo de campos dinámicos */
+	                /* Es un catÃ¡logo de campos dinÃ¡micos */
 	            	/*if (cf.getCampo().equals("tipo_representacion")){
 	            		List<CatalogoElement> catalog = new ArrayList<CatalogoElement>();
 	            		CatalogoElement catalogOption = new CatalogoElement();
 	            		if (tipoRepresentacion.equals("TEC")){
 	            			catalogOption.setCodigo(tipoRepresentacion);
-	            			catalogOption.setDescripcion("Técnico");
+	            			catalogOption.setDescripcion("TÃ©cnico");
 	            		}else if (tipoRepresentacion.equals("AN")){
 	            			catalogOption.setCodigo(tipoRepresentacion);
 	            			catalogOption.setDescripcion("Alto Nivel");
@@ -389,7 +389,7 @@ public class FormulariosServices {
                 })
                 .list();
 
-	        /* Si el filtro es catálogo, se deben traer los elementos del catálogo */
+	        /* Si el filtro es catÃ¡logo, se deben traer los elementos del catÃ¡logo */
 		for (GastosComision ef : elementosFormulario) {
 			if (ef.getTipoControl().equals(TipoControl.LISTA) && ef.getListaHabilitada()) {
                 List<CatalogoElement> cat = session.createSQLQuery("CALL get_valores_dinamicos_por_id(:idLista)")
@@ -445,7 +445,7 @@ public class FormulariosServices {
                 })
                 .list();
 
-	        /* Si el filtro es catálogo, se deben traer los elementos del catálogo */
+	        /* Si el filtro es catÃ¡logo, se deben traer los elementos del catÃ¡logo */
 		for (GastosComision ef : elementosFormulario) {
 			if (ef.getTipoControl().equals(TipoControl.LISTA) && ef.getListaHabilitada()) {
                 List<CatalogoElement> cat = session.createSQLQuery("CALL get_valores_dinamicos_por_id(:idLista)")

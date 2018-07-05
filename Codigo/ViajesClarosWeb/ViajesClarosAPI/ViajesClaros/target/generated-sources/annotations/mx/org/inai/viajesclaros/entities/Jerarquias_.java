@@ -10,10 +10,10 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class Jerarquias_ {
 
 	public static volatile CollectionAttribute<Jerarquias, JerarquiaMiembros> jerarquiaMiembrosCollection;
-	public static volatile SingularAttribute<Jerarquias, String> nombreJerarquia;
-	public static volatile SingularAttribute<Jerarquias, Integer> idJerarquia;
 	public static volatile SingularAttribute<Jerarquias, Boolean> editable;
 	public static volatile CollectionAttribute<Jerarquias, ConfiguracionAprobacion> configuracionAprobacionCollection;
+	public static volatile SingularAttribute<Jerarquias, Integer> idJerarquia;
+	public static volatile SingularAttribute<Jerarquias, String> nombreJerarquia;
 
 }
 

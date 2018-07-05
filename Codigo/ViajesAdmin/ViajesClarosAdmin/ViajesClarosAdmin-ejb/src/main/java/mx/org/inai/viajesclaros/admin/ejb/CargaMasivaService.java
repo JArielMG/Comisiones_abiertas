@@ -106,8 +106,41 @@ public class CargaMasivaService {
      * @throws java.lang.Exception
      */
     public void saveColumn(CargaColumnDomain column) throws Exception {
+        int i = 0;
         try {
             Session session = em.unwrap(Session.class);
+            
+            List<CargaColumnDomain> encabezados = session.createSQLQuery("CALL get_columnas_carga(:idDep, :secuencia)")
+                    .setParameter("idDep", column.getIdDependencia())
+                    .setParameter("secuencia", column.getSecuencia())
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            CargaColumnDomain domain = new CargaColumnDomain();
+                            domain.setIdDependencia((Integer) tuple[0]);
+                            domain.setTabla((String) tuple[1]);
+                            domain.setCampo((String) tuple[2]);
+                            domain.setDespliegue((String) tuple[3]);
+                            domain.setEditable((Boolean) tuple[4]);
+                            domain.setSecuencia((Integer) tuple[5]);
+                            domain.setListaHabilitada((Boolean) tuple[6]);
+                            return domain;
+                        }
+                    })
+                    .list();
+            
+            for(CargaColumnDomain item : encabezados){
+                session.createSQLQuery("CALL update_secuencias(:inSecuencia, :inTabla, :inCampo, :inDependencia)")
+                    .setParameter("inTabla", item.getTabla())
+                    .setParameter("inCampo", item.getCampo())
+                    .setParameter("inSecuencia", column.getSecuencia()+ i + 1)
+                    .setParameter("inDependencia", column.getIdDependencia())
+                    .executeUpdate();
+                i++;
+            }
+            
             session.createSQLQuery("CALL insert_interfaz_config(:tabla, :campo, "
                     + ":listaHabilitada, :etiqueta, :secuencia, :idDep, :editable)")
                     .setParameter("tabla", column.getTabla())
@@ -161,6 +194,7 @@ public class CargaMasivaService {
      * @throws Exception 
      */
     public void deleteColumn(CargaColumnDomain column) throws Exception {
+        int i = 0;
         try {
             Session session = em.unwrap(Session.class);
             session.createSQLQuery("CALL delete_interfaz_config(:tabla, :campo, :idDep)")
@@ -168,6 +202,37 @@ public class CargaMasivaService {
                     .setParameter("campo", column.getCampo())
                     .setParameter("idDep", column.getIdDependencia())
                     .executeUpdate();
+            
+            List<CargaColumnDomain> encabezados = session.createSQLQuery("CALL get_columnas_carga(:idDep, :secuencia)")
+                    .setParameter("idDep", column.getIdDependencia())
+                    .setParameter("secuencia", column.getSecuencia())
+                    .setResultTransformer(new BasicTransformerAdapter() {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public Object transformTuple(Object[] tuple, String[] aliases) {
+                            CargaColumnDomain domain = new CargaColumnDomain();
+                            domain.setIdDependencia((Integer) tuple[0]);
+                            domain.setTabla((String) tuple[1]);
+                            domain.setCampo((String) tuple[2]);
+                            domain.setDespliegue((String) tuple[3]);
+                            domain.setEditable((Boolean) tuple[4]);
+                            domain.setSecuencia((Integer) tuple[5]);
+                            domain.setListaHabilitada((Boolean) tuple[6]);
+                            return domain;
+                        }
+                    })
+                    .list();
+            
+            for(CargaColumnDomain item : encabezados){
+                session.createSQLQuery("CALL update_secuencias(:inSecuencia, :inTabla, :inCampo, :inDependencia)")
+                    .setParameter("inTabla", item.getTabla())
+                    .setParameter("inCampo", item.getCampo())
+                    .setParameter("inSecuencia", column.getSecuencia() + i)
+                    .setParameter("inDependencia", column.getIdDependencia())
+                    .executeUpdate();
+                i++;
+            }
             
             session.flush();
             session.clear();

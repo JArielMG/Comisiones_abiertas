@@ -8,11 +8,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CatCatValor.class)
 public abstract class CatCatValor_ {
 
-	public static volatile SingularAttribute<CatCatValor, Integer> id;
-	public static volatile SingularAttribute<CatCatValor, Integer> idCat;
-	public static volatile SingularAttribute<CatCatValor, String> valor;
-	public static volatile SingularAttribute<CatCatValor, Integer> idPadre;
 	public static volatile SingularAttribute<CatCatValor, Integer> idCatalogo;
+	public static volatile SingularAttribute<CatCatValor, String> valor;
+	public static volatile SingularAttribute<CatCatValor, Integer> id;
+	public static volatile SingularAttribute<CatCatValor, Integer> idPadre;
+	public static volatile SingularAttribute<CatCatValor, Integer> idCat;
 
 }
 

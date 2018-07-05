@@ -9,9 +9,9 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(CategoriaCampo.class)
 public abstract class CategoriaCampo_ {
 
-	public static volatile SingularAttribute<CategoriaCampo, String> categoria;
-	public static volatile CollectionAttribute<CategoriaCampo, CamposDinamicos> camposDinamicosCollection;
 	public static volatile SingularAttribute<CategoriaCampo, String> descripcion;
+	public static volatile CollectionAttribute<CategoriaCampo, CamposDinamicos> camposDinamicosCollection;
+	public static volatile SingularAttribute<CategoriaCampo, String> categoria;
 
 }
 
