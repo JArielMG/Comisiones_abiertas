@@ -158,9 +158,12 @@ Tener instalada una instancia de MySql 5.5, JDK 1.7.X o superior, herramientas p
 
 ### Instalación
 
-El archivo “viajes_claros_install.zip” contiene los instaladores de las herramientas y las aplicaciones, y al descomprimir este archivo se encuentran las siguientes carpetas:
+El archivo “viajes_claros_install.zip” contiene los instaladores de las herramientas y las aplicaciones, y al descomprimir este archivo se encuentra la siguiente carpeta:
             
     /install
+
+La cual, a su vez contiene las carpetas:
+
     /app
     /installers
     /libs
