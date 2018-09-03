@@ -178,12 +178,9 @@ Ahora se sigue el presente proceso para realizar la instalación completa del pr
     -	business_data
     -	viajes_claros
   *	Crear los siguientes usuarios de base de datos (cumplir con las minúsculas) y sus accesos a bases de datos:
-    -	bonita
-    - Acceso a completo a BD bonita y BD business_data
-    - viajes_admin
-    - Acceso completo a BD viajes_claros
-    - viajes_lectura
-    - Acceso restringido (select, execute y show view) a la BD viajes_claros
+    -	bonita : "Acceso a completo a BD bonita y BD business_data"
+    - viajes_admin :	"Acceso completo a BD viajes_claros"
+    - viajes_lectura : "Acceso restringido (select, execute y show view) a la BD viajes_claros"
 
   Nota: en caso de que las Bases de Datos se encuentren en el mismo servidor que el aplicativo otorgar a los usuarios los permisos: local, 127.0.0.1 y el nombre del servidor.
 
