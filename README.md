@@ -115,24 +115,24 @@ Nota: Como alternativa para levantar el servicio de Glassfish se puede ejecutar 
 	
 	      [root@localhost /]# cd /root/viajes_claros_web
 
-*	Copiar el archivo viajes-claros.zip a la carpeta de Apache.
+*	Copiar el archivo comisiones-abiertas.zip a la carpeta de Apache.
 	
-	      [root@localhost /viajes_claros_web]#  cp viajes-claros.zip /var/www/html/
+	      [root@localhost /viajes_claros_web]#  cp comisiones-abiertas.zip /var/www/html/
 
 *	Ir a la carpeta de Apache y descomprimir el archivo.
 
         [root@localhost /]#  cd /var/www/html/
-        [root@localhost /]#  unzip viajes-claros.zip
+        [root@localhost /]#  unzip comisiones-abiertas.zip
 
-*	Eliminar el archivo viajes-claros.zip
+*	Eliminar el archivo comisiones-abiertas.zip
 
-	      [root@localhost /]#  rm viajes-claros.zip
+	      [root@localhost /]#  rm comisiones-abiertas.zip
 
 ###	Configuraciones adicionales
 
 *	Para verificar que la URL de la API esté correctamente configurada, editar el archivo app.constant
 
-	      [root@localhost /]#  nano /var/www/html/viajes-claros/app/app.constant.js
+	      [root@localhost /]#  nano /var/www/html/comisiones-abiertas/app/app.constant.js
 
 *	Verificar que la configuración de la URL sea:
 
@@ -148,7 +148,7 @@ Nota: Como alternativa para levantar el servicio de Glassfish se puede ejecutar 
 
 *	Acceder al sistema, en un navegador, con la ruta:
   
-        http://IP_DEL_SERVIDOR/viajes-claros
+        http://IP_DEL_SERVIDOR/comisiones-abiertas
 
 ## III.	Instalación Gestión de Viajes de Trabajo
 
