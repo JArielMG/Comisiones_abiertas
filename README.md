@@ -30,7 +30,7 @@
 
 *	Levantar el servicio de Glassfish, el sistema parametrizador se instalará automáticamente.
 
-	    [root@localhost /]# /opt/glassfish4/glassfish/bin/startserv &
+	    [root@localhost /]# sh /opt/glassfish4/glassfish/bin/startserv &
 
 ###	Validación
 *	Acceder al sistema, en un navegador, con la ruta:
@@ -105,7 +105,7 @@ Donde los valores del password, puerto y el server son representados por valores
 
 *	Guardar los cambios y levantar el servicio de Glassfish, la API de Viajes Claros se instalará automáticamente.
 
-	      [root@localhost /]#  /opt/glassfish4/glassfish/bin/startserv &
+	      [root@localhost /]# sh /opt/glassfish4/glassfish/bin/startserv &
 
 Nota: Como alternativa para levantar el servicio de Glassfish se puede ejecutar el comando /asadmin start-domain dentro de /apps/viajesclaros/glassfish4/glassfish/bin/
 
