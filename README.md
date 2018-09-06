@@ -1,48 +1,6 @@
 # Manual de Instalación
-
-## I.	Instalación del Parametrizador
-
-###	Prerrequisitos
-1.	Tener instalado un servidor de base de datos MySQL 5.5
-2.	JDK 1.7 o superior
-3.	Usuario del sistema con permisos de administrador.
-4.	Tener instalado el servidor de aplicaciones Glassfish 4.1
-5.	Haber configurado en el servidor de aplicaciones el recurso JDBC con el nombre jndiViajesClaros, con el acceso a la base de datos.
-6.	Contar con el archivo ViajesClarosAdmin-web.war que es el sistema parametrizador que será instalado en el servidor.
-7.	Contar con el conector mysql-connector-java-5.1.35-bin.jar para la conexión de la base de datos.
-
-###	Instalación 
-*	Acceder al servidor (Linux Red Hat 6.4) por medio de SSH y dirigirse a la ruta donde se encuentra el 	archivo .war. 
-	
-	    [root@localhost /]# cd /root/viajes_claros_web/
-
-*	Dar de baja el servicio de Glassfish.
-	
-	    [root@localhost /]# sh /opt/glassfish4/glassfish/bin/stopserv &
-
-*	Copiar el archivo ViajesClarosAdmin-web.war a la ruta donde se encuentra el servidor de aplicaciones Glassfish.
-	
-        [root@localhost /viajes_claros_web]# cp ViajesClarosAdmin-web.war /opt/glassfish4/glassfish/domains/domain1/autodeploy/
-
-*	Copiar el archivo mysql-connector-java-5.1.35-bin.jar a la ruta /opt/glassfish4/glassfish/domains/domain1/lib
-
-        [root@localhost /viajes_claros_web]# cp mysql-connector-java-5.1.35-bin.jar /opt/glassfish4/glassfish/domains/domain1/lib
-
-*	Levantar el servicio de Glassfish, el sistema parametrizador se instalará automáticamente.
-
-	    [root@localhost /]# sh /opt/glassfish4/glassfish/bin/startserv &
-
-###	Validación
-*	Acceder al sistema, en un navegador, con la ruta:
-	
-	    http://localhost:9080/ViajesClarosAdmin-web
-
-*	Ingresar con los datos (únicamente aplica para el ambiente de calidad):
-
-        Usuario: admin
-        Contraseña: admin
   
-## II.	Instalación del Sitio Web Viajes Claros y Buscador
+## I.	Instalación del Sitio Web Viajes Claros y Buscador
 
 ### Prerrequisitos
 
@@ -150,6 +108,50 @@ Nota: Como alternativa para levantar el servicio de Glassfish se puede ejecutar 
   
         http://IP_DEL_SERVIDOR/comisiones-abiertas
 
+
+## II.	Instalación del Parametrizador
+
+###	Prerrequisitos
+1.	Tener instalado un servidor de base de datos MySQL 5.5
+2.	JDK 1.7 o superior
+3.	Usuario del sistema con permisos de administrador.
+4.	Tener instalado el servidor de aplicaciones Glassfish 4.1
+5.	Haber configurado en el servidor de aplicaciones el recurso JDBC con el nombre jndiViajesClaros, con el acceso a la base de datos.
+6.	Contar con el archivo ViajesClarosAdmin-web.war que es el sistema parametrizador que será instalado en el servidor.
+7.	Contar con el conector mysql-connector-java-5.1.35-bin.jar para la conexión de la base de datos.
+
+###	Instalación 
+*	Acceder al servidor (Linux Red Hat 6.4) por medio de SSH y dirigirse a la ruta donde se encuentra el 	archivo .war. 
+	
+	    [root@localhost /]# cd /root/viajes_claros_web/
+
+*	Dar de baja el servicio de Glassfish.
+	
+	    [root@localhost /]# sh /opt/glassfish4/glassfish/bin/stopserv &
+
+*	Copiar el archivo ViajesClarosAdmin-web.war a la ruta donde se encuentra el servidor de aplicaciones Glassfish.
+	
+        [root@localhost /viajes_claros_web]# cp ViajesClarosAdmin-web.war /opt/glassfish4/glassfish/domains/domain1/autodeploy/
+
+*	Copiar el archivo mysql-connector-java-5.1.35-bin.jar a la ruta /opt/glassfish4/glassfish/domains/domain1/lib
+
+        [root@localhost /viajes_claros_web]# cp mysql-connector-java-5.1.35-bin.jar /opt/glassfish4/glassfish/domains/domain1/lib
+
+*	Levantar el servicio de Glassfish, el sistema parametrizador se instalará automáticamente.
+
+	    [root@localhost /]# sh /opt/glassfish4/glassfish/bin/startserv &
+
+###	Validación
+*	Acceder al sistema, en un navegador, con la ruta:
+	
+	    http://localhost:9080/ViajesClarosAdmin-web
+
+*	Ingresar con los datos (únicamente aplica para el ambiente de calidad):
+
+        Usuario: admin
+        Contraseña: admin
+	
+	
 ## III.	Instalación Gestión de Viajes de Trabajo
 
 ###	Prerrequisitos
