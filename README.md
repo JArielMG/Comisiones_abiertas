@@ -419,7 +419,7 @@ max_allowed_packet=256M
                     driverClassName="com.mysql.jdbc.Driver"
       url="jdbc:mysql://localhost:3306/business_data?dontTrackOpenResources=true&amp;useUnicode=true&amp;characterEncoding=UTF-8"/>
 
-*	Eliminar los JARs asociados al conector de base de datos predeterminado de Bonita en Tomcat.
+*	Eliminar los JARs asociados al conector de base de datos predeterminado de Bonita en Tomcat. Ubicados en la ruta /etc/Bonita-Tomcat-7/lib/bonita/.
 
           [root@localhost lib]# cd bonita
           [root@localhost bonita]# ls -ltr *h2*
