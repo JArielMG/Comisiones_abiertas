@@ -243,18 +243,23 @@ Ahora se sigue el presente proceso para realizar la instalación completa del pr
         Enter password: 
         [root@localhost scripts]#
 
-*	Modificar el archivo /etc/my.cnf para ampliar el tamaño de los paquetes enviados. Reiniciar el servicio mysqld para aplicar este cambio.
+*	Modificar el archivo "my.cnf" ubicado en la carpeta /etc/, para ampliar el tamaño de los paquetes enviados. Agregando la línea:
+max_allowed_packet=256M
 
         [mysqld]
         datadir=/var/lib/mysql
         socket=/var/lib/mysql/mysql.sock
         max_allowed_packet=256M
+	
+	Reiniciar el servicio mysqld para aplicar este cambio.
 
         [root@localhost scripts]# /etc/init.d/mysqld restart
         Stopping mysqld:                                           [  OK  ]
         Starting mysqld:                                           [  OK  ]
         [root@localhost scripts]#
 
+	Comprobamos el tamaño del paquete.
+	
         mysql> Select @@global.max_allowed_packet;
         +-----------------------------+
         | @@global.max_allowed_packet |
