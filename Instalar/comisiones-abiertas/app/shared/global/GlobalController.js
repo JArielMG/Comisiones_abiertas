@@ -10,7 +10,7 @@ myApp.controller('GlobalController', ['$scope', '$rootScope', '$location', '$fil
     $rootScope.funcionariosCompara = [];
     $scope.funcSelected;
     
-    $scope.years=['todos los años',2014,2015,2016,2017];
+    $scope.years=['todos los años',2014,2015,2016,2017,2018];
     
     $rootScope.metaService = MetaService;
     
