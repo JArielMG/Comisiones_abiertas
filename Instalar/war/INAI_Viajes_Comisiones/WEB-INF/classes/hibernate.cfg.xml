@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.datasource">java:comp/env/INAI_Viajes_DS</property>
+        <property name="hibernate.connection.autoReconnect">true</property>
+		<property name="hibernate.connection.autoReconnectForPools">true</property>
+		<property name="hibernate.connection.is-connection-validation-required">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        
+        <!-- Disable second-level cache. -->
+	    <property name="cache.provider_class">org.hibernate.cache.NoCacheProvider</property>
+	    <property name="cache.use_query_cache">false</property>
+	    <property name="cache.use_minimal_puts">false</property>
+	    <property name="max_fetch_depth">3</property>
+	    
+	    <!-- Print SQL to stdout. -->
+    	<property name="show_sql">true</property>
+        <!-- <property name="format_sql">true</property> -->
+        
+        <!-- Bind the getCurrentSession() method to the thread. -->
+    	<property name="current_session_context_class">thread</property>
+    	<property name="hibernate.enable_lazy_load_no_trans">true</property>
+    	
+    	<!-- configuration pool via c3p0--> 
+	    <property name="c3p0.initialPoolSize">0</property>
+	    <property name="c3p0.acquire_increment">1</property>
+	    <property name="c3p0.max_size">32</property>
+	    <property name="c3p0.max_statements">100</property> 
+	    <property name="c3p0.min_size">0</property> 
+	    <property name="c3p0.timeout">600</property> <!-- seconds --> 
+        
+        <!-- Hibernate XML mapping files -->
+        <mapping resource="mx/org/inai/viajesclaros/admin/common/Viajes.hbm.xml"></mapping>
+    </session-factory>
+</hibernate-configuration>

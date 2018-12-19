@@ -1,0 +1,18 @@
+.boton {
+text-decoration:none;
+border:0;
+outline:none;
+vertical-align: middle;
+display: inline-block;
+}
+.focus {
+background:#eee; color: #B40431;
+}
+.unfocus {
+background:#ffffff;
+}
+.error {
+color: #B40431;
+}
+.date-form { margin: 10px; }
+label.control-label span { cursor: pointer; }
