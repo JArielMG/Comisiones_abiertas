@@ -7,7 +7,7 @@ myApp.controller('FuncionarioController', ['$scope',  '$rootScope', 'Funcionario
 	  
 	$scope.pagItemsByPage = 20;
 	var opc = $routeParams.ord;
-    
+
 	FuncionarioService.getFuncionariosByDependencia().then(function(d) {
         $scope.funcionarios = d;
         $scope.funcionariosSafe = d;
@@ -15,7 +15,7 @@ myApp.controller('FuncionarioController', ['$scope',  '$rootScope', 'Funcionario
         $scope.pagTotalPages = Math.floor($scope.total / $scope.pagItemsByPage);
 		$scope.funcionariosSafe = orderBy($scope.funcionariosSafe, $scope.propertyName, $scope.reverse);
     });
-		
+
     if ($rootScope.anioConsulta!=null&&$rootScope.anioConsulta!='')
     		$rootScope.thisYear = $rootScope.anioConsulta;
     else

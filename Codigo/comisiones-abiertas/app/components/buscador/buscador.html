@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <div id="busqueda" class="container-fluid buscador-container">
     
     <script type="text/ng-template" id="pagination-template.html">
@@ -24,7 +23,7 @@
     </script>
 
     <div class="row">
-        <div id="search-filters" class="col-xs-12 col-sm-3 col-md-3">
+        <div id="search-filters" class="col-xs-12 col-sm-3 col-md-3" style="margin-bottom: 50px;">
             <h4 class="text-center">Filtros de búsqueda</h4>
 
             <form>
@@ -68,10 +67,10 @@
                     <h5 class="text-center blue"><strong>Aún no hay filtros de búsqueda configurados para {{slcDependencia.siglas}}</strong></h5>
                 </div>
             </form>
-
-            <button type="button" scroll-to="tbl-results-mobile" ng-disabled="filtros.length < 1"
-                    class="btn btn-primary pull-right clearfix" ng-click="realizaBusqueda()">
-                <i class="fa fa-search"></i> Buscar</button>
+				
+				<button type="button" scroll-to="tbl-results-mobile" ng-disabled="filtros.length < 1"
+						class="btn btn-primary pull-right clearfix" ng-click="realizaBusqueda()">
+					<i class="fa fa-search"></i> Buscar</button>
         </div>
 
         <!-- TABLA DE RESULTADOS -->
@@ -121,33 +120,29 @@
                         </tr>
                     </tfoot>
                 </table>
-                <h4 class="text-center blue" ng-hide="total>0">Aún no hay viajes registrados para <b>{{slcDependencia.siglas}}</b></h4></div>
+                <h4 class="text-center blue" ng-hide="total>0">Aún no hay viajes registrados para <b>{{slcDependencia.siglas}}</b></h4>
+			</div>
 
-                <table id="tbl-results-mobile" st-table="viajes" st-safe-src="viajesSafe" 
-                       class="table table-striped small visible-xs-block">
-                    <tbody>
-                        <tr ng-repeat="v in viajes">
-                            <td>
-                                <div class="col-xs-6" ng-repeat="d in v.datos track by $index">
-                                    <strong>{{headers[$index].descripcion}}</strong> <br/>
-                                    {{d}}
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="{{headers.length+1}}" class="text-center">
-                                <div st-pagination="" st-items-by-page="pagItemsByPage" st-displayed-pages="7" st-template="pagination-template.html"></div>
-                            </td>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    
-
+			<table id="tbl-results-mobile" st-table="viajes" st-safe-src="viajesSafe" 
+				   class="table table-striped small visible-xs-block">
+				<tbody>
+					<tr ng-repeat="v in viajes">
+						<td>
+							<div class="col-xs-6" ng-repeat="d in v.datos track by $index">
+								<strong>{{headers[$index].descripcion}}</strong> <br/>
+								{{d}}
+							</div>
+						</td>
+					</tr>
+				</tbody>
+				<tfoot>
+					<tr>
+						<td colspan="{{headers.length+1}}" class="text-center">
+							<div st-pagination="" st-items-by-page="pagItemsByPage" st-displayed-pages="7" st-template="pagination-template.html"></div>
+						</td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
 </div>
-
