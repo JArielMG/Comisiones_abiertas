@@ -5,6 +5,11 @@ import java.util.List;
 
 public class CamposFormulario implements Serializable {
 
+    @Override
+    public String toString() {
+        return "CamposFormulario{" + "idFlujo=" + idFlujo + ", tabla=" + tabla + ", campo=" + campo + ", etiqueta=" + etiqueta + ", listaHabilitada=" + listaHabilitada + ", idSeccionFormulario=" + idSeccionFormulario + ", obligatorio=" + obligatorio + ", orden=" + orden + ", tipoControl=" + tipoControl + ", tipoDato=" + tipoDato + ", idLista=" + idLista + ", subtipo=" + subtipo + ", soloLectura=" + soloLectura + ", valorCampo=" + valorCampo + ", clase=" + clase + ", catalogo=" + catalogo + '}';
+    }
+
 private static final long serialVersionUID = 1L;
     
     private Integer idFlujo; 

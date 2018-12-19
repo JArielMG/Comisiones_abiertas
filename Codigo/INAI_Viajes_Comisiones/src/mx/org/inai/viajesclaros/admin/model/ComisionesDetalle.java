@@ -11,9 +11,24 @@ public class ComisionesDetalle implements Serializable{
 	private Integer idComision;
 	private String tabla;
 	private String campo;
-    private String valorTexto;
-    private Double valorNumerico;
-    private Date valorFecha;
+        private String valorTexto;
+        private Double valorNumerico;
+        private Date valorFecha;
+
+    public ComisionesDetalle() {
+    }
+
+    public ComisionesDetalle(Integer idDetalle, Integer idComision, String tabla, String campo, String valorTexto, Double valorNumerico, Date valorFecha) {
+        this.idDetalle = idDetalle;
+        this.idComision = idComision;
+        this.tabla = tabla;
+        this.campo = campo;
+        this.valorTexto = valorTexto;
+        this.valorNumerico = valorNumerico;
+        this.valorFecha = valorFecha;
+    }
+    
+    
     
 	public Integer getIdDetalle() {
 		return idDetalle;

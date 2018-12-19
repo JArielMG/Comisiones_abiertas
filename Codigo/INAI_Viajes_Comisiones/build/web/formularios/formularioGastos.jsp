@@ -104,7 +104,8 @@ var indexDates = 0;
 		    	<div class="form-group">
 				    <div class="col-sm-offset-2 col-sm-10">
 				    	<button type="submit" class="btn btn-primary">Guardar Datos</button>
-				    </div>
+                                        <button type="button" class="btn btn-default" onclick="location.href = 'formularioAction?action=listarGastos&id_comision=${idComision}';">Regresar</button>
+				    </div>                                    
 			  	</div>
 			</form>
 	

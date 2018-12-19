@@ -1,0 +1,672 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="mx.org.inai.viajesclaros.admin.model.CategoriaVO" table="categoria" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_categoria" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_categoria" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="topeHospedaje" type="java.lang.Double">
+            <column name="tope_hospedaje" not-null="true" />
+        </property>
+        <property name="topeViaticos" type="java.lang.Double">
+            <column name="tope_viaticos" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.PerfilVO" table="perfiles" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_perfil" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_perfil" length="50" not-null="true" unique="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.PosicionVO" table="posiciones" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_posicion" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_posicion" length="50" not-null="true" unique="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TipoPersonaVO" table="tipo_persona" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_tipo" />
+            <generator class="identity" />
+        </id>
+        <property name="codigo" type="string">
+            <column name="codigo_tipo" length="30" not-null="true" unique="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="200" not-null="true" unique="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.PersonaVO" table="personas" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_persona" />
+            <generator class="identity" />
+        </id>
+        <property name="nombres" type="string">
+            <column name="nombres" length="200" not-null="true" />
+        </property>
+        <property name="apellidoPaterno" type="string">
+            <column name="apellido_paterno" length="200" not-null="true" />
+        </property>
+        <property name="apellidoMaterno" type="string">
+            <column name="apellido_materno" length="200" not-null="true" />
+        </property>
+        <property name="titulo" type="string">
+            <column name="titulo" length="200" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="200" not-null="true" unique="true" />
+        </property>
+        <many-to-one name="categoria" class="mx.org.inai.viajesclaros.admin.model.CategoriaVO"
+            column="id_categoria" unique="true" not-null="true"
+            cascade="all" />
+        <many-to-one name="tipoPersona" class="mx.org.inai.viajesclaros.admin.model.TipoPersonaVO"
+            column="id_tipo_persona" unique="true" not-null="true"
+            cascade="all" />
+        <many-to-one name="posicion" class="mx.org.inai.viajesclaros.admin.model.PosicionVO"
+            column="id_posicion" unique="true" not-null="true"
+            cascade="all" />
+        <property name="cargo" type="string">
+            <column name="cargo" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="numeroEmpleado" type="java.lang.Integer">
+            <column name="numero_empleado" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="denominacionPuesto" type="string">
+            <column name="puesto" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="clavePuesto" type="string">
+            <column name="clave_puesto" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="sexo" type="string">
+            <column name="sexo" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="fechaIngreso" type="java.util.Date">
+            <column name="fecha_ingreso" not-null="false" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.DependenciaVO" table="dependencias" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_dependencia" />
+            <generator class="identity" />
+        </id>
+        <property name="siglas" type="string">
+            <column name="siglas" length="20" not-null="true" unique="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre_dependencia" length="400" not-null="true" unique="true" />
+        </property>
+        <property name="predeterminada" type="java.lang.Boolean">
+            <column name="predeterminada" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.AreaVO" table="areas" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_area" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_area" length="200" not-null="true" unique="true" />
+        </property>
+        <many-to-one name="dependencia" class="mx.org.inai.viajesclaros.admin.model.DependenciaVO"
+            column="id_dependencia" unique="true" not-null="true"
+            cascade="all" />
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.PaisVO" table="paises" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_pais" />
+            <generator class="identity" />
+        </id>
+        <property name="clave" type="string">
+            <column name="clave_pais" length="3" not-null="true" unique="true" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre_pais" length="300" not-null="true" unique="true" />
+        </property>
+        <property name="predeterminado" type="java.lang.Boolean">
+            <column name="predeterminado" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.EstadoVO" table="estados" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_estado" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_estado" length="300" not-null="true" unique="true" />
+        </property>
+        <many-to-one name="pais" class="mx.org.inai.viajesclaros.admin.model.PaisVO"
+            column="id_pais" not-null="true"
+            cascade="all" />
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.CiudadVO" table="ciudades" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_ciudad" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_ciudad" length="300" not-null="true" unique="true" />
+        </property>
+        <many-to-one name="pais" class="mx.org.inai.viajesclaros.admin.model.PaisVO"
+            column="id_pais" not-null="true"
+            cascade="all" />
+        <many-to-one name="estado" class="mx.org.inai.viajesclaros.admin.model.EstadoVO"
+            column="id_estado" not-null="true"
+            cascade="all" />
+        <property name="latitud" type="string">
+            <column name="latitud" length="20" not-null="false" unique="true" />
+        </property>
+        <property name="longitud" type="string">
+            <column name="longitud" length="20" not-null="false" unique="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.UsuarioVO" table="usuarios" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_usuario" />
+            <generator class="identity" />
+        </id>
+        <property name="usuario" type="string">
+            <column name="usuario" length="30" not-null="true" unique="true" />
+        </property>
+        <property name="contra" type="string">
+            <column name="contrasena" length="300" not-null="true" unique="true" />
+        </property>
+        <property name="salt" type="string">
+            <column name="salt" length="300" not-null="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="250" not-null="true" unique="true" />
+        </property>
+        <property name="habilitado" type="java.lang.Boolean">
+            <column name="habilitado" length="300" not-null="true" unique="true" />
+        </property>
+        <property name="intentos" type="java.lang.Integer">
+            <column name="intentos" length="300" not-null="true" unique="true" />
+        </property>
+        <many-to-one name="perfil" class="mx.org.inai.viajesclaros.admin.model.PerfilVO"
+            column="id_perfil" not-null="true" cascade="all" />
+        <many-to-one name="dependencia" class="mx.org.inai.viajesclaros.admin.model.DependenciaVO"
+            column="id_dependencia" not-null="true" cascade="all" />
+        <many-to-one name="persona" class="mx.org.inai.viajesclaros.admin.model.PersonaVO"
+            column="id_persona" not-null="true" cascade="all" />
+        <many-to-one name="area" class="mx.org.inai.viajesclaros.admin.model.AreaVO"
+            column="id_area" not-null="false" cascade="all" />
+        <property name="jefeArea" type="java.lang.Boolean">
+            <column name="jefe_area" not-null="true" />
+        </property>
+        <property name="idBonita" type="java.lang.Long">
+            <column name="id_bonita" not-null="false" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.ProcesoVO" table="flujos_trabajo" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_flujo" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_flujo" length="50" not-null="true" unique="true" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="300" not-null="true" unique="true" />
+        </property>
+        <property name="version" type="string">
+            <column name="version" length="20" not-null="true" unique="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.JerarquiaVO" table="jerarquias" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_jerarquia" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre_jerarquia" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="editable" type="java.lang.Boolean">
+            <column name="editable" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.JerarMiembroVO" table="jerarquia_miembros" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_miembro" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="jerarquia" class="mx.org.inai.viajesclaros.admin.model.JerarquiaVO"
+            column="id_jerarquia" not-null="true" cascade="all" />
+        <many-to-one name="usuario" class="mx.org.inai.viajesclaros.admin.model.UsuarioVO"
+            column="id_usuario" not-null="true" cascade="all" />
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.GrupoAprobacionVO" table="configuracion_aprobacion" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_conf_aprobacion" />
+            <generator class="identity" />
+        </id>
+        <property name="nombre" type="string">
+            <column name="nombre" length="200" not-null="true" unique="true"/>
+        </property>
+        <many-to-one name="proceso" class="mx.org.inai.viajesclaros.admin.model.ProcesoVO"
+            column="id_flujo" not-null="true" cascade="all" />
+        <many-to-one name="dependencia" class="mx.org.inai.viajesclaros.admin.model.DependenciaVO"
+            column="id_dependencia" not-null="true" cascade="all" />
+        <many-to-one name="area" class="mx.org.inai.viajesclaros.admin.model.AreaVO"
+            column="id_area" not-null="true" cascade="all" />
+        <many-to-one name="jerarquia" class="mx.org.inai.viajesclaros.admin.model.JerarquiaVO"
+            column="id_jerarquia" not-null="true" cascade="all" />
+        <property name="editable" type="java.lang.Boolean">
+            <column name="editable" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.InterfazConfigVO" table="interfaz_config" catalog="viajes_claros">
+        <composite-id>
+			<key-property name="tabla" column="tabla" length="50" />
+			<key-property name="campo" column="campo" length="50" />
+		</composite-id>
+        <property name="listaHabilita" type="java.lang.Boolean">
+            <column name="lista_habilitada" not-null="true" />
+        </property>
+        <property name="etiqueta" type="string">
+            <column name="etiqueta" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="secuencia" type="java.lang.Integer">
+            <column name="secuencia" not-null="true" unique="true" />
+        </property>
+        <property name="tipoDato" type="java.lang.Integer">
+            <column name="tipo_dato" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.HeaderInterfazVO" table="viajes_claros_instancias" catalog="viajes_claros">
+        <id name="idViaje" type="java.lang.Integer">
+            <column name="id_viaje" />
+            <generator class="identity" />
+        </id>        
+        <property name="idDependencia" type="java.lang.Integer">
+            <column name="id_dependencia" not-null="true" />
+        </property>
+        <property name="fecPublic" type="java.util.Date">
+            <column name="fecha_publicacion" not-null="false" />
+        </property>
+        <property name="idComision" type="java.lang.Integer">
+            <column name="id_comision" not-null="false" />
+        </property>
+        <property name="idArchivo" type="java.lang.Long">
+            <column name="id_archivo" not-null="false" />
+        </property>
+     </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.DetalleInterfazVO" table="viajes_claros_detalle" catalog="viajes_claros">
+        <composite-id>
+        	<key-property name="idViaje" column="id_viaje"/>
+			<key-property name="tabla" column="tabla" length="50" />
+			<key-property name="campo" column="campo" length="50" />
+		</composite-id>      
+        <property name="valorT" type="string">
+            <column name="valor_texto" not-null="false" />
+        </property>
+        <property name="valorN" type="java.lang.Integer">
+            <column name="valor_numerico" not-null="false" />
+        </property>
+        <property name="valorF" type="java.util.Date">
+            <column name="valor_fecha" not-null="false" />
+        </property>
+     </class>
+     <class name="mx.org.inai.viajesclaros.admin.model.ProcesaInterfazVO" table="archivos_procesados" catalog="viajes_claros">
+        <id name="idArchivo" type="java.lang.Long">
+            <column name="id_archivo" />
+            <generator class="identity" />
+        </id>        
+        <property name="archivo" type="string">
+            <column name="nombre_archivo" not-null="true" />
+        </property>
+        <property name="fechaCarga" type="java.util.Date">
+            <column name="fecha_carga" not-null="true" />
+        </property>
+        <property name="totalReg" type="java.lang.Integer">
+            <column name="total_registros" not-null="false" />
+        </property>
+        <property name="aceptados" type="java.lang.Integer">
+            <column name="total_aceptados" not-null="false" />
+        </property>
+        <property name="rechazados" type="java.lang.Integer">
+            <column name="total_rechazados" not-null="false" />
+        </property>
+     </class>
+	 <class name="mx.org.inai.viajesclaros.admin.model.ErrorInterfazVO" table="archivo_lineas" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_error" />
+            <generator class="identity" />
+        </id>
+        <property name="idArchivo" type="java.math.BigInteger">
+            <column name="id_archivo" not-null="false" />
+        </property>
+        <property name="linea" type="java.lang.Integer">
+            <column name="id_linea" not-null="false" />
+        </property>
+        <property name="estatus" type="string">
+            <column name="estatus" not-null="false" />
+        </property>
+        <property name="error" type="string">
+            <column name="comentarios" not-null="false" />
+        </property>
+     </class>
+     <class name="mx.org.inai.viajesclaros.admin.model.DatosFuncionariosVO">
+       <id name="idPersona" type="java.lang.Integer">
+            <column name="id_persona" />
+        </id>
+        <property name="nombres" type="string">
+            <column name="nombres" length="200" not-null="true" />
+        </property>
+        <property name="apellidoPaterno" type="string">
+            <column name="apellido_paterno" length="200" not-null="true" />
+        </property>
+        <property name="apellidoMaterno" type="string">
+            <column name="apellido_materno" length="200" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="nombreArea" type="string">
+            <column name="nombre_area"/>
+        </property>
+        <property name="nombreDependencia" type="string">
+            <column name="nombre_dependencia"/>
+        </property>
+        <property name="cargo" type="string">
+            <column name="cargo" />
+        </property>
+        <property name="descripcion" type="string">
+            <column name="descripcion" />
+        </property>
+        <property name="nombreCategoria" type="string">
+            <column name="nombre_categoria" />
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" />
+        </property>
+        <property name="idTipoPersona" type="java.lang.Integer">
+            <column name="id_tipo_persona"/>
+        </property>
+        <property name="idDependencia" type="java.lang.Integer">
+            <column name="id_dependencia"/>
+        </property>
+        <property name="idUsuario" type="java.lang.Integer">
+            <column name="id_usuario"/>
+        </property>
+        <property name="tipoRepresentacion" type="string">
+            <column name="tipo_representacion"/>
+        </property>
+     </class>
+     
+     <class name="mx.org.inai.viajesclaros.admin.model.Comisiones">
+       <id name="idComision" type="java.lang.Integer">
+            <column name="id_comision" />
+        </id>
+        <property name="estatus" type="string">
+            <column name="estatus" />
+        </property>
+        <property name="idPersona" type="java.lang.Integer">
+            <column name="id_persona"/>
+        </property>
+        <property name="idDependencia" type="java.lang.Integer">
+            <column name="id_dependencia"/>
+        </property>
+        <property name="idUsuario" type="java.lang.Integer">
+            <column name="id_usuario"/>
+        </property>
+     </class>
+     <class name="mx.org.inai.viajesclaros.admin.model.SeccionesFormulario" table="secciones_formulario" catalog="viajes_claros">
+        <id name="idSeccion" type="java.lang.Integer">
+            <column name="id_seccion" />
+            <generator class="identity" />
+        </id>
+        <property name="etiqueta" type="string">
+            <column name="etiqueta" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="nombreSeccion" type="string">
+            <column name="nombre_seccion" length="150" not-null="true" unique="true"/>
+        </property>
+        <many-to-one name="idFlujo" class="mx.org.inai.viajesclaros.admin.model.ProcesoVO"
+            column="id_flujo" not-null="true" cascade="all" />
+        <property name="orden" type="java.lang.Boolean">
+            <column name="orden_seccion" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.ComisionVO" table="comisiones" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id_comision" />
+            <generator class="identity" />
+        </id>
+        <property name="estatus" type="string">
+            <column name="estatus" length="254" not-null="true" unique="true"/>
+        </property>
+        <many-to-one name="dependencia" class="mx.org.inai.viajesclaros.admin.model.DependenciaVO"
+            column="id_dependencia" not-null="true" cascade="all" />
+        <many-to-one name="persona" class="mx.org.inai.viajesclaros.admin.model.PersonaVO"
+            column="id_persona" not-null="true" cascade="all" />
+        <many-to-one name="usuario" class="mx.org.inai.viajesclaros.admin.model.UsuarioVO"
+            column="id_usuario" not-null="true" cascade="all" />
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.ComisionDetalleVO" table="comisiones_detalle" catalog="viajes_claros">
+        <id name="idDetalle" type="java.lang.Integer">
+            <column name="id_detalle" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="comision" class="mx.org.inai.viajesclaros.admin.model.ComisionVO"
+            column="id_comision" not-null="true" cascade="all" />
+        <property name="tabla" type="string">
+            <column name="tabla" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="campo" type="string">
+            <column name="campo" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="valorTexto" type="string">
+            <column name="valor_texto" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="valorNumerico" type="java.lang.Double">
+            <column name="valor_numerico"  not-null="true" unique="true"/>
+        </property>
+        <property name="valorFecha" type="java.util.Date">
+            <column name="valor_fecha" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="etiqueta" type="string">
+            <column name="etiqueta" length="100" not-null="false" unique="false"/>
+        </property>
+        <property name="subtipo" type="string">
+            <column name="subtipo" length="150" not-null="false" unique="false"/>
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.FlujosInstanciasVO" table="flujos_instancias" catalog="viajes_claros">
+        <composite-id>
+        	<key-many-to-one name="flujo" column="id_flujo" class="mx.org.inai.viajesclaros.admin.model.ProcesoVO"/>
+			<key-property name="instancia" column="id_instancia" length="50" type="java.lang.Long"/>
+			<key-many-to-one name="comision" column="id_comision" class="mx.org.inai.viajesclaros.admin.model.ComisionVO"/>
+		</composite-id>
+		<property name="fechaInicio" type="java.util.Date">
+            <column name="fecha_inicio" not-null="true" unique="true"/>
+        </property>
+        <property name="fechaFin" type="java.util.Date">
+            <column name="fecha_fin" not-null="true" unique="true"/>
+        </property>
+        <property name="asignado" type="java.lang.Boolean">
+            <column name="asignado" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.SeccionesNotificacionVO" table="secciones_formulario" catalog="viajes_claros">
+        <id name="idSeccion" type="java.lang.Integer">
+            <column name="id_seccion" />
+            <generator class="identity" />
+        </id>
+        <property name="etiqueta" type="string">
+            <column name="etiqueta" length="254" not-null="true" unique="true"/>
+        </property>
+        <property name="nombreSeccion" type="string">
+            <column name="nombre_seccion" length="150" not-null="true" unique="true"/>
+        </property>
+        <many-to-one name="flujo" class="mx.org.inai.viajesclaros.admin.model.ProcesoVO"
+            column="id_flujo" not-null="true" cascade="all" />
+        <property name="orden" type="java.lang.Integer">
+            <column name="orden_seccion" not-null="true" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.MailConfigVO" table="smtp_config" catalog="viajes_claros">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="identity" />
+        </id>
+        <property name="host" type="string">
+            <column name="host" length="100" not-null="true" unique="true"/>
+        </property>
+        <property name="puerto" type="string">
+            <column name="puerto" length="10" not-null="true" unique="true"/>
+        </property>
+        <property name="usuario" type="string">
+            <column name="usuario" length="50" not-null="true" unique="true"/>
+        </property>
+        <property name="contra" type="string">
+            <column name="password" length="50" not-null="true" unique="true"/>
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.BitacoraVO" table="aprobaciones_bitacora" catalog="viajes_claros">
+        <composite-id>
+        	<key-many-to-one name="instancia" class="mx.org.inai.viajesclaros.admin.model.FlujosInstanciasVO">
+        		<column name="id_instancia"></column>
+        		<column name="id_flujo"></column>
+        		<column name="id_comision"></column>
+        	</key-many-to-one>
+			<key-many-to-one name="funcionario" column="id_funcionario" class="mx.org.inai.viajesclaros.admin.model.PersonaVO"/>
+		</composite-id>
+		<property name="respuesta" type="string">
+            <column name="respuesta" length="100" not-null="true" unique="true"/>
+        </property>
+    </class>
+   
+    <class name="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" table="tr_actividad_presupuestal" catalog="viajes_claros">
+        <id name="idActividad" type="java.lang.Integer">
+            <column name="id_actividad" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="trProgramaEspecial" class="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" fetch="select">
+            <column name="programa_especial_fk" not-null="true" />
+        </many-to-one>
+        <many-to-one name="trPrs" class="mx.org.inai.viajesclaros.admin.model.TrPrsVO" fetch="select">
+            <column name="PRS_id_fk" not-null="true" />
+        </many-to-one>
+        <property name="nombre" type="string">
+            <column name="nombre" length="65535" />
+        </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrPlaneacionPresupuestalVO" table="tr_planeacion_presupuestal" catalog="viajes_claros">
+        <id name="idPlaneacion" type="java.lang.Integer">
+            <column name="id_planeacion" />
+            <generator class="identity" />
+        </id>
+        <property name="cvePlaneacion" type="string">
+            <column name="cve_planeacion" length="45" />
+        </property>
+        <set name="trProgramaEspecials" table="tr_programa_especial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="planeacion_presupuestal_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" table="tr_programa_especial" catalog="viajes_claros">
+        <id name="idProgramaEspecial" type="java.lang.Integer">
+            <column name="id_programa_especial" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="trPlaneacionPresupuestal" class="mx.org.inai.viajesclaros.admin.model.TrPlaneacionPresupuestalVO" fetch="select">
+            <column name="planeacion_presupuestal_fk" not-null="true" />
+        </many-to-one>
+        <many-to-one name="trProgramaPresupuestal" class="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO" fetch="select">
+            <column name="programa_presupuestal_id_programa_presupuestal" not-null="true" />
+        </many-to-one>
+        <property name="cvePe" type="string">
+            <column name="cve_pe" length="245" />
+        </property>
+        <property name="nombrePe" type="string">
+            <column name="nombre_pe" length="245" />
+        </property>
+        <set name="trActividadPresupuestals" table="tr_actividad_presupuestal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="programa_especial_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO" table="tr_programa_presupuestal" catalog="viajes_claros">
+        <id name="idProgramaPresupuestal" type="java.lang.Integer">
+            <column name="id_programa_presupuestal" />
+            <generator class="identity" />
+        </id>
+        <property name="cvePp" type="string">
+            <column name="cve_pp" length="245" />
+        </property>
+        <property name="descripcionPp" type="string">
+            <column name="descripcion_pp" length="245" />
+        </property>
+        <property name="anio" type="java.lang.Integer">
+            <column name="anio" />
+        </property>
+        <set name="trUnidadAdministrativas" table="tr_ua_tiene_pp" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_pp_fk" not-null="true" />
+            </key>
+            <many-to-many entity-name="mx.org.inai.viajesclaros.admin.model.TrUnidadAdministrativaVO">
+                <column name="id_ua_fk" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="trProgramaEspecials" table="tr_programa_especial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="programa_presupuestal_id_programa_presupuestal" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrPrsVO" table="tr_prs" catalog="viajes_claros">
+        <id name="idPrs" type="java.lang.Integer">
+            <column name="id_prs" />
+            <generator class="identity" />
+        </id>
+        <property name="prs" type="string">
+            <column name="PRS" length="45" />
+        </property>
+        <set name="trActividadPresupuestals" table="tr_actividad_presupuestal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PRS_id_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrUnidadAdministrativaVO" table="tr_unidad_administrativa" catalog="viajes_claros">
+        <id name="idUa" type="java.lang.Integer">
+            <column name="id_ua" />
+            <generator class="identity" />
+        </id>
+        <property name="cveUa" type="java.lang.Integer">
+            <column name="cve_ua" />
+        </property>
+        <property name="nombreUa" type="string">
+            <column name="nombre_ua" length="65535" />
+        </property>
+        <property name="titular" type="string">
+            <column name="titular" length="65535" />
+        </property>
+        <set name="trProgramaPresupuestals" table="tr_ua_tiene_pp" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_ua_fk" not-null="true" />
+            </key>
+            <many-to-many entity-name="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO">
+                <column name="id_pp_fk" not-null="true" />
+            </many-to-many>
+        </set>
+    </class>
+</hibernate-mapping>

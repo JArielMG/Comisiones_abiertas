@@ -82,6 +82,7 @@ public class UserServices {
 		query.setInteger("id", perfil.getId());
 		query.addEntity(PerfilVO.class);
 						
+                System.out.println("################### En el for");
 		List result = query.list();
 		for(int i=0; i<result.size(); i++){
 			vo = (PerfilVO)result.get(i);
@@ -219,7 +220,7 @@ public class UserServices {
     		try {
     			BonitaUsuariosAdmin usAdmin = new BonitaUsuariosAdmin();
 	    		final User user = usAdmin.crearUsuario(usAdmin.bonitaSession(null, null), usuario);
-	    		
+                        
 	    		if (user != null) {
 	    			usAdmin.asignarPerfil(usAdmin.bonitaSession(null, null), prop.getProperty("bonita_default_profile"), user);
 	    			

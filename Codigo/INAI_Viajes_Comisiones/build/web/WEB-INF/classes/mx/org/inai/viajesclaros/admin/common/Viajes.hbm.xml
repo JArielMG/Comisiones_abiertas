@@ -80,8 +80,26 @@
         <property name="cargo" type="string">
             <column name="cargo" length="200" not-null="true" unique="true" />
         </property>
+        <property name="numeroEmpleado" type="java.lang.Integer">
+            <column name="numero_empleado" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="denominacionPuesto" type="string">
+            <column name="puesto" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="clavePuesto" type="string">
+            <column name="clave_puesto" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="sexo" type="string">
+            <column name="sexo" length="200" not-null="true" unique="true" />
+        </property>
+        <property name="tipoRepresentacion" type="string">
+            <column name="tipo_representacion" length="200" not-null="true" unique="true" />
+        </property>
         <property name="fechaIngreso" type="java.util.Date">
             <column name="fecha_ingreso" not-null="false" />
+        </property>
+       <property name="tipoIntegrante" type="java.lang.Integer">
+            <column name="id_tipo_integrante" not-null="false" />
         </property>
     </class>
     <class name="mx.org.inai.viajesclaros.admin.model.DependenciaVO" table="dependencias" catalog="viajes_claros">
@@ -364,6 +382,9 @@
         <property name="nombreArea" type="string">
             <column name="nombre_area"/>
         </property>
+        <property name="idArea" type="java.lang.Integer">
+            <column name="id_area"/>
+        </property>
         <property name="nombreDependencia" type="string">
             <column name="nombre_dependencia"/>
         </property>
@@ -534,5 +555,133 @@
 		<property name="respuesta" type="string">
             <column name="respuesta" length="100" not-null="true" unique="true"/>
         </property>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" table="tr_actividad_presupuestal" catalog="viajes_claros">
+        <id name="idActividad" type="java.lang.Integer">
+            <column name="id_actividad" />
+            <generator class="identity" />
+        </id>
+        <property name="cve_ua" type="java.lang.Integer">
+            <column name="cve_ua" />
+        </property>
+        <property name="cve_pp" type="string">
+            <column name="cve_pp" length="65535" />
+        </property>
+        <property name="cve_pe" type="string">
+            <column name="cve_pe" length="65535" />
+        </property>
+        <property name="nombre" type="string">
+            <column name="nombre" length="65535" />
+        </property>
+        <property name="prs" type="string">
+            <column name="prs" length="65535" />
+        </property>
+        
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrPlaneacionPresupuestalVO" table="tr_planeacion_presupuestal" catalog="viajes_claros">
+        <id name="idPlaneacion" type="java.lang.Integer">
+            <column name="id_planeacion" />
+            <generator class="identity" />
+        </id>
+        <property name="cvePlaneacion" type="string">
+            <column name="cve_planeacion" length="45" />
+        </property>
+        <set name="trProgramaEspecials" table="tr_programa_especial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="planeacion_presupuestal_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" table="tr_programa_especial" catalog="viajes_claros">
+        <id name="idProgramaEspecial" type="java.lang.Integer">
+            <column name="id_programa_especial" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="trPlaneacionPresupuestal" class="mx.org.inai.viajesclaros.admin.model.TrPlaneacionPresupuestalVO" fetch="select">
+            <column name="planeacion_presupuestal_fk" not-null="true" />
+        </many-to-one>
+        <many-to-one name="trProgramaPresupuestal" class="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO" fetch="select">
+            <column name="programa_presupuestal_id_programa_presupuestal" not-null="true" />
+        </many-to-one>
+        <property name="cvePe" type="string">
+            <column name="cve_pe" length="245" />
+        </property>
+        <property name="nombrePe" type="string">
+            <column name="nombre_pe" length="245" />
+        </property>
+        <set name="trActividadPresupuestals" table="tr_actividad_presupuestal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="programa_especial_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO" table="tr_programa_presupuestal" catalog="viajes_claros">
+        <id name="idProgramaPresupuestal" type="java.lang.Integer">
+            <column name="id_programa_presupuestal" />
+            <generator class="identity" />
+        </id>
+        <property name="cvePp" type="string">
+            <column name="cve_pp" length="245" />
+        </property>
+        <property name="descripcionPp" type="string">
+            <column name="descripcion_pp" length="245" />
+        </property>
+        <property name="anio" type="java.lang.Integer">
+            <column name="anio" />
+        </property>
+        <set name="trUnidadAdministrativas" table="tr_ua_tiene_pp" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_pp_fk" not-null="true" />
+            </key>
+            <many-to-many entity-name="mx.org.inai.viajesclaros.admin.model.TrUnidadAdministrativaVO">
+                <column name="id_ua_fk" not-null="true" />
+            </many-to-many>
+        </set>
+        <set name="trProgramaEspecials" table="tr_programa_especial" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="programa_presupuestal_id_programa_presupuestal" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrProgramaEspecialVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrPrsVO" table="tr_prs" catalog="viajes_claros">
+        <id name="idPrs" type="java.lang.Integer">
+            <column name="id_prs" />
+            <generator class="identity" />
+        </id>
+        <property name="prs" type="string">
+            <column name="PRS" length="45" />
+        </property>
+        <set name="trActividadPresupuestals" table="tr_actividad_presupuestal" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="PRS_id_fk" not-null="true" />
+            </key>
+            <one-to-many class="mx.org.inai.viajesclaros.admin.model.TrActividadPresupuestalVO" />
+        </set>
+    </class>
+    <class name="mx.org.inai.viajesclaros.admin.model.TrUnidadAdministrativaVO" table="tr_unidad_administrativa" catalog="viajes_claros">
+        <id name="idUa" type="java.lang.Integer">
+            <column name="id_ua" />
+            <generator class="identity" />
+        </id>
+        <property name="cveUa" type="java.lang.Integer">
+            <column name="cve_ua" />
+        </property>
+        <property name="nombreUa" type="string">
+            <column name="nombre_ua" length="65535" />
+        </property>
+        <property name="titular" type="string">
+            <column name="titular" length="65535" />
+        </property>
+        <set name="trProgramaPresupuestals" table="tr_ua_tiene_pp" inverse="false" lazy="true" fetch="select">
+            <key>
+                <column name="id_ua_fk" not-null="true" />
+            </key>
+            <many-to-many entity-name="mx.org.inai.viajesclaros.admin.model.TrProgramaPresupuestalVO">
+                <column name="id_pp_fk" not-null="true" />
+            </many-to-many>
+        </set>
     </class>
 </hibernate-mapping>

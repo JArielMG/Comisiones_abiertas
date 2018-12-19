@@ -186,7 +186,9 @@ public class UploadFileServices {
 			query.setString("valorT", diVO.getValorT());
 			//query.setInteger("valorN", diVO.getValorN());
 			query.setParameter("valorN", diVO.getValorN());
-			query.setTimestamp("valorF", diVO.getValorF());	
+			query.setTimestamp("valorF", diVO.getValorF());
+                        
+                        SQLQuery q = session.createSQLQuery("CALL viajes_claros.actualiza_serv_publico_dump()");
 			
 	    	res = (Integer)query.uniqueResult();
 	    	return res;
@@ -249,7 +251,9 @@ public class UploadFileServices {
 		//query.setInteger("valorN", diVO.getValorN());
 		query.setParameter("valorN", diVO.getValorN());
 		query.setTimestamp("valorF", diVO.getValorF());
-			
+	
+                //SQLQuery q = session.createSQLQuery("CALL viajes_claros.actualiza_serv_publico_dump()");
+                
 	    res = (Integer)query.uniqueResult();
 	    return res;
 	 }

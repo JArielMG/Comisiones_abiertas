@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -31,6 +32,7 @@
 		
 		  <!-- Tab panes -->
 		  <div class="tab-content">
+                        <c:set var="denom" value="0"/>
 		  	<c:forEach items="${detalle.secciones}" var="seccion" varStatus="posicion">
 				<c:choose>
 			  		<c:when test="${posicion.index==0}">
@@ -42,19 +44,32 @@
 			  	</c:choose>
 			  				<c:forEach items="${seccion.detalle}" var="registro">
 			  					<div class="form-group">
-			  						<label class="col-sm-3 control-label">${registro.etiqueta}</label>
+			  						<label class="col-sm-4 control-label">${registro.etiqueta}</label>
 								    <div class="col-sm-8">
-								    	<c:choose> 
-								    		<c:when test="${registro.subtipo=='AREA'}">
-												<textarea class="form-control" readonly placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}"></textarea>
-										    </c:when>
-										    <c:otherwise>
-										    	<input class="form-control" type="text" placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}" readonly>
-										    </c:otherwise>
-										</c:choose>
+								    	<c:choose>                                                                              
+                                                                            <c:when test="${registro.subtipo=='AREA'}">
+                                                                                <textarea class="form-control" readonly placeholder="${registro.valorTexto}${registro.valorNumerico}${registro.valorFecha}"></textarea>
+                                                                            </c:when>
+                                                                            <c:when test = "${registro.campo == 'denominacion_pviaticos'}">
+                                                                                <c:set var="denom" value="1"/>
+                                                                                <select class="form-control" name="denominacion_pviaticos" required id="denominacion_pviaticos">
+                                                                                    <c:forEach items="${denominacionViaticos}" var="denominacion">
+                                                                                        <option value="${denominacion.codigo}" <c:if test="${registro.valorTexto==denominacion.codigo}">selected</c:if>>${denominacion.descripcion}</option>
+                                                                                    </c:forEach>
+                                                                                 </select>
+                                                                            </c:when>
+                                                                            <c:otherwise>
+                                                                                <c:if test="${registro.valorFecha != null}">
+                                                                                    <input class="form-control" type="text" readonly placeholder="${registro.valorFechaS}" >																				
+                                                                                </c:if>
+                                                                                <c:if test="${registro.valorFecha == null}">
+                                                                                    <input class="form-control" type="text" placeholder="${registro.valorTexto}${registro.valorNumerico}" readonly>												
+                                                                                </c:if>
+                                                                            </c:otherwise>
+                                                                        </c:choose>
 								    </div>
 							    </div>
-			  				</c:forEach>
+			  				</c:forEach>                                                    
 			  			</div>
 			</c:forEach>
 		  </div>
@@ -68,7 +83,7 @@
 	  </div>
 	  <div class="form-group">
 	    <div class="col-sm-offset-2 col-sm-10">
-	      <button type="button" class="btn btn-primary" onclick="location.href = 'notificacionAction?action=responde&resp=Aprobar&instance=${instance}&id=${id}&comentarios='+this.form.comentarios.value;">Aprobar</button>
+                <button type="button" class="btn btn-primary" onclick="location.href = 'notificacionAction?action=responde&resp=Aprobar&instance=${instance}&id=${id}&comentarios='+this.form.comentarios.value+ <c:if test='${denom == 1}'>'&denomCve='+this.form.denominacion_pviaticos.value +</c:if>'';">Aprobar</button>
 	      <button type="button" class="btn btn-danger" onclick="location.href = 'notificacionAction?action=responde&resp=Rechazar&instance=${instance}&id=${id}&comentarios='+this.form.comentarios.value;">Rechazar</button>
 	      <button type="button" class="btn btn-default" onclick="location.href = 'notificacionAction?action=listar';">Cancelar</button>
 	    </div>

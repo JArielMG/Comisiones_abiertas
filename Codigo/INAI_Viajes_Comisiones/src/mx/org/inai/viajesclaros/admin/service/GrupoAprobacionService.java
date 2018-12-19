@@ -119,10 +119,10 @@ public class GrupoAprobacionService {
     	query.setInteger("id", grupo.getId());
     	query.setString("nom", grupo.getNombre());
     	query.setInteger("proc", grupo.getProceso().getId());
-		query.setInteger("dep", grupo.getDependencia().getId());
-		query.setInteger("area", grupo.getArea().getId());
-		query.setInteger("jerar", grupo.getJerarquia().getId());
-    	
+        query.setInteger("dep", grupo.getDependencia().getId());
+        query.setInteger("area", grupo.getArea().getId());
+        query.setInteger("jerar", grupo.getJerarquia().getId());
+
     	res = (Integer)query.uniqueResult();
     	
     	session.close();

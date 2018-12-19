@@ -398,7 +398,7 @@ a:hover {
 #header .container .menu .search-form input[type="text"]:-ms-input-placeholder {
   color: #fff;
 }
-#header .container .menu .search-form input[type="text"]input:-moz-placeholder {
+#header .container .menu .search-form input[type="text"] input:-moz-placeholder {
   color: #fff;
 }
 #header .container .menu .search-form .dropdown-menu {
@@ -1702,7 +1702,7 @@ a:hover {
 #footer #comparador-popup .centered-content p input[type="text"]:-ms-input-placeholder {
   color: #fff;
 }
-#footer #comparador-popup .centered-content p input[type="text"]input:-moz-placeholder {
+#footer #comparador-popup .centered-content p input[type="text"] input:-moz-placeholder {
   color: #fff;
 }
 #footer #comparador-popup .centered-content p .custom-button {
@@ -1797,7 +1797,7 @@ a:hover {
 #sidebar-comparador md-content input[type="text"]:-ms-input-placeholder {
   color: #fff;
 }
-#sidebar-comparador md-content input[type="text"]input:-moz-placeholder {
+#sidebar-comparador md-content input[type="text"] input:-moz-placeholder {
   color: #fff;
 }
 #sidebar-comparador md-content .to-compare li {

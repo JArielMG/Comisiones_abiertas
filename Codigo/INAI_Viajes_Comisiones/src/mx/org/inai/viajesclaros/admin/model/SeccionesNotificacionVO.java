@@ -8,11 +8,11 @@ public class SeccionesNotificacionVO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer idSeccion; 
-    private String etiqueta;
-    private String nombreSeccion;
-    private ProcesoVO flujo;
-    private Integer orden;
-    private List<ComisionDetalleVO> detalle;
+        private String etiqueta;
+        private String nombreSeccion;
+        private ProcesoVO flujo;
+        private Integer orden;
+        private List<ComisionDetalleVO> detalle;
     
 	public Integer getIdSeccion() {
 		return idSeccion;

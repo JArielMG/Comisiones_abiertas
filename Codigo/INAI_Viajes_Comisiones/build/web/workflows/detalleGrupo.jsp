@@ -30,11 +30,11 @@
 	  <div class="form-group">
 	    <label class="col-sm-2 control-label">Proceso</label>
 	    <div class="col-sm-10">
-	      <select class="form-control" name="flujo">
-		  	<c:forEach items="${flujos}" var="flujo">
-            	<option value="${flujo.id}" <c:if test="${flujo.id==grupo.flujo.id}">selected</c:if>>${flujo.nombre}</option>
-            </c:forEach>
-		  </select>
+                <select class="form-control" name="flujo">
+                    <c:forEach items="${flujos}" var="flujo">
+                        <option value="${flujo.id}" selected>${flujo.id}</option>
+                    </c:forEach>
+                </select>
 	    </div>
 	  </div>
 	  <div class="form-group">

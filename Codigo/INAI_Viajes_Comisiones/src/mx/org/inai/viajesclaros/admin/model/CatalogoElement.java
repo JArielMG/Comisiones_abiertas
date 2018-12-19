@@ -3,6 +3,11 @@ package mx.org.inai.viajesclaros.admin.model;
 import java.io.Serializable;
 
 public class CatalogoElement implements Serializable {
+
+    @Override
+    public String toString() {
+        return "CatalogoElement{" + "id=" + id + ", codigo=" + codigo + ", descripcion=" + descripcion + '}';
+    }
 private static final long serialVersionUID = 1L;
     
     private Integer id;

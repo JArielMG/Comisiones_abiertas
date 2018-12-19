@@ -54,7 +54,9 @@
         </tbody>
     </table>
     <a href="formularioAction?action=agregarGasto&id_comision=${idComision}"><img src="img/Add.png" title="Agregar" height="40" width="40" class="boton"></a>
-    <a href="<c:url value="formularioAction?action=oficioGastos"/>"><img src="img/Home.png" title="Inicio" height="40" width="40" class="boton"></a>
+    <a href="<c:url value="formularioAction?action=oficioGastos"/>"><img src="img/Home.png" title="Inicio" height="40" width="40" class="boton"></a>    
+    <button type="button" class="btn btn-default" onclick="location.href = 'formularioAction?action=verDetalleComision&id_comision=${idComision}';">Regresar</button>
+    
     </div>
     <jsp:include page="/footer.jsp"/>
 </body>

@@ -34,7 +34,7 @@
 	    </div>
 	  </div>
 	  <div class="form-group">
-	    <label class="col-sm-2 control-label">Tope Vi&aacute;ticos</label>
+	    <label class="col-sm-2 control-label">Tope Viáticos</label>
 	    <div class="col-sm-10">
 	      <input type="number" class="form-control" name="viaticos" placeholder="Numero" value="<c:out value="${categoria.topeViaticos}"/>" size="30">
 	    </div>

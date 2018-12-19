@@ -27,7 +27,7 @@
         <thead>
             <th>Nombre</th>
             <th>Tope Hospedaje</th>
-            <th>Tope Vi&aacute;ticos</th>
+            <th>Tope Viáticos</th>
             <th>&nbsp;</th>
         </thead>
         <tbody>

@@ -1,0 +1,919 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.5.0.final using JasperReports Library version 6.5.0  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteOficioComision" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bddcea48-379c-4e4e-8c8a-420cbc46b95f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="CONTEXT" class="java.lang.String"/>
+	<parameter name="ID_TIPO_PERSONA" class="java.lang.Integer"/>
+	<parameter name="ID_COMISION" class="java.lang.Integer"/>
+	<parameter name="ID_FLUJO" class="java.lang.Integer"/>
+	<parameter name="HIBERNATE_SESSION" class="java.sql.Connection"/>
+	<parameter name="COMISION_DETALLE" class="java.util.Map"/>
+	<variable name="FechaSolicitud" class="java.util.Date">
+		<variableExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_solicitud_comision")]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_solicitud_comision")]]></initialValueExpression>
+	</variable>
+	<variable name="FechaSalida" class="java.util.Date">
+		<variableExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_hora_salida")]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_hora_salida")]]></initialValueExpression>
+	</variable>
+	<variable name="HoraSalida" class="java.util.Date">
+		<variableExpression><![CDATA[$P{COMISION_DETALLE}.get("hora_salida_comision")]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{COMISION_DETALLE}.get("hora_salida_comision")]]></initialValueExpression>
+	</variable>
+	<variable name="FechaRegreso" class="java.util.Date">
+		<variableExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_hora_regreso")]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{COMISION_DETALLE}.get("fecha_hora_regreso")]]></initialValueExpression>
+	</variable>
+	<variable name="HoraRegreso" class="java.util.Date">
+		<variableExpression><![CDATA[$P{COMISION_DETALLE}.get("hora_regreso_comision")]]></variableExpression>
+		<initialValueExpression><![CDATA[$P{COMISION_DETALLE}.get("hora_regreso_comision")]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="83" splitType="Stretch">
+			<image>
+				<reportElement x="0" y="1" width="100" height="79" uuid="d74e61a6-961e-4d01-aa2a-6995b40cb7d4"/>
+				<imageExpression><![CDATA[$P{CONTEXT}+"/reportes/images/logoifai2014.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="109" y="1" width="463" height="12" uuid="a3cbb156-7ef8-445f-a951-ecbfa21e6a18">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[INSTITUTO NACIONAL DE TRANSPARENCIA, ACCESO A LA INFORMACIÓN Y PROTECCIÓN DE DATOS PERSONALES]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="109" y="13" width="463" height="12" uuid="7bf03b36-e33d-4497-bd45-8f4662b63a6e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get( "area_ads_aprueba" ) != null ? $P{COMISION_DETALLE}.get( "area_ads_aprueba" ) : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="370" y="26" width="38" height="12" uuid="b5d748b8-ab40-4182-9929-f61ff3999c56">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Oficio:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="26" width="162" height="12" uuid="97c9d6b8-9724-4d53-a1b4-14b7289dc610">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("numero_oficio") != null ? $P{COMISION_DETALLE}.get("numero_oficio") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="110" y="40" width="462" height="12" uuid="710411a9-d92b-475e-81ad-6ff3a611fa1f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[“Año del Centenario de la Promulgación de la Constitución Política de los Estados Unidos Mexicanos”]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="54" width="38" height="12" uuid="1a8b3199-8eaf-42ac-8225-7c46a25f6104">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asunto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="448" y="54" width="124" height="12" uuid="a08d2caa-b067-456a-a47a-4bde63599904">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("asunto") != null ? $P{COMISION_DETALLE}.get("asunto") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="68" width="156" height="12" uuid="93f597f8-3a68-45a5-89a7-8d8c689c5a84">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["México D.F. a " + new SimpleDateFormat("dd").format($V{FechaSolicitud}) + " de " + new SimpleDateFormat("MMM").format($V{FechaSolicitud}) + ", " + new SimpleDateFormat("YYYY").format($V{FechaSolicitud})]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="628" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="572" height="15" uuid="341393ff-bba2-44b4-94ce-0ed41508abb6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[OFICIO DE COMISIÓN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="15" width="572" height="13" uuid="fe1cf0af-3447-4ec0-8b90-ffa1ec679907">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("nombre_enc") != null ? $P{COMISION_DETALLE}.get("nombre_enc") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="572" height="13" uuid="5268021b-e617-4a77-aff0-42e78e35c42d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("cargo_enc") != null ?  $P{COMISION_DETALLE}.get("cargo_enc") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="200" height="13" uuid="283f9560-134e-40d6-9017-e4c1858367c1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Presente]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="54" width="572" height="15" uuid="70ec4d70-954e-45cd-b809-b948ba0c96bb">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<text><![CDATA[Me permito informarle que ha sido designado para cubrir la comisión que se detalla a continuación:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="69" width="64" height="12" uuid="bb42c645-254a-49af-8ba8-5a3961a87024">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO DE VIAJE:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="64" y="69" width="75" height="12" uuid="27dc8930-4f29-4373-a52d-9a5a536728dd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tipo_viaje") != null ? $P{COMISION_DETALLE}.get("tipo_viaje") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="69" width="114" height="12" uuid="c4480643-fec5-41bd-be7f-a643dbdef7d1">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO DE REPRESENTACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="264" y="69" width="125" height="12" uuid="ad427f95-ff5b-4b7f-9c10-ec88a5d85c16">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tipo_de_representacion") != null ? $P{COMISION_DETALLE}.get("tipo_de_representacion") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="479" y="69" width="93" height="12" uuid="84dcd8e3-35dc-408f-bae3-ec2ab432ea26">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("numero_acuerdo") != null ? $P{COMISION_DETALLE}.get("numero_acuerdo") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="69" width="79" height="12" uuid="377b4171-cd8b-408d-aa37-e4086c21e8e6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. DE ACUERDO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="69" y="93" width="503" height="30" uuid="8b4ceb12-7db5-453f-8142-361f166acc31"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("nombre_evento") != null ? $P{COMISION_DETALLE}.get("nombre_evento") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="123" width="503" height="30" uuid="41186492-e5cb-4220-8089-2dac1001a980"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("organizador_evento") != null ? $P{COMISION_DETALLE}.get("organizador_evento") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="150" y="153" width="422" height="12" uuid="5f9a872c-9c96-4d2e-b48f-461f86e9086e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("vinculo_evento") != null ? $P{COMISION_DETALLE}.get("vinculo_evento") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="165" width="100" height="12" uuid="49631a0c-84ad-4281-81e1-1a8d9ebef999">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESTINO: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="177" width="39" height="12" uuid="71e8456e-2adf-4ba3-93a6-53aacc91af22">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PAÍS:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="39" y="177" width="90" height="12" uuid="7a8e2b83-8c5b-404e-9826-9215477df1c8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("pais_origen") != null ? $P{COMISION_DETALLE}.get("pais_origen") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="150" y="177" width="39" height="12" uuid="dc079bed-b547-463d-97fa-21cb36ed10ed">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ESTADO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="190" y="177" width="130" height="12" uuid="08c966ab-02ef-416d-81d2-0e5869ec21e8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("estado_origen") != null ? $P{COMISION_DETALLE}.get("estado_origen") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="400" y="177" width="39" height="12" uuid="f4e3ec2b-74b2-44cf-ade6-e816696f25d2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CIUDAD:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="440" y="177" width="130" height="12" uuid="cf4592d1-5bf6-423a-95b9-04d4b06d296f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("ciudad_origen") != null ? $P{COMISION_DETALLE}.get("ciudad_origen") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="189" width="189" height="12" uuid="78e4591e-43e1-47ce-8eab-3348f33c7e25">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PERIODO DE LA COMISIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="258" y="201" width="29" height="12" uuid="f855de75-6e36-4ddf-aeab-1584d713e350">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORA:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="201" width="39" height="12" uuid="9fead1e8-e1e1-43fe-9a39-c88559b83ea4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALIDA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="288" y="201" width="44" height="12" uuid="1490b9ad-c54a-4b3b-857f-b89c04ed7915">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{HoraSalida} != null ? new SimpleDateFormat("HH:mm").format($V{HoraSalida}) : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="178" y="201" width="70" height="12" uuid="05e72119-e33c-43a7-9c9b-a7b321908acd">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{FechaSalida} != null ? new SimpleDateFormat("dd/MM/yyyy").format($V{FechaSalida}) : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="369" y="201" width="48" height="12" uuid="24bdb3b6-d17b-446a-87be-b2f668bf91b9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REGRESO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="418" y="201" width="70" height="12" uuid="514ae792-bced-4e96-845b-8b7eaf15f44c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{FechaRegreso} != null ? new SimpleDateFormat("dd/MM/yyyy").format($V{FechaRegreso}) : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="498" y="201" width="29" height="12" uuid="d2a1df2c-7df0-4fae-9fd4-8930684555da">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HORA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="528" y="201" width="44" height="12" uuid="7b4cd72e-2609-4a9f-86c3-327d43ac3f77">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{HoraRegreso} != null ? new SimpleDateFormat("HH:mm").format($V{HoraRegreso}) : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="213" width="49" height="12" uuid="47960075-559c-4043-916b-2647dace019c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VIÁTICOS:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="161" y="213" width="79" height="12" uuid="db6287bb-9a62-40fc-9bab-b152ee96cb2d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[HOMOLOGACIÓN: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="241" y="213" width="39" height="12" uuid="a48d417d-393a-4e93-8455-65ad67d92cf8">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("homologacion")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="303" y="213" width="115" height="12" uuid="2d16c25e-8ffb-4a4c-94dc-d96dea8a4dff">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIVEL DE HOMOLOGACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="418" y="213" width="153" height="12" uuid="bc697784-7235-4a24-a0c9-6c20d7733754">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("nivel_homologacion")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="225" width="79" height="30" uuid="43c06f09-b55e-4c9e-8838-0897593aa133">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JUSTIFICACIÓN HOMOLOGACIÓN:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="225" width="491" height="30" uuid="a9a83d55-74a0-4180-ba69-82ee85fc7ac3">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("justificacion_homologacion") != null ? $P{COMISION_DETALLE}.get("justificacion_homologacion") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="79" y="255" width="50" height="12" uuid="f2cdebd1-dd00-4703-bda4-e8d6e0035145">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO ZONA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="129" y="255" width="240" height="12" uuid="bc60f4f8-01cb-4805-85dd-73dfb9ea54b7">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tipo_de_zona") != null ? $P{COMISION_DETALLE}.get("tipo_de_zona") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="379" y="255" width="50" height="12" uuid="44edf159-b92b-45e4-87ca-43e15a44cee4">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TIPO PAGO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="429" y="255" width="143" height="12" uuid="c233644b-97f4-4ec8-a835-acc7a338b712">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tipo_de_pago") != null ? $P{COMISION_DETALLE}.get("tipo_de_pago") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="276" width="98" height="12" uuid="13088c9c-39a1-43b7-bc74-ef95b52a26bf">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TARIFA SIN PERNOCTA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="129" y="276" width="70" height="12" uuid="527f9af2-d87d-45ea-aa1d-78ff42c087aa">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tarifa_sin_pernocta") != null ? $P{COMISION_DETALLE}.get("tarifa_sin_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="211" y="276" width="108" height="12" uuid="dd1fa5ec-a2d2-45d7-bf37-40748add28f9">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. DÍAS SIN PERNOCTA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="319" y="276" width="50" height="12" uuid="4887cc02-d2bd-4a0c-9f6b-b5faed74aa1f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("dias_sin_pernocta") != null ? $P{COMISION_DETALLE}.get("dias_sin_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="444" y="276" width="35" height="12" uuid="615f5c03-4e66-43ac-8cfe-e77dff8f6f2d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="479" y="276" width="93" height="12" uuid="416dec64-b317-4ffb-90a7-3bea7084652c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("monto_sin_pernocta") != null ? $P{COMISION_DETALLE}.get("monto_sin_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="288" width="98" height="12" uuid="317d9405-1151-4572-aeb3-85b27528de2c">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TARIFA CON PERNOCTA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="129" y="288" width="70" height="12" uuid="1a6ab6c1-e0a5-426e-aec8-ce96feb955bf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tarifa_con_pernocta") != null ? $P{COMISION_DETALLE}.get("tarifa_con_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="211" y="288" width="108" height="12" uuid="24944f79-1699-4e18-aca3-c3fae55205fe">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. DÍAS CONPERNOCTA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="319" y="288" width="50" height="12" uuid="66465eab-ad74-4d17-9546-e451794bf986">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("dias_con_pernocta") != null ? $P{COMISION_DETALLE}.get("dias_con_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="444" y="288" width="35" height="12" uuid="4abe5e44-42e6-42d2-b843-44b67c12d0cc">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="479" y="288" width="93" height="12" uuid="06aed0db-e88b-4982-bfc6-910ba78d546c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("monto_con_pernocta") != null ? $P{COMISION_DETALLE}.get("monto_con_pernocta") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="300" width="118" height="12" uuid="030fc18c-daab-46e6-831a-822bda3566cd">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TARIFA CORRESPONDIENTE:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="379" y="300" width="63" height="12" uuid="0bcb91af-2c72-461a-baa7-ef7eed155ac2">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONEDA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="444" y="300" width="128" height="12" uuid="6f6870fe-9082-4133-84b5-25c6ab42a303">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("moneda") != null ? $P{COMISION_DETALLE}.get("moneda") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="300" width="190" height="12" uuid="971c645c-7cf2-41fc-b8ac-02f71552f58d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("tarifa_viaticos") != null ? $P{COMISION_DETALLE}.get("tarifa_viaticos") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="312" width="129" height="32" uuid="b9192e70-3c26-4cb2-be2f-ac0c7a31492f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MONTO A VIATICAR EN LETRA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="312" width="442" height="32" uuid="f4f7427f-1675-42e3-a891-4577b5d6e03f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("monto_letra") != null ? $P{COMISION_DETALLE}.get("monto_letra") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="344" width="69" height="32" uuid="975bb500-0288-4858-b353-b9c2a204986c">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MOTIVO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="344" width="502" height="32" uuid="1aa407ce-9bde-4218-ae0d-89e05e69092a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("motivo_encargo") != null ? $P{COMISION_DETALLE}.get("motivo_encargo") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="411" width="69" height="19" uuid="ae3c5892-cd94-43ab-ae41-de5453b81d46">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NOMBRE DE UA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="411" width="338" height="19" uuid="897cf353-541a-4280-9fcc-d6b57fc7592a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("ua_presupuesto") != null ? $P{COMISION_DETALLE}.get("ua_presupuesto") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="411" width="68" height="19" uuid="e856a22f-551e-4f78-a76e-395b660eec1a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAVE DE UA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="479" y="411" width="93" height="19" uuid="e38428ba-b4c3-4d1a-b046-6d9b5297bec9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("cve_ua_presupuesto") != null ? $P{COMISION_DETALLE}.get("cve_ua_presupuesto")  : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="430" width="69" height="28" uuid="e1be74a6-6e60-4222-9c36-fd2a17576afc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROGRAMA PRESUPUESTAL:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="458" width="69" height="28" uuid="6a4eb85d-3f70-41c9-9493-5e02dbc314d6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PROYECTO ESTRATÉGICO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="430" width="338" height="28" uuid="a0949c40-c8d9-4bdd-9fe2-87df2dc108f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("programa_presupuestal") != null ? $P{COMISION_DETALLE}.get("programa_presupuestal") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="70" y="458" width="338" height="28" uuid="4e1cde91-0df7-4067-a8d5-9944dfcfc593">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("proyecto_estrategico") != null ? $P{COMISION_DETALLE}.get("proyecto_estrategico") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="458" width="68" height="28" uuid="3f290d44-e2d8-497c-bc5f-6672f22e76c4">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAVE DE PROYECTO:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="479" y="458" width="93" height="28" uuid="38d0c83e-4f87-47f0-9091-da26b7e7688f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("cve_proyecto_estrategico") != null ? $P{COMISION_DETALLE}.get("cve_proyecto_estrategico") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="411" y="430" width="68" height="28" uuid="7556c491-5846-4220-b0b8-a92ca720921a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CLAVE PROGRAMA:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="479" y="430" width="93" height="28" uuid="42b42222-5282-4198-995f-6cee1d671943">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("cve_programa_pre") != null ? $P{COMISION_DETALLE}.get("cve_programa_pre") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="486" width="129" height="32" uuid="6cdf6871-aa56-47a8-a49a-480c08d33559">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OBSERVACIONES: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="130" y="486" width="441" height="32" uuid="8212468f-f48e-4380-89e8-455ab14508f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("observaciones") != null ? $P{COMISION_DETALLE}.get("observaciones") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="526" width="571" height="15" uuid="5e3d724b-a8ad-467b-91a0-5cca21f7b912">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZÓ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="80" y="579" width="400" height="12" uuid="7daed124-585e-42da-a144-56f1c2ae8d10">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("nombre_autorizo") != null ? $P{COMISION_DETALLE}.get("nombre_autorizo") : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="591" width="400" height="12" uuid="72d6ad3d-c7b7-4fbf-b055-620648c91549">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{COMISION_DETALLE}.get("cargo_autorizo") !=  null ? $P{COMISION_DETALLE}.get("cargo_autorizo") : ""]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="93" width="69" height="30" uuid="50405d62-b7b1-4ac1-b40d-e976b19be9c7"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DESCRIPCIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="123" width="69" height="30" uuid="d7c3a50a-53fa-4835-bd08-d0b2fed2b0b2"/>
+				<textElement>
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ORGANIZADOR:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="41" y="153" width="109" height="12" uuid="7fa42284-35e7-4469-9fd6-64e86aba7597">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VÍNCULO INTERNET:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="152" y="567" width="256" height="12" uuid="b2499709-e3a1-49fe-a392-935ef79b55e5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[__________________________________________________________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="81" width="572" height="12" uuid="a26c8968-505a-41e4-bcef-410a5ab1c940">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[DATOS DE LA COMISIÓN:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="603" width="399" height="12" uuid="c291030d-156a-403c-81b5-54bdb01c4e34">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[(texto  en casos de ausencia)]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="41" splitType="Stretch">
+			<staticText>
+				<reportElement x="1" y="10" width="570" height="30" uuid="ac498e93-3b40-42ab-bcfa-a34e8a70f47b"/>
+				<text><![CDATA[C.c.p.- Héctor Fernando Ortega Padilla.- Director General de Administración.- Para su atención y trámite.
+C.c.p.- María José Albornoz Bueno.- Directora de Desarrollo Humano y Organizacional.- Para su conocimiento.										]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

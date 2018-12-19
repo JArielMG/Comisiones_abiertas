@@ -11,11 +11,12 @@ public class ComisionDetalleVO implements Serializable {
 	private ComisionVO comision;
 	private String tabla;
 	private String campo;
-    private String valorTexto;
-    private Double valorNumerico;
-    private Date valorFecha;
-    private String etiqueta;
-    private String subtipo;
+        private String valorTexto;
+        private Double valorNumerico;
+        private Date valorFecha;
+        private String etiqueta;
+        private String subtipo;
+        private String valorFechaS;
     
 	public Integer getIdDetalle() {
 		return idDetalle;
@@ -71,4 +72,11 @@ public class ComisionDetalleVO implements Serializable {
 	public void setSubtipo(String subtipo) {
 		this.subtipo = subtipo;
 	}
+        public String getValorFechaS() {
+            return valorFechaS;
+        }
+
+        public void setValorFechaS(String valorFechaS) {
+            this.valorFechaS = valorFechaS;
+        }
 }

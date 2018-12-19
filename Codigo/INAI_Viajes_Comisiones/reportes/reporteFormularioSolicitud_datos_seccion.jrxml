@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reporteFormularioSolicitud_datos_seccion" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="f213b757-993e-4b13-82e9-0b26c541e659">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="ID_COMISION" class="java.lang.Integer"/>
+	<parameter name="ID_SECCION" class="java.lang.Integer"/>
+	<parameter name="ID_TIPO_PERSONA" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[select fcc.campo,fcc.etiqueta,
+CASE WHEN IFNULL(cbn.tipo_dato,cdn.tipo_dato) = 1 THEN
+	cd.valor_numerico
+ELSE (CASE WHEN IFNULL(cbn.tipo_dato,cdn.tipo_dato) = 2 and IFNULL(cbn.tipo_control,cdn.tipo_control) = 2 THEN
+	vd.valor
+	ELSE ( CASE WHEN IFNULL(cbn.tipo_dato,cdn.tipo_dato) = 2 and IFNULL(cbn.tipo_control,cdn.tipo_control) != 2 THEN
+		cd.valor_texto
+		ELSE (CASE WHEN fcc.subtipo = 'FECHA' AND IFNULL(cbn.tipo_dato,cdn.tipo_dato) = 3 THEN
+			DATE_FORMAT(cd.valor_fecha,'%d/%m/%Y')
+			ELSE (CASE WHEN fcc.subtipo = 'HORA' AND IFNULL(cbn.tipo_dato,cdn.tipo_dato) = 3 THEN
+                                        DATE_FORMAT(cd.valor_fecha,'%H:%i')
+                                     ELSE 0 END)
+			END )END) END ) END AS valor_campo
+from comisiones_detalle cd
+inner join flujos_campos_config fcc on cd.campo = fcc.campo
+left outer join campos_base cbn on fcc.campo = cbn.campo AND cd.tabla=cbn.tabla
+left outer join campos_dinamicos cdn on fcc.campo = cdn.nombre_campo
+left outer join valores_dinamicos vd on cdn.id_lista = vd.id_lista and cd.valor_texto = vd.codigo
+where cd.id_comision = $P{ID_COMISION} and fcc.id_seccion_formulario = $P{ID_SECCION} and
+fcc.id_tipo_persona = $P{ID_TIPO_PERSONA}
+order by fcc.orden]]>
+	</queryString>
+	<field name="campo" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="etiqueta" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="valor_campo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="31" y="0" width="187" height="21" uuid="09eb9667-2ff8-476b-800a-db49bb78f90a"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{etiqueta}.toString()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement x="218" y="0" width="320" height="21" uuid="8669d448-9fb9-472c-8750-0f5288991ef9"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Arial" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valor_campo}.toString()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

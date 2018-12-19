@@ -76,11 +76,11 @@ public class GrupoAprobacionAction extends HttpServlet {
 			ArrayList<JerarquiaVO> jerarquias = jerarServ.obtenerJerarquias();
 			ArrayList<DependenciaVO> dependencias = depServ.obtenerDependencias();
 			ArrayList<AreaVO> areas = areaServ.obtenerAreas();
-			
+//			
 			request.setAttribute("grupo", grupo);
-			
+//			
 			request.setAttribute("comando", "update");
-			request.setAttribute("flujos", flujos);
+//			request.setAttribute("flujos", flujos);
 			request.setAttribute("jerarquias", jerarquias);
 			request.setAttribute("dependencias", dependencias);
 			request.setAttribute("areas", areas);
